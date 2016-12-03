@@ -1,4 +1,6 @@
 package com.p3k.magictale.map.background;
 
-public class BackgroundSpriteSheet {
+import com.p3k.magictale.map.SpriteSheet;
+
+public class BackgroundSpriteSheet implements SpriteSheet {
 }
