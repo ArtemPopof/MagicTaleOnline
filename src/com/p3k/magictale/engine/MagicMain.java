@@ -1,4 +1,4 @@
-package com.P3K.magictale.engine;
+package com.p3k.magictale.engine;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;

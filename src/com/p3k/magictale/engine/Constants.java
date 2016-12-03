@@ -1,4 +1,4 @@
-package com.P3K.magictale.engine;
+package com.p3k.magictale.engine;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jar" level="project" />
     <orderEntry type="library" name="linux" level="project" />
+    <orderEntry type="library" name="org.lwjgl.lwjgl:lwjgl:2.9.3" level="project" />
   </component>
 </module>
