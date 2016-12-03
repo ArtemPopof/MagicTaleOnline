@@ -11,11 +11,24 @@ import org.lwjgl.input.Keyboard;
 public class Player extends GameObject implements Constants{
 
     private float speed;
+    private int health;
+    private float xp;
 
     public Player(float x, float y) {
        init(x, y, 0.1f, 0.1f, 0.5f, PLAYER_SIZE, PLAYER_SIZE);
 
+       xp = 0;
+       health = 10;
        speed = 4f;
+    }
+
+    @Override
+    public void update() {
+        System.out.println("SPEED: " + speed);
+        System.out.println("LEVEL: " + getLevel());
+        System.out.println("XP: " + xp);
+        System.out.println("STRENGTH: " + getStrength());
+        System.out.println("MAGIC: " + getMagic());
     }
 
     public void processInput() {
@@ -45,5 +58,40 @@ public class Player extends GameObject implements Constants{
 
     public float getSpeed() {
         return speed;
+    }
+
+    public float getXp() {
+        return xp;
+    }
+
+    public void addXp(float amount) {
+        xp += amount;
+    }
+
+    public int getLevel() {
+        return (int) (xp / 50) + 1;
+    }
+
+    public int getMaxHealth() {
+        return getLevel() * 10;
+    }
+
+    public int getStrength() {
+        return (int) (getLevel() * 4f);
+    }
+
+    public int getMagic() {
+        return (int) (getLevel() * 1.5f);
+    }
+
+    public int getCurrentHealth() {
+
+        int maxHealth = getMaxHealth();
+
+        if (health > maxHealth) {
+            health = maxHealth;
+        }
+
+        return health;
     }
 }

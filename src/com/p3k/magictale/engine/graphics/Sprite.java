@@ -12,6 +12,8 @@ public class Sprite {
     private float width;
     private float height;
 
+    private int textureId;
+
 
     public Sprite(float r, float g, float b, float width, float height) {
         this.r = r;
@@ -20,6 +22,9 @@ public class Sprite {
 
         this.width = width;
         this.height = height;
+    }
+
+    public Sprite(String texturePath, float width, float height) {
     }
 
     public void render() {
