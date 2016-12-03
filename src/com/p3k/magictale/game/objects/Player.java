@@ -22,11 +22,14 @@ public class Player extends GameObject implements Constants{
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             move(0, 1);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             move(0, -1);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             move(-1, 0);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             move(1, 0);
         }
     }
