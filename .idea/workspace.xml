@@ -1,70 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d2c8159-9c45-42d0-b01a-f3a7dbd99403" name="Default" comment="native lib bugfix&#10;">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux/libjinput-linux.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux/libjinput-linux64.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux/liblwjgl.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux/liblwjgl64.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux/libopenal.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/linux/libopenal64.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/macosx/libjinput-osx.dylib" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/macosx/liblwjgl.dylib" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/macosx/openal.dylib" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/solaris/liblwjgl.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/solaris/liblwjgl64.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/solaris/libopenal.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/solaris/libopenal64.so" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/OpenAL32.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/OpenAL64.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/jinput-dx8.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/jinput-dx8_64.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/jinput-raw.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/jinput-raw_64.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/lwjgl.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/native/windows/lwjgl64.dll" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/Footsteps.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/Thumbs.db" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/appletlogo.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/appletprogress.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/ball.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/ball_sm.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/center.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/ding.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/left.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/logo/lwjgl_logo-with_jacket.ai" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/lwjgl_16x16.xpm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/lwjgl_32x32.xpm" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/right.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/Thumbs.db" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/alien.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/alien2.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/alien3.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/gotyou.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/hit.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/loose.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/pressanykey.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/ship.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/shot.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/shot.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/start.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/win.wav" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/spaceinvaders/youwin.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/native.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/jinput_license.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/jogl_license.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/lzma_license.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/openal_license.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/CREDITS" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/LICENSE" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/README" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/lwjgl_hidden_switches.text" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/logo/lwjgl_logo-with_jacket.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/resources.txt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/linux.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/jar.xml" afterPath="$PROJECT_DIR$/.idea/libraries/jar.xml" />
+    <list default="true" id="1d2c8159-9c45-42d0-b01a-f3a7dbd99403" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/lwjgl_16x16.xpm" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/lwjgl_16x16.xpm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/lwjgl_32x32.xpm" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/lwjgl_32x32.xpm" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MagicTaleOnline.iml" afterPath="$PROJECT_DIR$/MagicTaleOnline.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/jinput_license.txt" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/jinput_license.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/jogl_license.txt" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/jogl_license.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/lzma_license.txt" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/lzma_license.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/openal_license.txt" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/3rdparty/openal_license.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/CREDITS" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/CREDITS" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/LICENSE" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/LICENSE" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/README" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/README" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/lwjgl_hidden_switches.text" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/doc/lwjgl_hidden_switches.text" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/logo/lwjgl_logo-with_jacket.svg" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/logo/lwjgl_logo-with_jacket.svg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/resources.txt" afterPath="$PROJECT_DIR$/lib/lwjgl-2.9.3/res/resources.txt" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -86,19 +37,21 @@
       <file leaf-file-name="MagicMain.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
+            <state relative-caret-position="15">
               <caret line="70" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1480804093233" expanded="true" signature="1501:1635" ph="{...}" />
-                <marker date="1480804093233" expanded="false" signature="1664:1675" ph=" { " />
-                <marker date="1480804093233" expanded="false" signature="1695:1701" ph=" }" />
-                <marker date="1480804093233" expanded="false" signature="1728:1739" ph=" { " />
-                <marker date="1480804093233" expanded="false" signature="1753:1759" ph=" }" />
-                <marker date="1480804093233" expanded="true" signature="1787:1937" ph="{...}" />
-                <marker date="1480804093233" expanded="true" signature="1967:2029" ph="{...}" />
-                <marker date="1480804093233" expanded="false" signature="2058:2069" ph=" { " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -106,7 +59,7 @@
       <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
+            <state relative-caret-position="15">
               <caret line="42" column="24" lean-forward="false" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -115,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sprite.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Sprite.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="19" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+            <state relative-caret-position="23">
+              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -232,6 +185,7 @@
         <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java" />
         <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/LoadTexture.java" />
         <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -382,6 +336,7 @@
     <property name="nodejs_interpreter_path" value="/bin/node" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="js-jscs-nodeInterpreter" value="/bin/node" />
+    <property name="prop_add_unversioned_files" value="true" />
   </component>
   <component name="RunManager" selected="Application.MagicMain">
     <configuration default="false" name="MagicMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -796,7 +751,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1480795007879</updated>
-      <workItem from="1480804122380" duration="724000" />
+      <workItem from="1480804122380" duration="2240000" />
     </task>
     <task id="LOCAL-00001" summary="Engine basic routines added, main window appears">
       <created>1480796222016</created>
@@ -812,11 +767,18 @@
       <option name="project" value="LOCAL" />
       <updated>1480801674251</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="native lib bugfix&#10;">
+      <created>1480804881245</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1480804881245</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="724000" />
+    <option name="totallyTimeSpent" value="2240000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-23" width="1366" height="767" extended-state="0" />
@@ -825,14 +787,14 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32886904" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -880,14 +842,6 @@
           <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1480804093233" expanded="true" signature="1501:1635" ph="{...}" />
-            <marker date="1480804093233" expanded="false" signature="1664:1675" ph=" { " />
-            <marker date="1480804093233" expanded="false" signature="1695:1701" ph=" }" />
-            <marker date="1480804093233" expanded="false" signature="1728:1739" ph=" { " />
-            <marker date="1480804093233" expanded="false" signature="1753:1759" ph=" }" />
-            <marker date="1480804093233" expanded="true" signature="1787:1937" ph="{...}" />
-            <marker date="1480804093233" expanded="true" signature="1967:2029" ph="{...}" />
-            <marker date="1480804093233" expanded="false" signature="2058:2069" ph=" { " />
           </folding>
         </state>
       </provider>
@@ -976,14 +930,6 @@
           <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1480804093233" expanded="true" signature="1501:1635" ph="{...}" />
-            <marker date="1480804093233" expanded="false" signature="1664:1675" ph=" { " />
-            <marker date="1480804093233" expanded="false" signature="1695:1701" ph=" }" />
-            <marker date="1480804093233" expanded="false" signature="1728:1739" ph=" { " />
-            <marker date="1480804093233" expanded="false" signature="1753:1759" ph=" }" />
-            <marker date="1480804093233" expanded="true" signature="1787:1937" ph="{...}" />
-            <marker date="1480804093233" expanded="true" signature="1967:2029" ph="{...}" />
-            <marker date="1480804093233" expanded="false" signature="2058:2069" ph=" { " />
           </folding>
         </state>
       </provider>
@@ -1022,39 +968,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="42" column="24" lean-forward="false" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="70" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1480804093233" expanded="true" signature="1501:1635" ph="{...}" />
-            <marker date="1480804093233" expanded="false" signature="1664:1675" ph=" { " />
-            <marker date="1480804093233" expanded="false" signature="1695:1701" ph=" }" />
-            <marker date="1480804093233" expanded="false" signature="1728:1739" ph=" { " />
-            <marker date="1480804093233" expanded="false" signature="1753:1759" ph=" }" />
-            <marker date="1480804093233" expanded="true" signature="1787:1937" ph="{...}" />
-            <marker date="1480804093233" expanded="true" signature="1967:2029" ph="{...}" />
-            <marker date="1480804093233" expanded="false" signature="2058:2069" ph=" { " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1084,14 +1002,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-42">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MagicTaleOnline.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1102,16 +1012,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/lwjgl-2.9.3/res/logo/lwjgl_logo-with_jacket.svg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="27" lean-forward="false" selection-start-line="6" selection-start-column="27" selection-end-line="6" selection-end-column="27" />
+        <state relative-caret-position="0">
+          <caret line="6" column="33" lean-forward="true" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="19" lean-forward="true" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+        <state relative-caret-position="23">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="42" column="24" lean-forward="false" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="70" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="17" lean-forward="false" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
           <folding />
         </state>
       </provider>
