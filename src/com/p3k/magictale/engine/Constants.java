@@ -30,4 +30,7 @@ public interface Constants {
     // помимо тайлов на экране могут быть другие
     // объекты, больше по размеру, чем тайлы.
     public static final int TILE_SIZE = 32;
+
+    // temp value
+    public static final int PLAYER_SIZE = 32;
 }

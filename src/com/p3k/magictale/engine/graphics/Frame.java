@@ -1,4 +1,4 @@
-package com.p3k.magictale.graphics;
+package com.p3k.magictale.engine.graphics;
 
 /**
  * Created by artem96 on 03.12.16.

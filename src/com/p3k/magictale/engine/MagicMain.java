@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine;
 
+import com.p3k.magictale.game.Game;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -75,7 +76,7 @@ public class MagicMain {
     }
 
     private void getInput() {
-        game.getInput();
+        game.processInput();
     }
 
     private void update() {

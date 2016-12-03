@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1d2c8159-9c45-42d0-b01a-f3a7dbd99403" name="Default" comment="" />
+    <list default="true" id="1d2c8159-9c45-42d0-b01a-f3a7dbd99403" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/physics/Collision.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/graphics/Sprite.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/engine/Game.java" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/game/Game.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/graphics/Animation.java" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Animation.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/graphics/Frame.java" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Frame.java" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/graphics/GameObject.java" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/GameObject.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/engine/Constants.java" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/Constants.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java" afterPath="$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,8 +34,100 @@
       <file leaf-file-name="MagicMain.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state relative-caret-position="-120">
+              <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1544#1545#0" expanded="true" />
+                <element signature="e#1579#1580#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="585">
+              <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1066#1067#0" expanded="true" />
+                <element signature="e#1094#1095#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sprite.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+              <folding>
+                <element signature="e#927#928#0" expanded="true" />
+                <element signature="e#963#964#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/Game.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="371">
+              <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#480#481#0" expanded="true" />
+                <element signature="e#517#518#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="33" column="17" lean-forward="false" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameObject.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/GameObject.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="236">
+              <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+              <folding>
+                <element signature="e#458#459#0" expanded="true" />
+                <element signature="e#482#483#0" expanded="true" />
+                <element signature="e#515#516#0" expanded="true" />
+                <element signature="e#541#542#0" expanded="true" />
+                <element signature="e#568#569#0" expanded="true" />
+                <element signature="e#592#593#0" expanded="true" />
+                <element signature="e#625#626#0" expanded="true" />
+                <element signature="e#651#652#0" expanded="true" />
+                <element signature="e#683#684#0" expanded="true" />
+                <element signature="e#723#724#0" expanded="true" />
+                <element signature="e#764#765#0" expanded="true" />
+                <element signature="e#802#803#0" expanded="true" />
+                <element signature="e#834#835#0" expanded="true" />
+                <element signature="e#875#876#0" expanded="true" />
+                <element signature="e#918#919#0" expanded="true" />
+                <element signature="e#958#959#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Collision.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/physics/Collision.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -31,67 +135,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/Game.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameObject.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/GameObject.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
-              <folding>
-                <element signature="e#326#327#0" expanded="true" />
-                <element signature="e#358#359#0" expanded="true" />
-                <element signature="e#411#412#0" expanded="true" />
-                <element signature="e#453#454#0" expanded="true" />
-                <element signature="e#480#481#0" expanded="true" />
-                <element signature="e#504#505#0" expanded="true" />
-                <element signature="e#537#538#0" expanded="true" />
-                <element signature="e#563#564#0" expanded="true" />
-                <element signature="e#594#595#0" expanded="true" />
-                <element signature="e#618#619#0" expanded="true" />
-                <element signature="e#651#652#0" expanded="true" />
-                <element signature="e#677#678#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Animation.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/Animation.java">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Animation.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="315">
               <caret line="21" column="42" lean-forward="false" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
               <folding>
-                <element signature="e#226#227#0" expanded="true" />
-                <element signature="e#268#269#0" expanded="true" />
+                <element signature="e#233#234#0" expanded="true" />
+                <element signature="e#275#276#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Frame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/Frame.java">
+        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Frame.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="360">
               <caret line="24" column="32" lean-forward="false" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Sprite.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/Sprite.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -130,6 +191,14 @@
         <option value="$PROJECT_DIR$/src/com/p3k/magictale/graphics/Frame.java" />
         <option value="$PROJECT_DIR$/src/com/p3k/magictale/graphics/Sprite.java" />
         <option value="$PROJECT_DIR$/src/com/p3k/magictale/graphics/GameObject.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/physics/Collision.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/physics/Collision.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/Constants.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/game/Game.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java" />
+        <option value="$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/GameObject.java" />
       </list>
     </option>
   </component>
@@ -205,7 +274,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="graphics" />
+              <option name="myItemId" value="game" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -231,6 +300,32 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MagicTaleOnline" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MagicTaleOnline" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magictale" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="engine" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="graphics" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -253,7 +348,7 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="MAIN_CLASS_NAME" value="com.P3K.magictale.engine.MagicMain" />
+      <option name="MAIN_CLASS_NAME" value="com.p3k.magictale.engine.MagicMain" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
@@ -451,12 +546,12 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32972974" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24979457" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -495,11 +590,13 @@
           <caret line="25" column="22" lean-forward="false" selection-start-line="25" selection-start-column="22" selection-end-line="25" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1544#1545#0" expanded="true" />
+            <element signature="e#1579#1580#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/Game.java">
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
@@ -514,36 +611,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java">
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Animation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        <state relative-caret-position="315">
+          <caret line="21" column="42" lean-forward="false" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+          <folding>
+            <element signature="e#233#234#0" expanded="true" />
+            <element signature="e#275#276#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/physics/Collision.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/Game.java">
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        <state relative-caret-position="480">
+          <caret line="33" column="17" lean-forward="false" selection-start-line="33" selection-start-column="17" selection-end-line="33" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/Animation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="42" lean-forward="false" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
-          <folding>
-            <element signature="e#226#227#0" expanded="true" />
-            <element signature="e#268#269#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/Frame.java">
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Frame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="24" column="32" lean-forward="false" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
@@ -551,31 +648,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/Sprite.java">
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/MagicMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="-120">
+          <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1544#1545#0" expanded="true" />
+            <element signature="e#1579#1580#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/graphics/GameObject.java">
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
+        <state relative-caret-position="371">
+          <caret line="28" column="27" lean-forward="false" selection-start-line="28" selection-start-column="27" selection-end-line="28" selection-end-column="27" />
           <folding>
-            <element signature="e#326#327#0" expanded="true" />
-            <element signature="e#358#359#0" expanded="true" />
-            <element signature="e#411#412#0" expanded="true" />
-            <element signature="e#453#454#0" expanded="true" />
+            <element signature="imports" expanded="true" />
             <element signature="e#480#481#0" expanded="true" />
-            <element signature="e#504#505#0" expanded="true" />
-            <element signature="e#537#538#0" expanded="true" />
-            <element signature="e#563#564#0" expanded="true" />
-            <element signature="e#594#595#0" expanded="true" />
-            <element signature="e#618#619#0" expanded="true" />
+            <element signature="e#517#518#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/game/objects/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1066#1067#0" expanded="true" />
+            <element signature="e#1094#1095#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/Sprite.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="0" lean-forward="true" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+          <folding>
+            <element signature="e#927#928#0" expanded="true" />
+            <element signature="e#963#964#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/p3k/magictale/engine/graphics/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="20" column="28" lean-forward="false" selection-start-line="20" selection-start-column="28" selection-end-line="20" selection-end-column="28" />
+          <folding>
+            <element signature="e#458#459#0" expanded="true" />
+            <element signature="e#482#483#0" expanded="true" />
+            <element signature="e#515#516#0" expanded="true" />
+            <element signature="e#541#542#0" expanded="true" />
+            <element signature="e#568#569#0" expanded="true" />
+            <element signature="e#592#593#0" expanded="true" />
+            <element signature="e#625#626#0" expanded="true" />
             <element signature="e#651#652#0" expanded="true" />
-            <element signature="e#677#678#0" expanded="true" />
+            <element signature="e#683#684#0" expanded="true" />
+            <element signature="e#723#724#0" expanded="true" />
+            <element signature="e#764#765#0" expanded="true" />
+            <element signature="e#802#803#0" expanded="true" />
+            <element signature="e#834#835#0" expanded="true" />
+            <element signature="e#875#876#0" expanded="true" />
+            <element signature="e#918#919#0" expanded="true" />
+            <element signature="e#958#959#0" expanded="true" />
           </folding>
         </state>
       </provider>

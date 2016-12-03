@@ -1,4 +1,4 @@
-package com.p3k.magictale.graphics;
+package com.p3k.magictale.engine.graphics;
 
 import java.util.ArrayList;
 
