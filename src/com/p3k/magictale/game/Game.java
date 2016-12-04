@@ -2,6 +2,7 @@ package com.p3k.magictale.game;
 
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.game.objects.Player;
+import com.p3k.magictale.map.level.Level;
 
 import java.util.ArrayList;
 
@@ -13,8 +14,11 @@ public class Game {
 
     private ArrayList<GameObject> objects;
     private Player player;
+    private Level level;
 
     public Game() {
+
+//        level = LevelLoad.load();
 
         objects = new ArrayList<>();
 
@@ -31,6 +35,8 @@ public class Game {
 
     public void update() {
 
+//        level.update();
+
         for (GameObject object : objects) {
             object.update();
         }
@@ -38,6 +44,8 @@ public class Game {
     }
 
     public void render() {
+
+//        level.render();
 
         for (GameObject object : objects) {
             object.render();
