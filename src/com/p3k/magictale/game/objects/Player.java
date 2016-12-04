@@ -5,6 +5,8 @@ import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Sprite;
 import org.lwjgl.input.Keyboard;
 
+import java.io.IOException;
+
 /**
  * Created by artem96 on 04.12.16.
  */
@@ -15,8 +17,16 @@ public class Player extends GameObject implements Constants{
     private float xp;
 
     public Player(float x, float y) {
-       init(x, y, 0.1f, 0.1f, 0.5f, PLAYER_SIZE, PLAYER_SIZE);
+       this.x = x;
+       this.y = y;
 
+       try {
+           this.sprite = new Sprite("res/bird.png", 128, 128);
+       } catch (IOException e) {
+           System.err.println("Cannot init sprite for player class");
+           System.err.println(e.getMessage());
+           System.exit(1);
+       }
        xp = 0;
        health = 10;
        speed = 4f;

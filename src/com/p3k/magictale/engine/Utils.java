@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 /**
  * Created by artem96 on 04.12.16.
  */
-public class LoadTexture {
+public class Utils {
 
     private static final int BYTES_PER_PIXEL = 4;
     public static int loadTexture(BufferedImage image){
