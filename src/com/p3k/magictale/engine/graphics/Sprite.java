@@ -132,4 +132,8 @@ public class Sprite {
     public void setHeight(float height) {
         this.height = height;
     }
+
+    public int getTextureId() {
+        return textureId;
+    }
 }

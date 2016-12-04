@@ -7,6 +7,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import org.lwjgl.input.Keyboard;
 
+import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +23,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class MagicMain {
 
     private Game game;
+
+    private boolean isInFullScreenMode = true;
 
     MagicMain() {
 
@@ -44,7 +47,15 @@ public class MagicMain {
     public void initDisplay() {
 
         try {
-            Display.setDisplayMode(new DisplayMode(800, 600));
+            if (isInFullScreenMode) {
+                Display.setDisplayMode(new DisplayMode(
+                        Toolkit.getDefaultToolkit().getScreenSize().width,
+                        Toolkit.getDefaultToolkit().getScreenSize().height));
+                Display.setFullscreen(true);
+            } else {
+                Display.setDisplayMode(new DisplayMode(800, 600));
+            }
+
             Display.create();
             Keyboard.create();
             Display.setVSyncEnabled(true);
