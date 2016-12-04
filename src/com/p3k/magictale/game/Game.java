@@ -18,7 +18,7 @@ public class Game {
 
         objects = new ArrayList<>();
 
-        player = new Player(50, 50);
+        player = new Player(250, 250);
 
         objects.add(player);
 

@@ -20,6 +20,7 @@ public class Player extends GameObject implements Constants{
        this.x = x;
        this.y = y;
 
+
        try {
            this.sprite = new Sprite("res/bird.png", 128, 128);
        } catch (IOException e) {
@@ -27,6 +28,8 @@ public class Player extends GameObject implements Constants{
            System.err.println(e.getMessage());
            System.exit(1);
        }
+
+      // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
        xp = 0;
        health = 10;
        speed = 4f;
@@ -34,11 +37,7 @@ public class Player extends GameObject implements Constants{
 
     @Override
     public void update() {
-        System.out.println("SPEED: " + speed);
-        System.out.println("LEVEL: " + getLevel());
-        System.out.println("XP: " + xp);
-        System.out.println("STRENGTH: " + getStrength());
-        System.out.println("MAGIC: " + getMagic());
+
     }
 
     public void processInput() {

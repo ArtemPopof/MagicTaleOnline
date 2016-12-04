@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -40,32 +41,52 @@ public class Sprite {
     //
     public Sprite(String texturePath, float width, float height) throws IOException {
 
-        BufferedImage test = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = test.createGraphics();
 
-        g2d.setColor(new Color(1.0f, 1.0f, 1.0f, 0.5f));
-        g2d.fillRect(0, 0, 128, 128); //A transparent white background
+        // read image from file
+        BufferedImage rawImage = ImageIO.read(new File(texturePath));
 
-        g2d.setColor(Color.red);
-        g2d.drawRect(0, 0, 127, 127); //A red frame around the image
-        g2d.fillRect(10, 10, 10, 10); //A red box
+        Graphics2D gr = rawImage.createGraphics();
 
-        g2d.setColor(Color.blue);
-        g2d.drawString("Test image", 10, 64); //Some blue text
+        gr.transform(new AffineTransform(AffineTransform.TYPE_FLIP));
 
-        textureId = Utils.loadTexture(test);
+        // and convert it to another format
+        BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g = image.createGraphics();
+
+        g.drawImage(rawImage,0, 0, null);
+
+        textureId = Utils.loadTexture(image);
+
+        this.width = width;
+        this.height = height;
+
+    }
+
+    /**
+     * This constructor should be used for sprites, that
+     * not unique. If your sprite will be unique, use another
+     * constructor.
+     *
+     * Before use this, load texture with loadTexture
+     * method, to obtain textureId.
+     *
+     * Please, be sure that you use valid textureId,
+     * otherwise your sprite might look strange.
+     */
+
+    public Sprite(int textureId, float width, float height) {
+
+        this.textureId = textureId;
+        this.width = width;
+        this.height = height;
 
     }
 
     public void render() {
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        if (textureId == -1)
-            glColor3f(r, g, b);
-        else
-            glBindTexture(GL_TEXTURE_2D, textureId);
+        glBindTexture(GL_TEXTURE_2D, textureId);
 
         glBegin(GL_QUADS); {
 
@@ -74,7 +95,6 @@ public class Sprite {
 
             glVertex2f(0, height);
             glTexCoord2f(0, 1);
-
 
             glVertex2f(width, height);
             glTexCoord2f(1, 1);
