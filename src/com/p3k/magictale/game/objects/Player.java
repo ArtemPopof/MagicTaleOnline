@@ -22,7 +22,7 @@ public class Player extends GameObject implements Constants{
 
 
        try {
-           this.sprite = new Sprite("res/bird.png", 128, 128);
+           this.sprite = new Sprite("res/bird.png", 300, 300);
        } catch (IOException e) {
            System.err.println("Cannot init sprite for player class");
            System.err.println(e.getMessage());

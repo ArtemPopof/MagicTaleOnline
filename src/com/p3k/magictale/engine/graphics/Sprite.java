@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Utils;
+import javafx.scene.transform.Affine;
 import org.lwjgl.opengl.Display;
 
 import javax.imageio.ImageIO;
@@ -41,13 +42,20 @@ public class Sprite {
     //
     public Sprite(String texturePath, float width, float height) throws IOException {
 
+        //TODO This method seems to me little slow,
+        // if someone knows how to rotate image
+        // in GL, or remake loadTexture so the
+        // image will not be inversed verticaly,
+        // do so.
 
         // read image from file
         BufferedImage rawImage = ImageIO.read(new File(texturePath));
 
-        Graphics2D gr = rawImage.createGraphics();
+        AffineTransform transform = new AffineTransform();
 
-        gr.transform(new AffineTransform(AffineTransform.TYPE_FLIP));
+        transform.translate(rawImage.getWidth() / 2, rawImage.getHeight() / 2);
+        transform.rotate(-Math.PI/2);
+        transform.translate(-rawImage.getWidth() / 2, -rawImage.getHeight() / 2);
 
         // and convert it to another format
         BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(),
@@ -55,7 +63,7 @@ public class Sprite {
 
         Graphics2D g = image.createGraphics();
 
-        g.drawImage(rawImage,0, 0, null);
+        g.drawImage(rawImage, transform,null);
 
         textureId = Utils.loadTexture(image);
 
