@@ -72,6 +72,24 @@ public class Sprite {
 
     }
 
+    public Sprite(BufferedImage rawImage, float width, float height) {
+        AffineTransform transform = new AffineTransform();
+        transform.translate(rawImage.getWidth() / 2, rawImage.getHeight() / 2);
+        transform.rotate(-Math.PI/2);
+        transform.translate(-rawImage.getWidth() / 2, -rawImage.getHeight() / 2);
+
+        // and convert it to another format
+        BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g = image.createGraphics();
+        g.drawImage(rawImage, transform, null);
+
+        textureId = Utils.loadTexture(image);
+
+        this.width = width;
+        this.height = height;
+    }
+
     /**
      * This constructor should be used for sprites, that
      * not unique. If your sprite will be unique, use another
