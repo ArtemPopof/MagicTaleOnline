@@ -10,6 +10,10 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +29,7 @@ public class SoundManager {
 
     private static SoundManager instance = null;
 
-    private static final String SOUNDS_DIR = "/res/sounds/";
+    private static final String SOUNDS_DIR = "res/sounds/";
 
     private Map<String, IntBuffer> soundData;
 
@@ -51,6 +55,24 @@ public class SoundManager {
         return instance;
     }
 
+    public IntBuffer getSound(String soundname) {
+        return soundData.get(soundname);
+    }
+
+    public void setListenerPos(float x, float y) throws Exception {
+        FloatBuffer listPos = (FloatBuffer) BufferUtils.createFloatBuffer(3)
+                .put(new float[] { x, y, 0.0f }).rewind();
+
+        AL10.alListener(AL10.AL_POSITION, listPos);
+        //TODO: set listener pos
+
+        if ( AL10.alGetError() != AL10.AL_NO_ERROR ) {
+            throw new Exception("SoundManager setListenerPos error:" +
+                    " cannot update listener position!");
+        }
+
+    }
+
     public void registerSound(String soundname) throws Exception {
 
         IntBuffer buf = BufferUtils.createIntBuffer(1);
@@ -61,8 +83,16 @@ public class SoundManager {
                     " cannot generate buffer (lack of memory)");
         }
 
-        WaveData wavData = WaveData.create(SOUNDS_DIR + soundname);
-        if ( wavData == null ) {
+        WaveData wavData;
+        try (BufferedInputStream fin = new BufferedInputStream(
+                     new FileInputStream(SOUNDS_DIR + soundname))) {
+
+            wavData = WaveData.create(fin);
+
+            if ( wavData == null ) {
+                throw new FileNotFoundException();
+            }
+        } catch (FileNotFoundException e) {
             throw new Exception("SoundManager registerSound error:" +
                     " error opening sound file " + soundname + "! Check this file!");
         }
@@ -78,7 +108,7 @@ public class SoundManager {
         soundData.put(soundname, buf);
     }
 
-    public static void close() {
+    public static void destroy() {
         // buffers free with GC
 
         AL.destroy();
