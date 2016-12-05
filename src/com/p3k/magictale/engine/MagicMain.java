@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine;
 
+import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.game.Game;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -112,6 +113,7 @@ public class MagicMain {
     private void cleanUp () {
         Display.destroy();
         Keyboard.destroy();
+        SoundManager.destroy();
     }
 
     private void initGame() {
