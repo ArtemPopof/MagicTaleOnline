@@ -53,7 +53,7 @@ public class Player extends GameObject implements Constants{
             mainSound.play("user/baphomet_breath.wav");
         }
 
-        SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
+        //SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
     }
 
     @Override

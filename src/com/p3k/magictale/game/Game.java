@@ -27,7 +27,8 @@ public class Game {
     private SoundSource envSound;
 
     public Game() {
-//        level = LevelLoad.load();
+
+        //  level = LevelLoad.load();
 
         initSoundManager();
 
@@ -84,6 +85,8 @@ public class Game {
 
             soundManager.registerSound("main_theme.wav");
             soundManager.registerSound("wind.wav");
+            soundManager.registerSound("user/baphomet_breath.wav");
+            soundManager.registerSound("user/attack_axe.wav");
         } catch (Exception e) {
             System.err.println("Error initializing sound manager: " + e);
         }

@@ -99,6 +99,11 @@ public class MagicMain {
 
     private void getInput() {
         game.processInput();
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            Display.destroy();
+            game.cleanUp();
+        }
     }
 
     private void update() {
