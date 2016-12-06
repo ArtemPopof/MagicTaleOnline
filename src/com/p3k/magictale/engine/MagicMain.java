@@ -23,6 +23,8 @@ public class MagicMain {
 
     private Game game;
 
+    private boolean isRunning = true;
+
     private boolean isInFullScreenMode = true;
 
     MagicMain() {
@@ -88,7 +90,7 @@ public class MagicMain {
 
     private void gameLoop() {
 
-        while (!Display.isCloseRequested()) {
+        while (isRunning && !Display.isCloseRequested()) {
 
             getInput();
             update();
@@ -101,8 +103,7 @@ public class MagicMain {
         game.processInput();
 
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            Display.destroy();
-            game.cleanUp();
+            isRunning = false;
         }
     }
 
@@ -126,6 +127,7 @@ public class MagicMain {
         Display.destroy();
         Keyboard.destroy();
         SoundManager.destroy();
+        game.cleanUp();
     }
 
     private void initGame() {
