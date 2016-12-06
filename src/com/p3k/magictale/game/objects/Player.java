@@ -31,7 +31,11 @@ public class Player extends GameCharacter implements Constants{
 
         type = CharacterTypes.ABSTRACT_PLAYER;
 
-        animations = ResourceManager.getInstance().getAnimations(this);
+        try {
+            animations = ResourceManager.getInstance().getAnimations(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /**
        try {

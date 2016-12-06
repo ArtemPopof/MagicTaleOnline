@@ -29,10 +29,10 @@ public class ResourceManager {
 
     private static ResourceManager instance = null;
 
-    public ResourceManager() throws IllegalStateException {
+    private ResourceManager() throws IllegalStateException {
 
         if (instance != null) {
-            throw new IllegalStateException("Cannot init ResoureManager for the second time, bandit!");
+            throw new IllegalStateException("Cannot init ResourceManager for the second time, bandit!");
         }
 
         textures = new HashMap<>();
@@ -44,6 +44,13 @@ public class ResourceManager {
 
     }
 
+    public static ResourceManager getInstance() throws Exception {
+        if ( instance == null ) {
+            instance = new ResourceManager();
+        }
+
+        return instance;
+    }
     /**
      * Load all map textures from spritesheet
      * and map them according to the given
@@ -67,9 +74,8 @@ public class ResourceManager {
 
         //TODO implement
 
-        int currentId = firstId;
-
         SpriteSheet mapSS = new SpriteSheet(spriteSheetPath);
+        System.out.println("Textures:");
 
         for (int i = 0; i < mapSS.size(); i++) {
             int textureId = mapSS.getSpriteTextureId(i);
@@ -77,8 +83,16 @@ public class ResourceManager {
             if (textures.put(firstId++, textureId) != null) {
                 throw new IllegalArgumentException();
             }
-
+//            System.out.println("id = " + (firstId-1) + "  sprId = " + textures.get(firstId-1));
         }
+        System.out.println("firstId - mapSS.size - 1= " + (firstId - mapSS.size() - 1) + "  sprId = "
+                + textures.get(firstId - mapSS.size() - 1));
+        System.out.println("firstId - mapSS.size    = " + (firstId - mapSS.size()) + "  sprId = "
+                + textures.get(firstId - mapSS.size()));
+        System.out.println("firstId - 1             = " + (firstId-1) + "  sprId = " + textures.get(firstId-1));
+        System.out.println("firstId                 = " + (firstId) + "  sprId = " + textures.get(firstId));
+        System.out.println("MapSS.size              = " + (mapSS.size()));
+
     }
 
     /** @TODO
@@ -131,13 +145,5 @@ public class ResourceManager {
      */
     public ArrayList<Animation> getAnimations(GameCharacter character) {
         return animations.get(character.getCharacterId());
-    }
-
-    public static ResourceManager getInstance() {
-        if (instance == null) {
-            instance = new ResourceManager();
-        }
-
-        return instance;
     }
 }

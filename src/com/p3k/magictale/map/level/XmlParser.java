@@ -2,10 +2,13 @@ package com.p3k.magictale.map.level;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.p3k.magictale.engine.graphics.Sprite;
+import com.sun.deploy.util.ArrayUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,9 +18,10 @@ import org.xml.sax.SAXException;
 /**
  * Created by COMar-PC on 04.12.2016.
  */
-public class LevelParser {
+public class XmlParser {
+    private Document doc = null;
 
-    public LevelParser() throws IOException, SAXException {
+    public XmlParser() throws IOException, SAXException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); //создали фабрику строителей, сложный и грамосткий процесс (по реже выполняйте это действие)
         // f.setValidating(false); // не делать проверку валидации
         DocumentBuilder db = null; // создали конкретного строителя документа
@@ -26,11 +30,14 @@ public class LevelParser {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-        Document doc = db.parse(new File("res/map/level/lvl_forest.tmx")); // стооитель построил документ
-        visit(doc, 0);
+        if (doc != null) {
+            doc = db.parse(new File("res/map/level/lvl_forest.tmx"));
+        }
+        // стооитель построил документ
+//        visit(doc, 0);
     }
 
-    public LevelParser(DocumentBuilderFactory dbf, String pathName, String elementTagName) throws IOException, SAXException {
+    public XmlParser(DocumentBuilderFactory dbf, String pathName) throws IOException, SAXException {
         // f.setValidating(false); // не делать проверку валидации
         DocumentBuilder db = null; // создали конкретного строителя документа
         try {
@@ -38,9 +45,28 @@ public class LevelParser {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-        Document doc = db.parse(new File(pathName)); // стооитель построил документ
-        visit(doc, 0);
-        System.out.println("el = " + doc.getElementsByTagName(elementTagName));
+        if (db != null) {
+            doc = db.parse(new File(pathName));
+        }
+//        if (doc != null) {
+//            visit(doc, 0);
+//            System.out.println("el = " + doc.getElementsByTagName("data"));
+//        }
+        System.out.println(doc.getStrictErrorChecking());
+    }
+
+    public ArrayList<String> getSpriteSheetPaths() {
+        ArrayList<String> spriteSheetPaths = new ArrayList<>();
+        spriteSheetPaths.add(doc.getNodeName());
+
+        return spriteSheetPaths;
+    }
+
+    public ArrayList<Sprite> getSprites() {
+        ArrayList<Sprite> sprites = new ArrayList<>();
+        System.out.println(doc.getClass().getName());
+
+        return sprites;
     }
 
     private static void visit(Node node, int level) {

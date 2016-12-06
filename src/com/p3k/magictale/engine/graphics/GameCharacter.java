@@ -39,7 +39,11 @@ public class GameCharacter extends GameObject {
 
         currentState = WAITING_STATE;
 
-        animations = ResourceManager.getInstance().getAnimations(this);
+        try {
+            animations = ResourceManager.getInstance().getAnimations(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public int getState() {

@@ -7,6 +7,7 @@ import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.objects.Player;
 import com.p3k.magictale.map.level.Level;
+import com.p3k.magictale.map.level.LevelManager;
 
 import java.util.ArrayList;
 
@@ -26,13 +27,37 @@ public class Game {
     private SoundSource bgmSound;
     private SoundSource envSound;
 
+    private final String mapName = "forest";
+
     public Game() {
 
-        //  level = LevelLoad.load();
+        try {
+            resourceManager = ResourceManager.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            level = LevelManager.getInstance();
+        } catch (Exception e) {
+            System.err.println("Error initializing level manager: " + e);
+        }
+        try {
+            level.load(mapName, resourceManager);
+        } catch (Exception e) {
+            System.err.println("Error render level manager: " + e);
+        }
+        try {
+            level.render();
+        } catch (Exception e) {
+            System.err.println("Error render level manager: " + e);
+        }
+
+
 
         initSoundManager();
 
-        resourceManager = new ResourceManager();
+
 
         initObjects();
     }
