@@ -9,11 +9,20 @@ import java.util.ArrayList;
 
 
 /**
- * Created by artem96 on 04.12.16.
+ * @author artem96
+ * @author Александр Плосков
+ *         Created on 04.12.16.
  */
 public class SpriteSheet {
     ArrayList<Sprite> sprites = null;
 
+    /**
+     * Load spriteSheet and cut it to
+     * individual sprites and put them to
+     * sprites array
+     *
+     * @param image - BufferedImage, which contains some sprites, include fully transparent unnecessary sprites
+     */
     public SpriteSheet(SpritesImage image) {
         sprites = new ArrayList<>();
 
@@ -26,13 +35,6 @@ public class SpriteSheet {
 
     //TODO implement
 
-    /**
-     * Load spriteSheet and cut it to
-     * individual sprites and put them to
-     * sprites array
-     *
-     * @param image - BufferedImage, which contains some sprites, include fully transparent unnecessary sprites
-     */
     private void loadSprites(SpritesImage image) throws IOException {
         BufferedImage img = ImageIO.read(image.getURL());
 
