@@ -1,5 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
+import com.p3k.magictale.game.objects.CharacterTypes;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ public class GameCharacter extends GameObject {
      * exmpl: for Blood Mage class it might be some-
      * thing like BLOOD_MAGE_CHARACTER_ID = 59;
      */
-    protected static final int ABSTRACT_CHARACTER_ID = 0;
+    protected CharacterTypes type = CharacterTypes.ABSTRACT_CHARACTER;
 
     protected ArrayList<Animation> animations;
 
@@ -63,8 +65,8 @@ public class GameCharacter extends GameObject {
      *
      * @return classID
      */
-    public int getCharacterId() {
-        return ABSTRACT_CHARACTER_ID;
+    public CharacterTypes getCharacterId() {
+        return type;
     }
 
 

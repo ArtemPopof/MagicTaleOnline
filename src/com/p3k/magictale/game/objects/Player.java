@@ -3,6 +3,7 @@ package com.p3k.magictale.game.objects;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
+import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
@@ -26,7 +27,11 @@ public class Player extends GameCharacter implements Constants{
 
     public Player(float x, float y) {
 
-        super(x, y, 216.0f, 34.0f);
+        super(x, y, 78, 112);
+
+        type = CharacterTypes.ABSTRACT_PLAYER;
+
+        animations = ResourceManager.getInstance().getAnimations(this);
 
         /**
        try {
@@ -37,10 +42,18 @@ public class Player extends GameCharacter implements Constants{
            System.exit(1);
        }**/
 
-      // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
+        // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
+
        xp = 0;
        health = 10;
        speed = 4f;
+
+       initSounds();
+
+        //SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
+    }
+
+    private void initSounds() {
 
         try {
             mainSound = new SoundSource(null, true);
@@ -55,11 +68,11 @@ public class Player extends GameCharacter implements Constants{
             mainSound.play("user/baphomet_breath.wav");
         }
 
-        //SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
     }
 
     @Override
     public void update() {
+        super.update();
     }
 
     public void processInput() {
@@ -129,4 +142,5 @@ public class Player extends GameCharacter implements Constants{
 
         return health;
     }
+
 }

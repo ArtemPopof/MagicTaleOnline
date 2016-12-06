@@ -1,5 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
+import com.p3k.magictale.game.objects.CharacterTypes;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -23,7 +25,7 @@ public class ResourceManager {
     // each player's animations should
     // be loaded in memory when level loaded
     // or when game begins.
-    private HashMap<Integer, ArrayList<Animation>> animations;
+    private HashMap<CharacterTypes, ArrayList<Animation>> animations;
 
     private static ResourceManager instance = null;
 
@@ -96,7 +98,18 @@ public class ResourceManager {
                 0, 8, 106, 129);
         characterTestAnims.add(waitAnimation);
 
-        animations.put(GameCharacter.ABSTRACT_CHARACTER_ID, characterTestAnims);
+        animations.put(CharacterTypes.ABSTRACT_CHARACTER, characterTestAnims);
+
+        //next
+
+        ArrayList<Animation> playerTestAnims = new ArrayList<>();
+
+        Animation waitAnim = new Animation("res/animation/bigfoot/bigfoot",
+                0, 20, 78, 112);
+
+        playerTestAnims.add(waitAnim);
+
+        animations.put(CharacterTypes.ABSTRACT_PLAYER, playerTestAnims);
     }
 
     /**
