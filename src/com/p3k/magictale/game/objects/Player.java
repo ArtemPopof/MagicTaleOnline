@@ -3,7 +3,10 @@ package com.p3k.magictale.game.objects;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Sprite;
+import com.p3k.magictale.engine.sound.SoundManager;
+import com.p3k.magictale.engine.sound.SoundSource;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 import java.io.IOException;
 
@@ -15,6 +18,10 @@ public class Player extends GameObject implements Constants{
     private float speed;
     private int health;
     private float xp;
+
+    private SoundSource mainSound;
+    private SoundSource attackSound;
+
 
     public Player(float x, float y) {
        this.x = x;
@@ -33,11 +40,24 @@ public class Player extends GameObject implements Constants{
        xp = 0;
        health = 10;
        speed = 4f;
+
+        try {
+            mainSound = new SoundSource(null, true);
+            attackSound = new SoundSource(null, false);
+            attackSound.setLevel(25.0f);
+        } catch (Exception e) {
+            System.err.println("Error initializing sound for player!");
+        }
+
+        if ( mainSound != null ) {
+            mainSound.play("user/baphomet_breath.wav");
+        }
+
+        SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
     }
 
     @Override
     public void update() {
-
     }
 
     public void processInput() {
@@ -53,6 +73,10 @@ public class Player extends GameObject implements Constants{
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             move(1, 0);
+        }
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            attackSound.play("user/attack_axe.wav");
         }
     }
 
