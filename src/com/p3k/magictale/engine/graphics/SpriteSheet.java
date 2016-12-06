@@ -1,10 +1,11 @@
 package com.p3k.magictale.engine.graphics;
 
-import java.util.ArrayList;
+import com.p3k.magictale.engine.networkobjects.SpritesImage;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -13,11 +14,11 @@ import java.io.IOException;
 public class SpriteSheet {
     ArrayList<Sprite> sprites = null;
 
-    public SpriteSheet(String path) {
+    public SpriteSheet(SpritesImage image) {
         sprites = new ArrayList<>();
 
         try {
-            loadSprites(path);
+            loadSprites(image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,35 +31,24 @@ public class SpriteSheet {
      * individual sprites and put them to
      * sprites array
      *
-     * @param path
+     * @param image - BufferedImage, which contains some sprites, include fully transparent unnecessary sprites
      */
-    private void loadSprites(String path) throws IOException {
-        System.out.println("HERE loadSprites");
-        BufferedImage image = ImageIO.read(new File(path));
-        System.out.println(image.getWidth() + " " + image.getHeight());
+    private void loadSprites(SpritesImage image) throws IOException {
+        BufferedImage img = ImageIO.read(image.getURL());
 
-        int width = 32;
-        int height = 32;
-        int index = 0;
-        for (int x = 0; x < 320; x += width) {
-            for (int y = 0; y < 320; y += height, index++) {
-//                System.out.println("x: " + x + " y: " + y + " w: " + width + " h: " + height);
-                BufferedImage subImage = image.getSubimage(x, y, width, height);
-//                System.out.println("subImage x:" + subImage.getWidth() + " h: " + subImage.getHeight());
-                Sprite sprite = null;
-                try {
-                    sprite = new Sprite(subImage, (float)width, (float)height);
-                } catch (Exception e) {
-                    System.out.println("Error create sprite from subImage" + e);
-                }
-                //ImageIO.write(subImage, "PNG", new File("res/map/background/tile" + index + ".png"));
-                if (sprite != null) {
-                    sprites.add(sprite);
-                }
+        int imgWidth = img.getWidth();
+        int imgHeight = img.getHeight();
+
+        int spriteWidth = image.getSpriteWidth();
+        int spriteHeight = image.getSpriteHeight();
+
+        for (int y = 0; y + spriteHeight <= imgHeight; y += spriteHeight) {
+            for (int x = 0; x + spriteWidth <= imgWidth; x += spriteWidth) {
+                BufferedImage subImage = img.getSubimage(x, y, spriteWidth, spriteHeight);
+                Sprite sprite = new Sprite(subImage);
+                sprites.add(sprite);
             }
-            System.out.println("Sprites column count = " + sprites.size());
         }
-        System.out.println("Sprites count = " + sprites.size());
     }
 
     public int getSpriteTextureId(int index) {
