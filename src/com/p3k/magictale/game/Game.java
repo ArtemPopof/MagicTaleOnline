@@ -29,11 +29,13 @@ public class Game {
     public Game() {
 //        level = LevelLoad.load();
 
+        initSoundManager();
+
         resourceManager = new ResourceManager();
 
         initObjects();
 
-        initSoundManager();
+
 
         objects = new ArrayList<>();
 
