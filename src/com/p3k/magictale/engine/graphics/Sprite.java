@@ -116,30 +116,6 @@ public class Sprite {
 
     }
 
-    private BufferedImage transformToValidTexture(BufferedImage rawImage) {
-
-        // Flip the image horizontally
-        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
-        tx.translate(-rawImage.getWidth(null), 0);
-        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        rawImage = op.filter(rawImage, null);
-
-        //rotate
-        AffineTransform transform = new AffineTransform();
-        transform.translate(rawImage.getWidth() / 2, rawImage.getHeight() / 2);
-        transform.rotate(-Math.PI/2);
-        transform.translate(-rawImage.getWidth() / 2, -rawImage.getHeight() / 2);
-
-        // and convert it to another format
-        BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g = image.createGraphics();
-        g.drawImage(rawImage, transform, null);
-
-        return image;
-    }
-
-
     public float getWidth() {
         return width;
     }
