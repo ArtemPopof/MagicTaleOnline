@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *         Created on 04.12.16.
  */
 public class SpriteSheet {
-    ArrayList<Sprite> sprites = null;
+    private ArrayList<Sprite> sprites = null;
 
     /**
      * Load spriteSheet and cut it to
