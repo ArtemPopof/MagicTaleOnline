@@ -11,6 +11,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.Buffer;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -51,6 +52,8 @@ public class Sprite {
 
         // read image from file
         BufferedImage rawImage = ImageIO.read(new File(texturePath));
+
+        rawImage = flipHorizontally(rawImage);
 
         textureId = Utils.loadTexture(rawImage);
 
@@ -95,25 +98,39 @@ public class Sprite {
 
             glVertex2f(0, 0);
             //glTexCoord2f(0, 1);
-            glTexCoord2f(1, 1);
+            //glTexCoord2f(1, 1);
+            glTexCoord2f(0, 0);
 
             glVertex2f(width, 0);
            // glTexCoord2f(1, 1);
-            glTexCoord2f(1, 0);
+           // glTexCoord2f(1, 0);
+              glTexCoord2f(0, 1);
 
             glVertex2f(width, -height);
            // glTexCoord2f(1, 0);
-            glTexCoord2f(0, 0);
+           // glTexCoord2f(0, 0);
+              glTexCoord2f(1, 1);
 
             glVertex2f(0, -height);
             //glTexCoord2f(0, 0);
-            glTexCoord2f(0, 1);
+            //glTexCoord2f(0, 1);
+              glTexCoord2f(1, 0);
 
 
 
         }
         glEnd();
 
+    }
+
+    private BufferedImage flipHorizontally(BufferedImage rawImage) {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-rawImage.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        rawImage = op.filter(rawImage, null);
+
+        return rawImage;
     }
 
     public float getWidth() {

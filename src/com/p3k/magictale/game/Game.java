@@ -1,6 +1,8 @@
 package com.p3k.magictale.game;
 
+import com.p3k.magictale.engine.graphics.Character;
 import com.p3k.magictale.engine.graphics.GameObject;
+import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.objects.Player;
@@ -18,6 +20,8 @@ public class Game {
     private Player player;
     private Level level;
 
+    private ResourceManager resourceManager;
+
     private SoundManager soundManager;
     private SoundSource bgmSound;
     private SoundSource envSound;
@@ -26,33 +30,11 @@ public class Game {
 
 //        level = LevelLoad.load();
 
-        objects = new ArrayList<>();
+        resourceManager = new ResourceManager();
 
-        player = new Player(100 , 520);
+        initObjects();
 
-        objects.add(player);
-
-        try {
-            soundManager = SoundManager.getInstance();
-
-            soundManager.registerSound("main_theme.wav");
-            soundManager.registerSound("wind.wav");
-        } catch (Exception e) {
-            System.err.println("Error initializing sound manager: " + e);
-        }
-
-
-        try {
-            bgmSound = new SoundSource(null, true);
-            envSound = new SoundSource(null, true);
-
-        } catch (Exception e) {
-            System.err.println("Error loading bgm sounds: " + e);
-        }
-
-        // Must be moved to more appropriate place?
-        bgmSound.setLevel(0.15f).play("main_theme.wav");
-        envSound.setLevel(1.0f).play("wind.wav");
+        initSoundManager();
 
     }
 
@@ -83,5 +65,42 @@ public class Game {
 
     public void cleanUp() {
 
+    }
+
+    private void initObjects() {
+        objects = new ArrayList<>();
+
+        player = new Player(100 , 520);
+
+        objects.add(player);
+
+        // test character
+        Character testChar = new Character(300, 550, 32, 64);
+        objects.add(testChar);
+
+    }
+
+    private void initSoundManager() {
+        try {
+            soundManager = SoundManager.getInstance();
+
+            soundManager.registerSound("main_theme.wav");
+            soundManager.registerSound("wind.wav");
+        } catch (Exception e) {
+            System.err.println("Error initializing sound manager: " + e);
+        }
+
+
+        try {
+            bgmSound = new SoundSource(null, true);
+            envSound = new SoundSource(null, true);
+
+        } catch (Exception e) {
+            System.err.println("Error loading bgm sounds: " + e);
+        }
+
+        // Must be moved to more appropriate place?
+        bgmSound.setLevel(0.15f).play("main_theme.wav");
+        envSound.setLevel(1.0f).play("wind.wav");
     }
 }

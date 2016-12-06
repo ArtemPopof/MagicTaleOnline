@@ -16,9 +16,8 @@ public class Frame {
         numberDisplayed = 0;
     }
 
-    public boolean render() {
+    public boolean update() {
 
-        object.render();
         numberDisplayed++;
 
         if (numberDisplayed >= length) {
@@ -27,6 +26,10 @@ public class Frame {
         }
 
         return true;
+    }
+
+    public Sprite getSprite() {
+        return object;
     }
 
 

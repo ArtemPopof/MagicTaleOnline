@@ -1,6 +1,14 @@
 package com.p3k.magictale.engine.graphics;
 
 /**
+ * GameObject
+ *
+ * Repreresnts some dynamic object with
+ * animations, states, etc
+ *
+ * NPC, Player, or Bullet class should
+ * be derived from this one.
+ *
  * Created by artem96 on 03.12.16.
  */
 
@@ -10,6 +18,17 @@ public class GameObject {
     protected float x;
     protected float y;
 
+    /**
+     * Object current orientation
+     * in space
+     *
+     * in degrees
+     *
+     */
+    protected float direction;
+    /**
+     * Visual information of this object
+     */
     protected Sprite sprite;
 
     public void render() {
@@ -63,10 +82,12 @@ public class GameObject {
         sprite.setHeight(height);
     }
 
-    protected void init(float x, float y, float r, float g, float b, float width, float height) {
+    protected void init(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
-        this.sprite = new Sprite(r, g, b, width, height);
+        this.sprite = new Sprite(0, 1f, 0, width, height);
+
+        direction = 0;
     }
 
 }

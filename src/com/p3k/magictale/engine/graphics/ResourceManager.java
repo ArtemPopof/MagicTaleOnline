@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine.graphics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -18,8 +19,26 @@ public class ResourceManager {
      */
     private HashMap<Integer, Integer> textures;
 
-    public ResourceManager() {
+    // all animations for all players.
+    // each player's animations should
+    // be loaded in memory when level loaded
+    // or when game begins.
+    private HashMap<Integer, ArrayList<Animation>> animations;
+
+    private static ResourceManager instance = null;
+
+    public ResourceManager() throws IllegalStateException {
+
+        if (instance != null) {
+            throw new IllegalStateException("Cannot init ResoureManager for the second time, bandit!");
+        }
+
         textures = new HashMap<>();
+        animations = new HashMap<>();
+
+        loadAllAnimationsInformation();
+
+        instance = this;
 
     }
 
@@ -60,6 +79,26 @@ public class ResourceManager {
         }
     }
 
+    /** @TODO
+     * This function will be read file
+     * that contains information about each
+     * character animations and load this info
+     * into Animations arrays.
+     *
+     * By now, this class is under development,
+     * so it's do fake actions
+     */
+    private void loadAllAnimationsInformation() {
+
+        ArrayList<Animation> characterTestAnims = new ArrayList<>();
+
+        Animation waitAnimation = new Animation("res/animation/test",
+                0, 8, 106, 129);
+        characterTestAnims.add(waitAnimation);
+
+        animations.put(Character.ABSTRACT_CHARACTER_ID, characterTestAnims);
+    }
+
     /**
      * Returns textureId, or -1 if there are no such
      * texture
@@ -69,5 +108,23 @@ public class ResourceManager {
      */
     public Integer getTexture(int textureName) {
         return textures.get(new Integer(textureName));
+    }
+
+    /**
+     * Return character animation by id.
+     *
+     * @param character
+     * @return animations
+     */
+    public ArrayList<Animation> getAnimations(Character character) {
+        return animations.get(character.getCharacterId());
+    }
+
+    public static ResourceManager getInstance() {
+        if (instance == null) {
+            instance = new ResourceManager();
+        }
+
+        return instance;
     }
 }

@@ -26,6 +26,9 @@ public interface Constants {
 
     public static final int MAX_FPS = 60;
 
+    // each animation frame will be showed 5 times.
+    public static final int FRAME_SHOW_COUNT = 5;
+
     // размер тайлов в пикселях
     // помимо тайлов на экране могут быть другие
     // объекты, больше по размеру, чем тайлы.
