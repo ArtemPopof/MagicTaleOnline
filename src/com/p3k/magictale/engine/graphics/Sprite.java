@@ -7,6 +7,7 @@ import org.lwjgl.opengl.Display;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -51,21 +52,7 @@ public class Sprite {
         // read image from file
         BufferedImage rawImage = ImageIO.read(new File(texturePath));
 
-        AffineTransform transform = new AffineTransform();
-
-        transform.translate(rawImage.getWidth() / 2, rawImage.getHeight() / 2);
-        transform.rotate(-Math.PI/2);
-        transform.translate(-rawImage.getWidth() / 2, -rawImage.getHeight() / 2);
-
-        // and convert it to another format
-        BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g = image.createGraphics();
-
-        g.drawImage(rawImage, transform,null);
-
-        textureId = Utils.loadTexture(image);
+        textureId = Utils.loadTexture(rawImage);
 
         this.width = width;
         this.height = height;
@@ -73,18 +60,8 @@ public class Sprite {
     }
 
     public Sprite(BufferedImage rawImage, float width, float height) {
-        AffineTransform transform = new AffineTransform();
-        transform.translate(rawImage.getWidth() / 2, rawImage.getHeight() / 2);
-        transform.rotate(-Math.PI/2);
-        transform.translate(-rawImage.getWidth() / 2, -rawImage.getHeight() / 2);
 
-        // and convert it to another format
-        BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g = image.createGraphics();
-        g.drawImage(rawImage, transform, null);
-
-        textureId = Utils.loadTexture(image);
+        textureId = Utils.loadTexture(rawImage);
 
         this.width = width;
         this.height = height;
@@ -117,21 +94,49 @@ public class Sprite {
         glBegin(GL_QUADS); {
 
             glVertex2f(0, 0);
-            glTexCoord2f(0, 0);
-
-            glVertex2f(0, height);
-            glTexCoord2f(0, 1);
-
-            glVertex2f(width, height);
+            //glTexCoord2f(0, 1);
             glTexCoord2f(1, 1);
 
             glVertex2f(width, 0);
+           // glTexCoord2f(1, 1);
             glTexCoord2f(1, 0);
+
+            glVertex2f(width, -height);
+           // glTexCoord2f(1, 0);
+            glTexCoord2f(0, 0);
+
+            glVertex2f(0, -height);
+            //glTexCoord2f(0, 0);
+            glTexCoord2f(0, 1);
+
 
 
         }
         glEnd();
 
+    }
+
+    private BufferedImage transformToValidTexture(BufferedImage rawImage) {
+
+        // Flip the image horizontally
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-rawImage.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        rawImage = op.filter(rawImage, null);
+
+        //rotate
+        AffineTransform transform = new AffineTransform();
+        transform.translate(rawImage.getWidth() / 2, rawImage.getHeight() / 2);
+        transform.rotate(-Math.PI/2);
+        transform.translate(-rawImage.getWidth() / 2, -rawImage.getHeight() / 2);
+
+        // and convert it to another format
+        BufferedImage image = new BufferedImage(rawImage.getWidth(), rawImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g = image.createGraphics();
+        g.drawImage(rawImage, transform, null);
+
+        return image;
     }
 
 

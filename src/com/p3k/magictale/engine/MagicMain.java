@@ -68,7 +68,7 @@ public class MagicMain {
     public void initGl() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, Display.getWidth(), 0, Display.getHeight(), -1, 1);
+        glOrtho(0, Display.getWidth(),0 , Display.getHeight(), -1, 1);
         glMatrixMode(GL_MODELVIEW);
 
         glDisable(GL_DEPTH_TEST);
