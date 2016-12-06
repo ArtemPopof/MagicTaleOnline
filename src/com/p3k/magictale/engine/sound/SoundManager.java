@@ -47,9 +47,13 @@ public class SoundManager {
         soundData = new HashMap<>();
     }
 
-    public static SoundManager getInstance() throws Exception {
+    public static SoundManager getInstance() {
         if ( instance == null ) {
-            instance = new SoundManager();
+            try {
+                instance = new SoundManager();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return instance;
@@ -59,7 +63,7 @@ public class SoundManager {
         return soundData.get(soundname);
     }
 
-    public void setListenerPos(float x, float y) throws Exception {
+    public void setListenerPos(float x, float y) {
         FloatBuffer listPos = (FloatBuffer) BufferUtils.createFloatBuffer(3)
                 .put(new float[] { x, y, 0.0f }).rewind();
 
@@ -67,8 +71,12 @@ public class SoundManager {
         //TODO: set listener pos
 
         if ( AL10.alGetError() != AL10.AL_NO_ERROR ) {
-            throw new Exception("SoundManager setListenerPos error:" +
-                    " cannot update listener position!");
+            try {
+                throw new Exception("SoundManager setListenerPos error:" +
+                        " cannot update listener position!");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

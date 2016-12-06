@@ -27,7 +27,6 @@ public class Game {
     private SoundSource envSound;
 
     public Game() {
-
 //        level = LevelLoad.load();
 
         resourceManager = new ResourceManager();
@@ -36,6 +35,11 @@ public class Game {
 
         initSoundManager();
 
+        objects = new ArrayList<>();
+
+        player = new Player(250, 250);
+
+        objects.add(player);
     }
 
 
