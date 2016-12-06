@@ -3,12 +3,10 @@ package com.p3k.magictale.engine;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.game.Game;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import org.lwjgl.input.Keyboard;
-
-import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +17,7 @@ import static org.lwjgl.opengl.GL11.*;
  * and main game cycle.
  *
  * @version 0.1
- * Created by artem96 on 03.12.16.
+ *          Created by artem96 on 03.12.16.
  */
 public class MagicMain {
 
@@ -49,10 +47,19 @@ public class MagicMain {
 
         try {
             if (isInFullScreenMode) {
-                Display.setDisplayMode(new DisplayMode(
-                        Toolkit.getDefaultToolkit().getScreenSize().width,
-                        Toolkit.getDefaultToolkit().getScreenSize().height));
-                Display.setFullscreen(true);
+                DisplayMode[] modes = Display.getAvailableDisplayModes();
+                DisplayMode max = modes[0];
+
+                for (DisplayMode mode : modes) {
+                    System.out.println("test mode: " + mode);
+                    if (mode.getWidth() * mode.getHeight() * mode.getFrequency() >
+                            max.getWidth() * max.getHeight() * max.getFrequency()) {
+                        max = mode;
+                    }
+                }
+
+                System.out.println("choose mode: " + max);
+                Display.setDisplayModeAndFullscreen(max);
             } else {
                 Display.setDisplayMode(new DisplayMode(800, 600));
             }
@@ -68,11 +75,11 @@ public class MagicMain {
     public void initGl() {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, Display.getWidth(),0 , Display.getHeight(), -1, 1);
+        glOrtho(0, Display.getWidth(), 0, Display.getHeight(), -1, 1);
         glMatrixMode(GL_MODELVIEW);
 
         glDisable(GL_DEPTH_TEST);
-        glClearColor(0,0,0,0);
+        glClearColor(0, 0, 0, 0);
 
         glEnable(GL_TEXTURE_2D);
 
@@ -110,7 +117,7 @@ public class MagicMain {
 
     }
 
-    private void cleanUp () {
+    private void cleanUp() {
         Display.destroy();
         Keyboard.destroy();
         SoundManager.destroy();
