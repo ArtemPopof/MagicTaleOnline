@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Map;
 
 /**
- * Character class represent any living thing.
+ * GameCharacter class represent any living thing.
  * NPC or Players classes should be derived from
  * this one.
  *
  * Created by artem96 on 06.12.16.
  */
-public class Character extends GameObject {
+public class GameCharacter extends GameObject {
 
     protected static final int WAITING_STATE = 0;
 
@@ -31,7 +31,7 @@ public class Character extends GameObject {
      */
     private int currentState;
 
-    public Character(float x, float y, float width, float height) {
+    public GameCharacter(float x, float y, float width, float height) {
 
         super.init(x, y, width, height);
 

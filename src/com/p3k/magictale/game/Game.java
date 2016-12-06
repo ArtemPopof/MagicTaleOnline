@@ -1,6 +1,6 @@
 package com.p3k.magictale.game;
 
-import com.p3k.magictale.engine.graphics.Character;
+import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.sound.SoundManager;
@@ -74,7 +74,7 @@ public class Game {
         objects.add(player);
 
         // test character
-        Character testChar = new Character(300, 550, 32, 64);
+        GameCharacter testChar = new GameCharacter(300, 550, 32, 64);
         objects.add(testChar);
 
     }

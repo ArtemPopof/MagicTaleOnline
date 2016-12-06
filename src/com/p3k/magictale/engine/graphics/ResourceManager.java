@@ -96,7 +96,7 @@ public class ResourceManager {
                 0, 8, 106, 129);
         characterTestAnims.add(waitAnimation);
 
-        animations.put(Character.ABSTRACT_CHARACTER_ID, characterTestAnims);
+        animations.put(GameCharacter.ABSTRACT_CHARACTER_ID, characterTestAnims);
     }
 
     /**
@@ -116,7 +116,7 @@ public class ResourceManager {
      * @param character
      * @return animations
      */
-    public ArrayList<Animation> getAnimations(Character character) {
+    public ArrayList<Animation> getAnimations(GameCharacter character) {
         return animations.get(character.getCharacterId());
     }
 

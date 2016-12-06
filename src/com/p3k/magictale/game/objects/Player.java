@@ -1,6 +1,7 @@
 package com.p3k.magictale.game.objects;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.sound.SoundManager;
@@ -13,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by artem96 on 04.12.16.
  */
-public class Player extends GameObject implements Constants{
+public class Player extends GameCharacter implements Constants{
 
     private float speed;
     private int health;
@@ -24,17 +25,17 @@ public class Player extends GameObject implements Constants{
 
 
     public Player(float x, float y) {
-       this.x = x;
-       this.y = y;
 
+        super(x, y, 216.0f, 34.0f);
 
+        /**
        try {
            this.sprite = new Sprite("res/hp_bar.png", 216, 34);
        } catch (IOException e) {
            System.err.println("Cannot init sprite for player class");
            System.err.println(e.getMessage());
            System.exit(1);
-       }
+       }**/
 
       // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
        xp = 0;
