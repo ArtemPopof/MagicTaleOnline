@@ -62,12 +62,11 @@ public class Sprite {
 
     }
 
-    public Sprite(BufferedImage rawImage, float width, float height) {
-
+    public Sprite(BufferedImage rawImage) {
         textureId = Utils.loadTexture(rawImage);
 
-        this.width = width;
-        this.height = height;
+        this.width = rawImage.getWidth();
+        this.height = rawImage.getHeight();
     }
 
     /**
