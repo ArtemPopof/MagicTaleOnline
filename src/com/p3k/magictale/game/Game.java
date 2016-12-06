@@ -34,14 +34,6 @@ public class Game {
         resourceManager = new ResourceManager();
 
         initObjects();
-
-
-
-        objects = new ArrayList<>();
-
-        player = new Player(250, 250);
-
-        objects.add(player);
     }
 
 
