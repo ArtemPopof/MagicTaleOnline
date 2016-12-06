@@ -25,7 +25,7 @@ public class MagicMain {
 
     private boolean isRunning = true;
 
-    private boolean isInFullScreenMode = true;
+    private boolean isInFullScreenMode = false;
 
     MagicMain() {
 
