@@ -64,6 +64,8 @@ public class Sprite {
 
     public Sprite(BufferedImage rawImage, float width, float height) {
 
+        rawImage = flipHorizontally(rawImage);
+
         textureId = Utils.loadTexture(rawImage);
 
         this.width = width;
