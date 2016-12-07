@@ -132,8 +132,8 @@ public class Game {
         }
 
         // Must be moved to more appropriate place?
-        //bgmSound.setLevel(0.5f).play("main_theme.wav");
-        envSound.setLevel(1.0f).play("wind.wav");
+        bgmSound.setLevel(0.8f).play("main_theme.wav");
+        envSound.setLevel(0.8f).play("wind.wav");
     }
 
     public Level getLevelManager() {

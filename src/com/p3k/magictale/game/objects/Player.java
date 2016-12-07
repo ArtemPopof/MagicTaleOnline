@@ -63,8 +63,8 @@ public class Player extends GameCharacter implements Constants{
         try {
             mainSound = new SoundSource(null, true);
             attackSound = new SoundSource(null, false);
-            attackSound.setLevel(1.0f);
-            mainSound.setLevel(0.8f);
+            attackSound.setLevel(0.8f);
+            mainSound.setLevel(0.3f);
         } catch (Exception e) {
             System.err.println("Error initializing sound for player!");
         }
