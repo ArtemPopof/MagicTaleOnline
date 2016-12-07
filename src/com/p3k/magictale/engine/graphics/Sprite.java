@@ -65,6 +65,7 @@ public class Sprite {
     public Sprite(BufferedImage rawImage, float width, float height) {
 
         rawImage = flipHorizontally(rawImage);
+        rawImage = flipVerticaly(rawImage);
 
         textureId = Utils.loadTexture(rawImage);
 
@@ -128,6 +129,16 @@ public class Sprite {
     private BufferedImage flipHorizontally(BufferedImage rawImage) {
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-rawImage.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        rawImage = op.filter(rawImage, null);
+
+        return rawImage;
+    }
+
+    private BufferedImage flipVerticaly(BufferedImage rawImage) {
+        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+        tx.translate(0, -rawImage.getHeight());
         AffineTransformOp op = new AffineTransformOp(tx,
                 AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         rawImage = op.filter(rawImage, null);

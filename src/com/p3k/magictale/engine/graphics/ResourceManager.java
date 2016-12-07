@@ -109,7 +109,7 @@ public class ResourceManager {
         ArrayList<Animation> characterTestAnims = new ArrayList<>();
 
         Animation waitAnimation = new Animation("res/animation/test",
-                0, 8, 106, 129);
+                0, 8, 53, 64);
         characterTestAnims.add(waitAnimation);
 
         animations.put(CharacterTypes.ABSTRACT_CHARACTER, characterTestAnims);
@@ -119,7 +119,7 @@ public class ResourceManager {
         ArrayList<Animation> playerTestAnims = new ArrayList<>();
 
         Animation waitAnim = new Animation("res/animation/bigfoot/bigfoot",
-                0, 20, 78, 112);
+                0, 20, 52, 75);
 
         playerTestAnims.add(waitAnim);
 
