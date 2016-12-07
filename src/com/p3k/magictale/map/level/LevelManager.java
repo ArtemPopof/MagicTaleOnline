@@ -1,9 +1,11 @@
 package com.p3k.magictale.map.level;
 
+import com.p3k.magictale.engine.MagicMain;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.graphics.TileObject;
+import com.p3k.magictale.game.Game;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,6 +13,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static org.lwjgl.opengl.GL11.*;
 
 // TODO Static constant
 
@@ -119,7 +123,9 @@ public class LevelManager implements Level {
 
     public void render() {
         for (TileObject object : tileObjects) {
+
             object.render();
+
         }
     }
 }

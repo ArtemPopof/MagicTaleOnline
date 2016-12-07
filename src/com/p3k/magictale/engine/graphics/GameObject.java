@@ -1,5 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
+import com.p3k.magictale.game.Game;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -36,7 +38,10 @@ public class GameObject {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glPushMatrix();
         {
-            glTranslatef(x, y, 0);
+            float cameraX = Game.getInstance().getCameraX();
+            float cameraY = Game.getInstance().getCameraY();
+
+            glTranslatef(x - cameraX, y - cameraY, 0);
 
             sprite.render();
 

@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine.graphics;
 
+import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.objects.CharacterTypes;
 
 import java.util.ArrayList;
@@ -60,6 +61,9 @@ public class GameCharacter extends GameObject {
 
         // next animation frame
         this.sprite = animations.get(currentState).update();
+
+        float cameraX = Game.getInstance().getCameraX();
+        float cameraY = Game.getInstance().getCameraY();
     }
 
     /**

@@ -16,10 +16,11 @@ import java.util.ArrayList;
  * Created by artem96 on 03.12.16.
  */
 public class Game {
+    private static Game instance = null;
 
     private ArrayList<GameObject> objects;
     private Player player;
-    private Level level;
+    private Level levelManager;
 
     private ResourceManager resourceManager;
 
@@ -27,9 +28,13 @@ public class Game {
     private SoundSource bgmSound;
     private SoundSource envSound;
 
+    private float cameraX = 0;
+    private float cameraY = 0;
+
+
     private final String mapName = "forest";
 
-    public Game() {
+    private Game() {
 
         try {
             resourceManager = ResourceManager.getInstance();
@@ -38,28 +43,29 @@ public class Game {
         }
 
         try {
-            level = LevelManager.getInstance();
+            levelManager = LevelManager.getInstance();
         } catch (Exception e) {
-            System.err.println("Error initializing level manager: " + e);
+            System.err.println("Error initializing levelManager manager: " + e);
         }
         try {
-            level.load(mapName, resourceManager);
+            levelManager.load(mapName, resourceManager);
         } catch (Exception e) {
-            System.err.println("Error render level manager: " + e);
+            System.err.println("Error render levelManager manager: " + e);
         }
-        try {
-            level.render();
-        } catch (Exception e) {
-            System.err.println("Error render level manager: " + e);
-        }
-
-
 
         initSoundManager();
 
 
 
         initObjects();
+    }
+
+    public static Game getInstance() {
+        if (instance == null) {
+            instance = new Game();
+        }
+
+        return instance;
     }
 
 
@@ -69,7 +75,7 @@ public class Game {
 
     public void update() {
 
-//        level.update();
+//        levelManager.update();
 
         for (GameObject object : objects) {
             object.update();
@@ -79,7 +85,7 @@ public class Game {
 
     public void render() {
 
-        level.render();
+        levelManager.render();
 
         for (GameObject object : objects) {
             object.render();
@@ -128,5 +134,30 @@ public class Game {
         // Must be moved to more appropriate place?
         //bgmSound.setLevel(0.5f).play("main_theme.wav");
         envSound.setLevel(1.0f).play("wind.wav");
+    }
+
+    public Level getLevelManager() {
+        return levelManager;
+    }
+
+    public float getCameraX() {
+        return cameraX;
+    }
+
+    public void setCameraX(float cameraX) {
+        this.cameraX = cameraX;
+    }
+
+    public float getCameraY() {
+        return cameraY;
+    }
+
+    public void setCameraY(float cameraY) {
+        this.cameraY = cameraY;
+    }
+
+    public void moveCamera(float x, float y) {
+        this.cameraX += x;
+        this.cameraY += y;
     }
 }

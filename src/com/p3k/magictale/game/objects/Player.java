@@ -7,6 +7,7 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
+import com.p3k.magictale.game.Game;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -38,21 +39,21 @@ public class Player extends GameCharacter implements Constants{
         }
 
         /**
-       try {
-           this.sprite = new Sprite("res/hp_bar.png", 216, 34);
-       } catch (IOException e) {
-           System.err.println("Cannot init sprite for player class");
-           System.err.println(e.getMessage());
-           System.exit(1);
-       }**/
+         try {
+         this.sprite = new Sprite("res/hp_bar.png", 216, 34);
+         } catch (IOException e) {
+         System.err.println("Cannot init sprite for player class");
+         System.err.println(e.getMessage());
+         System.exit(1);
+         }**/
 
         // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
 
-       xp = 0;
-       health = 10;
-       speed = 4f;
+        xp = 0;
+        health = 10;
+        speed = 4f;
 
-       initSounds();
+        initSounds();
 
         //SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
     }
@@ -77,6 +78,10 @@ public class Player extends GameCharacter implements Constants{
     @Override
     public void update() {
         super.update();
+
+        //TODO do not left it undone
+        this.x = 800/2 + Game.getInstance().getCameraX();
+        this.y = 600/2 + Game.getInstance().getCameraY();
     }
 
     public void processInput() {
@@ -103,8 +108,17 @@ public class Player extends GameCharacter implements Constants{
     // move player according to given params
     private void move(float magX, float magY) {
 
-        x += magX * getSpeed();
-        y += magY * getSpeed();
+        float deltaX = magX * getSpeed();
+        float deltaY = magY * getSpeed();
+
+        //  x += deltaX;
+        //  y += deltaY;
+
+        float oldX = Game.getInstance().getCameraX();
+        float oldY = Game.getInstance().getCameraY();
+
+        Game.getInstance().setCameraX(oldX + deltaX);
+        Game.getInstance().setCameraY(oldY + deltaY);
 
     }
 

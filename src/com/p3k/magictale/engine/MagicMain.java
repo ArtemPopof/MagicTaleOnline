@@ -85,7 +85,6 @@ public class MagicMain {
 
         glEnable(GL_TEXTURE_2D);
 
-
     }
 
     private void gameLoop() {
@@ -131,7 +130,7 @@ public class MagicMain {
     }
 
     private void initGame() {
-        game = new Game();
+        game = Game.getInstance();
     }
 
 
