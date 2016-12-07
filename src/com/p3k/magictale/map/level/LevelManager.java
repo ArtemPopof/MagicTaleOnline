@@ -81,38 +81,40 @@ public class LevelManager implements Level {
             lvlHeight = xml.getMapSize("height");
         }
         System.out.println(layerGrContext);
-//        for (int w = 0, id = 0; w < lvlWidth; w++) {
-//            for (int h = 0; h < lvlHeight; h++) {
-//                // TODO Replace it like: (Now for debug)
-//                // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
-//                // WIDTH_CONST, HEIGHT_CONST));
-//                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 5000;
-//                int idInGl = resourceManager.getTexture(idInSprSh);
-//                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-//
-//                sprites.add(sprite);
-//                tileObjects.add(new TileObject(sprite, w * sprWidth, h * sprHeight));
-//                id++;
-//                if (id == 1580)
-//                    System.out.print(" ");
-//            }
-//        }
-        for (int w = 0, id = 0; w < lvlWidth * sprWidth; w += sprWidth) {
-            for (int h = 0; h < lvlHeight * sprHeight; h += sprHeight) {
+        for (int h = 0, id = 0; h < lvlHeight; h++) {
+            for (int w = 0; w < lvlWidth; w++) {
                 // TODO Replace it like: (Now for debug)
                 // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
                 // WIDTH_CONST, HEIGHT_CONST));
-                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 5000;
+                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 4999;
                 int idInGl = resourceManager.getTexture(idInSprSh);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
+                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
                 sprites.add(sprite);
-                tileObjects.add(new TileObject(sprite, w, h));
+                tileObjects.add(new TileObject(sprite, w * sprWidth, h * sprHeight));
                 id++;
                 if (id == 1580)
                     System.out.print(" ");
             }
         }
+//        for (int h = 0, id = 0; h < lvlHeight * sprHeight; h += sprHeight) {
+//            for (int w = 0; w < lvlWidth * sprWidth; w += sprWidth) {
+//                // TODO Replace it like: (Now for debug)
+//                // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
+//                // WIDTH_CONST, HEIGHT_CONST));
+//                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 4999;
+//                int idInGl = resourceManager.getTexture(idInSprSh);
+//                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
+//                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
+//
+//                sprites.add(sprite);
+//                tileObjects.add(new TileObject(sprite, w, h));
+//                id++;
+//                if (id == 1580)
+//                    System.out.print(" ");
+//            }
+//        }
     }
 
     public void render() {

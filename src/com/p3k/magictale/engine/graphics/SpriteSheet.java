@@ -43,8 +43,8 @@ public class SpriteSheet {
         for (int x = 0; x < 320; x += width) {
             for (int y = 0; y < 320; y += height, index++) {
 //                System.out.println("x: " + x + " y: " + y + " w: " + width + " h: " + height);
-                BufferedImage subImage = image.getSubimage(x, y, width, height);
-//                System.out.println("subImage x:" + subImage.getWidth() + " h: " + subImage.getHeight());
+                BufferedImage subImage = image.getSubimage(y, x, width, height);
+                System.out.println("subImage x:" + subImage.getWidth() + " h: " + subImage.getHeight());
                 Sprite sprite = null;
                 try {
                     sprite = new Sprite(subImage, (float)width, (float)height);
