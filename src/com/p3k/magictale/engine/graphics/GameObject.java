@@ -90,4 +90,13 @@ public class GameObject {
         direction = 0;
     }
 
+    protected void initBySprite(Sprite sprite, float x, float y) {
+        this.sprite = sprite;
+//        this.sprite = new Sprite(sprite.getTextureId(), 32, 32);
+        this.x = x;
+        this.y = y;
+
+        direction = 0;
+    }
+
 }

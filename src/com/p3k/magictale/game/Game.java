@@ -79,7 +79,7 @@ public class Game {
 
     public void render() {
 
-//        level.render();
+        level.render();
 
         for (GameObject object : objects) {
             object.render();

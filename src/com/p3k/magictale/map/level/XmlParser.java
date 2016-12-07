@@ -3,16 +3,14 @@ package com.p3k.magictale.map.level;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.p3k.magictale.engine.graphics.Sprite;
-import com.sun.deploy.util.ArrayUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 /**
@@ -57,16 +55,53 @@ public class XmlParser {
 
     public ArrayList<String> getSpriteSheetPaths() {
         ArrayList<String> spriteSheetPaths = new ArrayList<>();
-        spriteSheetPaths.add(doc.getNodeName());
 
         return spriteSheetPaths;
     }
 
-    public ArrayList<Sprite> getSprites() {
-        ArrayList<Sprite> sprites = new ArrayList<>();
-        System.out.println(doc.getClass().getName());
+    public ArrayList<String> getLayerTextContextByName(String layerName) {
+        ArrayList<String> layerTextContextByName = new ArrayList<>();
+        try {
+            System.out.println(doc.getElementsByTagName("layer"));
+            NodeList layers = doc.getElementsByTagName("layer");
+            for (int i = 0; i < layers.getLength(); ++i) {
+                System.out.println(layers.item(i).getAttributes());
+                NamedNodeMap attrs = layers.item(i).getAttributes();
+                Node name = attrs.getNamedItem("name");
+                System.out.println(name.getNodeValue());
+                String is_gr = name.getNodeValue();
+                if (is_gr.equals(layerName)) {
+//                System.out.println(layers.item(i).getTextContent());
+                    String strContext = layers.item(i).getTextContent();
+                    layerTextContextByName.addAll(Arrays.asList(strContext.split("\\D")));
+                    for (int j = 0, size = layerTextContextByName.size(); j < size; ++j) {
+                        if (layerTextContextByName.get(j).equals("")) {
+                            layerTextContextByName.remove(j);
+                            --j;
+                            --size;
+                        }
+                    }
+                    return layerTextContextByName;
+                }
+            }
+        } catch (Exception e){
+            System.out.println("Parsing: getLayerTextContextByName() " + e);
+        }
+        return layerTextContextByName;
+    }
 
-        return sprites;
+    public int getMapSize(String param) {
+        int retValue = Integer.MIN_VALUE;
+        try {
+            NodeList maps = doc.getElementsByTagName("map");
+            if (maps.getLength() != 1) {
+                System.err.println("Only one map for .tmx file!");
+            }
+            retValue = Integer.parseInt(maps.item(0).getAttributes().getNamedItem(param).getNodeValue());
+        } catch (Exception e){
+            System.out.println("Parsing: getWidth() " + e);
+        }
+        return retValue;
     }
 
     private static void visit(Node node, int level) {
