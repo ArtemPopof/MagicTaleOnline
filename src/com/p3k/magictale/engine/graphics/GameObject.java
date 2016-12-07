@@ -1,5 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * GameObject
  *
@@ -11,9 +13,6 @@ package com.p3k.magictale.engine.graphics;
  *
  * Created by artem96 on 03.12.16.
  */
-
-import static org.lwjgl.opengl.GL11.*;
-
 public class GameObject {
     protected float x;
     protected float y;

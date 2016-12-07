@@ -81,7 +81,7 @@ public class LevelManager implements Level {
             lvlHeight = xml.getMapSize("height");
         }
         System.out.println(layerGrContext);
-        for (int h = 0, id = 0; h < lvlHeight; h++) {
+        for (int h = lvlHeight-1, id = 0; 0 <= h; h--) {
             for (int w = 0; w < lvlWidth; w++) {
                 // TODO Replace it like: (Now for debug)
                 // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
