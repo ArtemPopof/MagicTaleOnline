@@ -1,17 +1,11 @@
-package com.p3k.magictale.game.objects;
+package com.p3k.magictale.game.Characters;
 
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
-import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
-import com.p3k.magictale.engine.graphics.Sprite;
-import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.Game;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-
-import java.io.IOException;
 
 /**
  * Created by artem96 on 04.12.16.

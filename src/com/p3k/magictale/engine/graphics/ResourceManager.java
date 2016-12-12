@@ -1,6 +1,6 @@
 package com.p3k.magictale.engine.graphics;
 
-import com.p3k.magictale.game.objects.CharacterTypes;
+import com.p3k.magictale.game.Characters.CharacterTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

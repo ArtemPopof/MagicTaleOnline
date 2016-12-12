@@ -1,4 +1,4 @@
-package com.p3k.magictale.game.objects;
+package com.p3k.magictale.game.Characters;
 
 /**
  * All character types in game
