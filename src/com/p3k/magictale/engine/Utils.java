@@ -9,6 +9,8 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 /**
+ * Various static functions.
+ *
  * Created by artem96 on 04.12.16.
  */
 public class Utils {
@@ -54,5 +56,6 @@ public class Utils {
         //Return the texture ID so we can bind it later again
         return textureID;
     }
+
 
 }
