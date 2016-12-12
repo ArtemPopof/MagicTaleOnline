@@ -32,6 +32,9 @@ public class GameCharacter extends GameObject {
 
     protected ArrayList<Animation> animations;
 
+    private float speed;
+    private int health;
+
     /**
      * current state of this character
      *
@@ -49,6 +52,10 @@ public class GameCharacter extends GameObject {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        //TODO remove hardcode
+        speed = 4f;
+        health = 10;
     }
 
     public int getState() {
@@ -89,6 +96,23 @@ public class GameCharacter extends GameObject {
     public void changeState(int state) {
         if (currentState != state)
             currentState = state;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public int getCurrentHealth() {
+        return health;
+    }
+
+    // mag = magnitude
+    // move player according to given params
+    protected void move(float magX, float magY) {
+
+        float deltaX = magX * getSpeed();
+        float deltaY = magY * getSpeed();
+
     }
 
 

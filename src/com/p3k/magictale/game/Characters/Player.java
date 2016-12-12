@@ -12,8 +12,6 @@ import org.lwjgl.input.Keyboard;
  */
 public class Player extends GameCharacter implements Constants{
 
-    private float speed;
-    private int health;
     private float xp;
 
     private SoundSource mainSound;
@@ -44,8 +42,6 @@ public class Player extends GameCharacter implements Constants{
         // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
 
         xp = 0;
-        health = 10;
-        speed = 4f;
 
         initSounds();
 
@@ -115,7 +111,7 @@ public class Player extends GameCharacter implements Constants{
 
     // mag = magnitude
     // move player according to given params
-    private void move(float magX, float magY) {
+    protected void move(float magX, float magY) {
 
         float deltaX = magX * getSpeed();
         float deltaY = magY * getSpeed();
@@ -129,10 +125,6 @@ public class Player extends GameCharacter implements Constants{
         Game.getInstance().setCameraX(oldX + deltaX);
         Game.getInstance().setCameraY(oldY + deltaY);
 
-    }
-
-    public float getSpeed() {
-        return speed;
     }
 
     public float getXp() {
@@ -159,15 +151,5 @@ public class Player extends GameCharacter implements Constants{
         return (int) (getLevel() * 1.5f);
     }
 
-    public int getCurrentHealth() {
-
-        int maxHealth = getMaxHealth();
-
-        if (health > maxHealth) {
-            health = maxHealth;
-        }
-
-        return health;
-    }
 
 }
