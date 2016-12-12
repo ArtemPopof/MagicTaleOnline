@@ -27,14 +27,14 @@ public class Animation implements Constants {
      * Creates animation based on animationSpriteSheet path,
      * hor. tile offset and frameCount for this Animation.
      *
+     * Test constructor
+     *
      * @param pathToAnimationSheet - path to sprite sheet with animation sprites
-     * @param horizontalTileOffset - row in sprite sheet
      * @param framesCount - frame count for this animation
      * @param width  - width of frame
      * @param height - height of frame
      * */
     public Animation(String pathToAnimationSheet,
-                     int horizontalTileOffset,
                      int framesCount, int width, int height) {
 
         frames = new ArrayList<>(framesCount);
@@ -62,6 +62,42 @@ public class Animation implements Constants {
 
         currentFrame = 0;
 
+    }
+
+    public Animation(String pathToAnimationSheet,
+                     int horizontalTileOffset,
+                     int framesCount, int tileWidth, int tileHeight) {
+
+        frames = new ArrayList<>(framesCount);
+
+
+        SpriteSheet animationSprites = new SpriteSheet(pathToAnimationSheet, tileWidth, tileHeight);
+
+        ArrayList<Sprite> sprites = animationSprites.getSprites();
+
+        for (Sprite nextSprite : sprites) {
+
+            Frame nextFrame = new Frame(nextSprite, FRAME_SHOW_COUNT);
+
+            frames.add(nextFrame);
+
+        }
+
+    }
+
+    public Animation(SpriteSheet sprites, int horizontalTileOffset, int framesCount) {
+
+        frames = new ArrayList<>(framesCount);
+
+        ArrayList<Sprite> tileSprites = sprites.getSprites();
+
+        for (int i = horizontalTileOffset; i < framesCount + horizontalTileOffset; i++) {
+
+            Frame nextFrame = new Frame(tileSprites.get(i), FRAME_SHOW_COUNT);
+
+            frames.add(nextFrame);
+
+        }
     }
 
     public Sprite update() {

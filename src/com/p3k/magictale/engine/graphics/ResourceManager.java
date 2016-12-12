@@ -108,20 +108,39 @@ public class ResourceManager {
 
         ArrayList<Animation> characterTestAnims = new ArrayList<>();
 
-        Animation waitAnimation = new Animation("res/animation/test",
-                0, 8, 53, 64);
+        SpriteSheet charSprites = new SpriteSheet
+                ("res/animation/goblin/goblin.png", 64, 64);
+
+        Animation waitAnimation = new Animation(charSprites, 0, 11);
+
         characterTestAnims.add(waitAnimation);
 
         animations.put(CharacterTypes.ABSTRACT_CHARACTER, characterTestAnims);
 
         //next
 
+        SpriteSheet playerSprites = new SpriteSheet("res/animation/goblin/goblin.png", 64, 64);
+
         ArrayList<Animation> playerTestAnims = new ArrayList<>();
 
-        Animation waitAnim = new Animation("res/animation/bigfoot/bigfoot",
-                0, 20, 52, 75);
+        Animation waitAnim = new Animation(playerSprites, 10, 1);
+        Animation rightMoveAnim = new Animation(playerSprites, 11, 11);
+        Animation leftMoveAnim = new Animation(playerSprites, 33, 11);
+        Animation upMoveAnim = new Animation(playerSprites, 22, 11);
+        Animation downMoveAnim = new Animation(playerSprites, 0, 11);
+        Animation deathAnim = new Animation(playerSprites, 44, 5);
+
+
+        //  Animation moveAnim = new Animation("res/animation/bigfoot/bigfoot_move",
+       //         0, 5, 64, 64);
 
         playerTestAnims.add(waitAnim);
+        playerTestAnims.add(rightMoveAnim);
+        playerTestAnims.add(leftMoveAnim);
+        playerTestAnims.add(upMoveAnim);
+        playerTestAnims.add(downMoveAnim);
+        playerTestAnims.add(deathAnim);
+
 
         animations.put(CharacterTypes.ABSTRACT_PLAYER, playerTestAnims);
     }

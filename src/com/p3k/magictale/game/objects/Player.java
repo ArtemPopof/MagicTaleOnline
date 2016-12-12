@@ -86,22 +86,37 @@ public class Player extends GameCharacter implements Constants{
 
     public void processInput() {
 
+        boolean isStateChanged = false;
+
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            changeState(UP_MOVE_STATE);
             move(0, 1);
+            isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            changeState(DOWN_MOVE_STATE);
             move(0, -1);
+            isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            changeState(LEFT_MOVE_STATE);
             move(-1, 0);
+            isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            changeState(RIGHT_MOVE_STATE);
             move(1, 0);
+            isStateChanged = true;
         }
-
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             attackSound.play("user/attack_axe.wav");
         }
+
+        // if nothing happens with player, then wait
+        if (!isStateChanged) {
+            changeState(WAITING_STATE);
+        }
+
     }
 
     // mag = magnitude

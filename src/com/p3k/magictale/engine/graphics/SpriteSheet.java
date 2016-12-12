@@ -13,6 +13,9 @@ import java.io.IOException;
 public class SpriteSheet {
     ArrayList<Sprite> sprites = null;
 
+    private int tileWidth;
+    private int tileHeight;
+
     public SpriteSheet(String path) {
         sprites = new ArrayList<>();
 
@@ -21,6 +24,32 @@ public class SpriteSheet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     *
+     * Creates spritesheet representation of png image,
+     * containing sprites. Use getSprites to obtain sprites)
+     *
+     * @param path path to the spritesheet image
+     * @param width width of single tile
+     * @param height height of single tile
+     */
+    public SpriteSheet(String path, int width, int height) {
+
+        tileHeight = height;
+        tileWidth = width;
+
+        sprites = new ArrayList<>();
+
+        try {
+            loadSpritesCommon(path);
+        } catch (IOException e) {
+            System.err.println("SpriteSheet: Error while trying to cut "+path+" sprite sheet.");
+        }
+
+
     }
 
     //TODO implement
@@ -61,12 +90,42 @@ public class SpriteSheet {
         System.out.println("Sprites count = " + sprites.size());
     }
 
+    /**
+     * Unfortinately i can't use previous method, couse
+     * tile width and height is hardcoded in there =(
+     *
+     * So it is corrent realisation, i think.
+     *
+     * @param path
+     * @throws IOException
+     */
+    private void loadSpritesCommon(String path) throws IOException {
+
+        BufferedImage spriteSheet = ImageIO.read(new File(path));
+
+        int width = spriteSheet.getWidth();
+        int height = spriteSheet.getHeight();
+
+        for (int i = 0; i < height; i+= tileHeight) {
+            for (int j = 0; j < width; j+= tileWidth) {
+                BufferedImage nextTile = spriteSheet.getSubimage(j, i, tileWidth, tileHeight);
+
+                sprites.add(new Sprite(nextTile, tileWidth, tileHeight));
+            }
+        }
+
+    }
+
     public int getSpriteTextureId(int index) {
         return sprites.get(index).getTextureId();
     }
 
     public int size() {
         return sprites.size();
+    }
+
+    public ArrayList<Sprite> getSprites() {
+        return sprites;
     }
 
 }

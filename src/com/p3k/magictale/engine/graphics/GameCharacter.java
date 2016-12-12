@@ -16,6 +16,11 @@ import java.util.Map;
 public class GameCharacter extends GameObject {
 
     protected static final int WAITING_STATE = 0;
+    protected static final int RIGHT_MOVE_STATE = 1;
+    protected static final int LEFT_MOVE_STATE =  2;
+    protected static final int UP_MOVE_STATE = 3;
+    protected static final int DOWN_MOVE_STATE = 4;
+    protected static final int DEATH_STATE = 5;
 
     /**
      * Unique identifier for current class.
@@ -75,6 +80,16 @@ public class GameCharacter extends GameObject {
      */
     public CharacterTypes getCharacterId() {
         return type;
+    }
+
+    /**
+     * Change state if current state is different
+     *
+     * @param state
+     */
+    public void changeState(int state) {
+        if (currentState != state)
+            currentState = state;
     }
 
 
