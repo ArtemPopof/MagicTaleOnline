@@ -96,6 +96,7 @@ public class GameCharacter extends GameObject {
     public void changeState(int state) {
         if (currentState != state)
             currentState = state;
+      // animations.get(currentState).resume();
     }
 
     public float getSpeed() {

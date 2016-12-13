@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.game.Game;
+import com.p3k.magictale.engine.enums.Direction;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -23,10 +24,8 @@ public class GameObject {
      * Object current orientation
      * in space
      *
-     * in degrees
-     *
      */
-    protected float direction;
+    protected Direction direction;
     /**
      * Visual information of this object
      */
@@ -91,7 +90,7 @@ public class GameObject {
         this.y = y;
         this.sprite = new Sprite(0, 1f, 0, width, height);
 
-        direction = 0;
+        direction = Direction.DOWN;
     }
 
     protected void initBySprite(Sprite sprite, float x, float y) {
@@ -100,7 +99,24 @@ public class GameObject {
         this.x = x;
         this.y = y;
 
-        direction = 0;
+        direction = Direction.DOWN;
+    }
+
+    /**
+     * set direction of sprite
+     * @param direction - direction to be set
+     */
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    /**
+     * get current object direction
+     * @return direction of object
+     *
+     */
+    public Direction getDirection() {
+        return direction;
     }
 
 }

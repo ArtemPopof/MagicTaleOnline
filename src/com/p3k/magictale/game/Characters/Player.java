@@ -1,6 +1,7 @@
 package com.p3k.magictale.game.Characters;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.sound.SoundSource;
@@ -81,21 +82,25 @@ public class Player extends GameCharacter implements Constants{
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
             changeState(UP_MOVE_STATE);
             move(0, 1);
+            setDirection(Direction.UP);
             isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             changeState(DOWN_MOVE_STATE);
             move(0, -1);
+            setDirection(Direction.DOWN);
             isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
             changeState(LEFT_MOVE_STATE);
             move(-1, 0);
+            setDirection(Direction.LEFT);
             isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
             changeState(RIGHT_MOVE_STATE);
             move(1, 0);
+            setDirection(Direction.RIGHT);
             isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
@@ -104,7 +109,7 @@ public class Player extends GameCharacter implements Constants{
 
         // if nothing happens with player, then wait
         if (!isStateChanged) {
-            changeState(WAITING_STATE);
+            animations.get(getState()).pause();
         }
 
     }

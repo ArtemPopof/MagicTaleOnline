@@ -13,6 +13,11 @@ public class Animation implements Constants {
     private ArrayList<Frame> frames;
     private int currentFrame;
 
+    /**
+     * is animation running
+     */
+    private boolean isRunning;
+
     public Animation(ArrayList<Sprite> sprites) {
 
         frames = new ArrayList<>();
@@ -20,6 +25,8 @@ public class Animation implements Constants {
         for (Sprite sprite : sprites) {
             frames.add(new Frame(sprite, 1));
         }
+
+        isRunning = true;
 
     }
 
@@ -101,13 +108,41 @@ public class Animation implements Constants {
     }
 
     public Sprite update() {
+
         Frame frame = frames.get(currentFrame);
 
-        if (!frame.update()) {
-            currentFrame++;
-            currentFrame %= frames.size();
+        // if animation is not paused,
+        // show next frame
+        if (isRunning) {
+            if (!frame.update()) {
+                currentFrame++;
+                currentFrame %= frames.size();
+            }
         }
 
         return frame.getSprite();
+    }
+
+    /**
+     * Stops frames changing.
+     * Don't forget to use setFrame()
+     * to pick a frame to freeze
+     */
+    public void pause() {
+        isRunning = false;
+    }
+
+    /**
+     * Set a next frame of animation.
+     *
+     * @param frame - must be valid value (< frames.size() and >= 0);
+     */
+    public void setFrame(int frame)  {
+
+        if (frame >= frames.size() || frame < 0) {
+            System.err.println("Animation.setFrame("+frame+"): Invalid argument");
+        } else {
+            this.currentFrame = frame;
+        }
     }
 }

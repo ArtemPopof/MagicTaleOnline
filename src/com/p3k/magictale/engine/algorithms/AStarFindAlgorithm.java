@@ -1,7 +1,5 @@
 package com.p3k.magictale.engine.algorithms;
 
-import com.sun.javafx.sg.prism.NodePath;
-
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.nio.file.Path;
