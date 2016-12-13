@@ -5,6 +5,7 @@ import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.graphics.TileObject;
+import com.p3k.magictale.engine.graphics.TileProperties;
 import com.p3k.magictale.game.Game;
 import org.xml.sax.SAXException;
 
@@ -24,12 +25,12 @@ public class LevelManager implements Level {
     private static final String LEVEL_DIR = "res/map/levels/";
     String mapName = "forest";
     String pathName = "res/map/levels/lvl_forest.tmx";
-    private ArrayList<Sprite> sprites = null;
+//    private ArrayList<Sprite> sprites = null;
     private ArrayList<TileObject> tileObjects = null;
 
 
     private LevelManager() throws Exception {
-        sprites = new ArrayList<>();
+//        sprites = new ArrayList<>();
         tileObjects = new ArrayList<>();
 
         try {
@@ -75,12 +76,14 @@ public class LevelManager implements Level {
         }
 
         ArrayList<String> layerGrContext = null;
+        ArrayList<TileProperties> lvlTilesProperties = null;
         int lvlWidth = 0;
         int lvlHeight = 0;
         int sprWidth = 32;
         int sprHeight = 32;
         if (xml != null) {
             layerGrContext = xml.getLayerTextContextByName("gr");
+            lvlTilesProperties = xml.getTilesPropertiesByTilesetName("tiles_lvl_forest");
             lvlWidth = xml.getMapSize("width");
             lvlHeight = xml.getMapSize("height");
         }
@@ -90,13 +93,13 @@ public class LevelManager implements Level {
                 // TODO Replace it like: (Now for debug)
                 // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
                 // WIDTH_CONST, HEIGHT_CONST));
-                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 4999;
-                int idInGl = resourceManager.getTexture(idInSprSh);
+                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) - 1;
+                int idInGl = resourceManager.getTexture(idInSprSh + 5000);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
                 System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
-                sprites.add(sprite);
-                tileObjects.add(new TileObject(sprite, w * sprWidth, h * sprHeight));
+//                sprites.add(sprite);
+                tileObjects.add(new TileObject(sprite, w * sprWidth, h * sprHeight, lvlTilesProperties.get(idInSprSh)));
                 id++;
                 if (id == 1580)
                     System.out.print(" ");
