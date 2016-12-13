@@ -119,16 +119,16 @@ public class ResourceManager {
 
         //next
 
-        SpriteSheet playerSprites = new SpriteSheet("res/animation/goblin/goblin.png", 64, 64);
+        SpriteSheet playerSprites = new SpriteSheet("res/animation/prof/play_prof.png", 64, 64);
 
         ArrayList<Animation> playerTestAnims = new ArrayList<>();
 
-        Animation waitAnim = new Animation(playerSprites, 10, 1);
-        Animation rightMoveAnim = new Animation(playerSprites, 11, 11);
-        Animation leftMoveAnim = new Animation(playerSprites, 33, 11);
-        Animation upMoveAnim = new Animation(playerSprites, 22, 11);
-        Animation downMoveAnim = new Animation(playerSprites, 0, 11);
-        Animation deathAnim = new Animation(playerSprites, 44, 5);
+        Animation waitAnim = new Animation(playerSprites, 18, 1);
+        Animation rightMoveAnim = new Animation(playerSprites, 27, 9);
+        Animation leftMoveAnim = new Animation(playerSprites, 9, 9);
+        Animation upMoveAnim = new Animation(playerSprites, 0, 9);
+        Animation downMoveAnim = new Animation(playerSprites, 18, 9);
+     //   Animation deathAnim = new Animation(playerSprites, 44, 5);
 
 
         //  Animation moveAnim = new Animation("res/animation/bigfoot/bigfoot_move",
@@ -139,7 +139,7 @@ public class ResourceManager {
         playerTestAnims.add(leftMoveAnim);
         playerTestAnims.add(upMoveAnim);
         playerTestAnims.add(downMoveAnim);
-        playerTestAnims.add(deathAnim);
+    //    playerTestAnims.add(deathAnim);
 
 
         animations.put(CharacterTypes.ABSTRACT_PLAYER, playerTestAnims);
