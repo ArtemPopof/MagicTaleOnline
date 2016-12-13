@@ -38,5 +38,5 @@ public interface Constants {
     public static final int PLAYER_SIZE = 32;
 
     // standart player speed
-    public static final float PLAYER_SPEED = 2.5f;
+    public static final float PLAYER_SPEED = 2f;
 }
