@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Find path algorithm A* realisation
- * 
+ *
  * Created by artem96 on 12.12.16.
  */
 public class AStarFindAlgorithm {
