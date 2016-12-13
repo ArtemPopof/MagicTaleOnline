@@ -41,7 +41,7 @@ public class AStarFindAlgorithm {
             PathNode currentNode = orderByFullEstimateLength(openSet).get(0);
 
             // step 4.
-            if (currentNode.getPosition() == goal)
+            if (currentNode.getPosition().equals(goal))
                 return getPathForNode(currentNode);
 
             // step 5.

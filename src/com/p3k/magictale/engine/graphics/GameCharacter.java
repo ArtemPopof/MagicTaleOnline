@@ -79,6 +79,13 @@ public class GameCharacter extends GameObject {
     }
 
     /**
+     * Just abstrat method for future realisations
+     */
+    public void processInput() {
+
+    }
+
+    /**
      * Returns unique, class
      * based ID, required for Resource Manager
      * and other stuff
@@ -116,6 +123,9 @@ public class GameCharacter extends GameObject {
 
         float deltaX = magX * getSpeed();
         float deltaY = magY * getSpeed();
+
+        this.x += deltaX;
+        this.y += deltaY;
 
     }
 

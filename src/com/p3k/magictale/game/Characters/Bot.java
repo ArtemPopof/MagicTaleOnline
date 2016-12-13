@@ -3,6 +3,7 @@ package com.p3k.magictale.game.Characters;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.algorithms.AStarFindAlgorithm;
 import com.p3k.magictale.engine.graphics.GameCharacter;
+import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
@@ -61,6 +62,7 @@ public class Bot extends GameCharacter {
 
     // bot can see you if you
     // in this imaginary circle
+    // units is tiles
     private int visionRadius;
 
     /**
@@ -82,6 +84,16 @@ public class Bot extends GameCharacter {
 
     private float destinationX;
     private float destinationY;
+
+    /**
+     * path to target
+     */
+    private ArrayList<Point> pathToTarget;
+
+    /**
+     * Next cell to go
+     */
+    private int nextCellInPath;
 
     /**
      * Waiting mode variables
@@ -109,11 +121,22 @@ public class Bot extends GameCharacter {
     public Bot(float x, float y, float width, float height) {
         super(x, y, width, height);
 
+        // get player animations
+        type = CharacterTypes.ABSTRACT_PLAYER;
+
+        try {
+            animations = ResourceManager.getInstance().getAnimations(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // 10 keys should be enough, i think
         // all values equal false?
         keysState = new boolean[EMULATED_KEYS];
 
-        visionRadius = 50;
+        // how many pixels is visible to bot
+        visionRadius = 10 * Constants.TILE_SIZE;
+
         isAggressive = true;
 
         currentBotState = BOT_PATRULING_STATE;
@@ -122,6 +145,9 @@ public class Bot extends GameCharacter {
 
         destinationX = getRealX();
         destinationY = getRealY();
+
+        pathToTarget = null;
+        nextCellInPath = -1;
 
         framesToWait = -1;
 
@@ -214,11 +240,20 @@ public class Bot extends GameCharacter {
             // state has been changed just now
             // so generate random destination to follow
 
-            int randomX = random.nextInt(visionRadius);
-            int randomY = random.nextInt(visionRadius);
+            int randomX = random.nextInt( visionRadius * 2);
+            int randomY = random.nextInt( visionRadius * 2);
 
-            destinationY = getY() + randomY;
-            destinationX = getX() + randomX;
+            randomX = (-1 * visionRadius) + randomX;
+
+            randomY = (-1 * visionRadius) + randomY;
+
+            // if bot want to go to current cell
+            if (Math.abs(randomX) <= Constants.TILE_SIZE && Math.abs(randomY) <= Constants.TILE_SIZE) {
+                randomX += Constants.TILE_SIZE + 1;
+            }
+
+            destinationY = getRealY() + randomY;
+            destinationX = getRealX() + randomX;
 
             //here will be collision check, so we can be
             //sure that destination is reachable
@@ -229,17 +264,54 @@ public class Bot extends GameCharacter {
             setBotState(BOT_WAITING_STATE);
             destinationX = -1;
             destinationY = -1;
-        } else {
+            nextCellInPath = -1;
+        } else if (nextCellInPath == -1) {
 
-            // move to our target
+            // use a brain, to generate path to target
             // a* algorithm?
 
             Point start = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
             Point goal  = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
 
-            ArrayList<Point> routeToTarget = AStarFindAlgorithm.findPath(
+            pathToTarget = AStarFindAlgorithm.findPath(
                     field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
 
+            nextCellInPath = 0;
+
+        } else {
+
+            // so we know the path and can go to target
+            Point currentTile = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+            Point nextTile = pathToTarget.get(nextCellInPath);
+
+            // reset all keys
+            clearKeyStates();
+
+            if (currentTile.equals(nextTile)) {
+
+                // destination arrived
+                if (nextCellInPath == pathToTarget.size()-1) {
+                    setBotState(BOT_WAITING_STATE);
+                    destinationX = -1;
+                    destinationY = -1;
+                    nextCellInPath = -1;
+                }
+
+                nextCellInPath++;
+                return;
+            }
+
+            if (nextTile.x < currentTile.x) {
+                emulatekey(KEY_A);
+            } else if (nextTile.x > currentTile.x) {
+                emulatekey(KEY_D);
+            }
+
+            if (nextTile.y > currentTile.y) {
+                emulatekey(KEY_W);
+            } else if (nextTile.y < currentTile.y) {
+                emulatekey(KEY_S);
+            }
         }
 
     }
@@ -285,10 +357,33 @@ public class Bot extends GameCharacter {
     }
 
     /**
+     * Simulate key pressed by human.
+     * But it is bot's brain work
+     *
+     * @param keyCode - key to be simulated
+     */
+    private void emulatekey(int keyCode) {
+        if (keyCode < 0 || keyCode >= EMULATED_KEYS) {
+            System.err.print("Bot.emulateKey("+keyCode+"): invalid argument");
+        } else {
+            keysState[keyCode] = true;
+        }
+    }
+
+    /**
      * Set bot state
      */
 
     private void setBotState(int state) {
         currentBotState = state;
+    }
+
+    /**
+     * Clear all key states
+     */
+    private void clearKeyStates() {
+        for (int i = 0; i < keysState.length; i++) {
+            keysState[i] = false;
+        }
     }
 }

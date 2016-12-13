@@ -54,7 +54,13 @@ public class Game {
 
 
     public void processInput() {
-        player.processInput();
+
+        for(GameObject object : objects) {
+            if (GameCharacter.class.isInstance(object)) {
+                GameCharacter character = (GameCharacter) object;
+                character.processInput();
+            }
+        }
     }
 
     public void update() {
