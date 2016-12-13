@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine.graphics;
 
+import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 
@@ -54,7 +55,7 @@ public class GameCharacter extends GameObject {
         }
 
         //TODO remove hardcode
-        speed = 4f;
+        speed = Constants.PLAYER_SPEED;
         health = 10;
     }
 
@@ -94,9 +95,11 @@ public class GameCharacter extends GameObject {
      * @param state
      */
     public void changeState(int state) {
-        if (currentState != state)
+        if (currentState != state) {
             currentState = state;
-      // animations.get(currentState).resume();
+            animations.get(currentState).startOver();
+        }
+        animations.get(currentState).resume();
     }
 
     public float getSpeed() {

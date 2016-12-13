@@ -133,6 +133,13 @@ public class Animation implements Constants {
     }
 
     /**
+     * resume animation
+     */
+    public void resume() {
+        isRunning = true;
+    }
+
+    /**
      * Set a next frame of animation.
      *
      * @param frame - must be valid value (< frames.size() and >= 0);
@@ -144,5 +151,14 @@ public class Animation implements Constants {
         } else {
             this.currentFrame = frame;
         }
+    }
+
+    /**
+     * Start animation from first frame
+     *
+     */
+    public void startOver() {
+        setFrame(0);
+        resume();
     }
 }
