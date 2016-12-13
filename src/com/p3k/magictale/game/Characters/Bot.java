@@ -120,8 +120,8 @@ public class Bot extends GameCharacter {
 
         random = new Random(System.currentTimeMillis());
 
-        destinationX = x;
-        destinationY = y;
+        destinationX = getRealX();
+        destinationY = getRealY();
 
         framesToWait = -1;
 
@@ -152,22 +152,22 @@ public class Bot extends GameCharacter {
             boolean isSomethingHappens = false;
 
             if (isKeyDown(KEY_W)) {
-                setBotState(UP_MOVE_STATE);
+                setState(UP_MOVE_STATE);
                 move(0, 1);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_S)) {
-                setBotState(DOWN_MOVE_STATE);
+                setState(DOWN_MOVE_STATE);
                 move(0, -1);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_A)) {
-                setBotState(LEFT_MOVE_STATE);
+                setState(LEFT_MOVE_STATE);
                 move(-1, 0);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_D)) {
-                setBotState(RIGHT_MOVE_STATE);
+                setState(RIGHT_MOVE_STATE);
                 move(1, 0);
                 isSomethingHappens = true;
             }
@@ -198,7 +198,7 @@ public class Bot extends GameCharacter {
             boolean isEnoughWaiting = doWait();
 
             if (isEnoughWaiting) {
-                setState(BOT_PATRULING_STATE);
+                setBotState(BOT_PATRULING_STATE);
             }
         }
 
@@ -223,7 +223,7 @@ public class Bot extends GameCharacter {
             //here will be collision check, so we can be
             //sure that destination is reachable
 
-        }else if ((getX() - destinationX) <= 5 && (getY() - destinationY) <= 5) {
+        }else if ((getRealX() - destinationX) <= 5 && (getRealY() - destinationY) <= 5) {
             // if bot come pretty close to it's destination point
 
             setBotState(BOT_WAITING_STATE);
@@ -259,7 +259,7 @@ public class Bot extends GameCharacter {
             framesToWait--;
         } else {
             // enough waiting
-            setState(BOT_PATRULING_STATE);
+            setBotState(BOT_PATRULING_STATE);
             framesToWait = -1;
             return true;
         }
