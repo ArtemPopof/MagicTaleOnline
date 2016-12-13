@@ -1,8 +1,12 @@
 package com.p3k.magictale.game.Characters;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.algorithms.AStarFindAlgorithm;
 import com.p3k.magictale.engine.graphics.GameCharacter;
+import com.p3k.magictale.map.level.LevelManager;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -86,6 +90,22 @@ public class Bot extends GameCharacter {
     private int framesToWait;
 
 
+    //TODO remove nah
+    //TEMPORARY OBJECT
+    private int[][] field;
+
+
+    /**
+     *
+     * Basic constructor for bot, almost like GameCharacter one
+     *
+     * @param x x coord of bot
+     * @param y y coord of bot
+     * @param width width of bot
+     * @param height height of bot
+     */
+
+
     public Bot(float x, float y, float width, float height) {
         super(x, y, width, height);
 
@@ -104,6 +124,19 @@ public class Bot extends GameCharacter {
         destinationY = y;
 
         framesToWait = -1;
+
+        // TEMP CODE NEXT
+
+        field = new int[Constants.MAP_HEIGHT][Constants.MAP_WIDTH];
+
+        // init temp map with all passable values
+        // bot can move to every location.
+        for (int i = 0; i < Constants.MAP_HEIGHT; i++) {
+            for (int j = 0; j < Constants.MAP_WIDTH; j++) {
+                field[i][j] = 1;
+            }
+        }
+
     }
 
     /**
@@ -119,22 +152,22 @@ public class Bot extends GameCharacter {
             boolean isSomethingHappens = false;
 
             if (isKeyDown(KEY_W)) {
-                changeState(UP_MOVE_STATE);
+                setBotState(UP_MOVE_STATE);
                 move(0, 1);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_S)) {
-                changeState(DOWN_MOVE_STATE);
+                setBotState(DOWN_MOVE_STATE);
                 move(0, -1);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_A)) {
-                changeState(LEFT_MOVE_STATE);
+                setBotState(LEFT_MOVE_STATE);
                 move(-1, 0);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_D)) {
-                changeState(RIGHT_MOVE_STATE);
+                setBotState(RIGHT_MOVE_STATE);
                 move(1, 0);
                 isSomethingHappens = true;
             }
@@ -200,6 +233,12 @@ public class Bot extends GameCharacter {
 
             // move to our target
             // a* algorithm?
+
+            Point start = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+            Point goal  = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
+
+            ArrayList<Point> routeToTarget = AStarFindAlgorithm.findPath(
+                    field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
 
         }
 

@@ -1,5 +1,6 @@
 package com.p3k.magictale.map.level;
 
+import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.MagicMain;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
@@ -10,6 +11,7 @@ import com.p3k.magictale.game.Game;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.*;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -122,6 +124,30 @@ public class LevelManager implements Level {
 //                    System.out.print(" ");
 //            }
 //        }
+    }
+
+    /**
+     *
+     * Return Tile position like (x, y)
+     * where x is column in map and y is row
+     *
+     * @param x float coords of player,
+     * @param y
+     * @return
+     */
+    public static Point getTilePointByCoordinates(float x, float y) {
+
+        Point result = new Point();
+
+        // now result in java coordinates
+        result.x = (int) (x / Constants.MAP_TILE_SIZE);
+        result.y = (int) (y / Constants.MAP_TILE_SIZE);
+
+        // y coordinate should be inversed
+        result.y = Constants.MAP_HEIGHT - result.y;
+
+        return result;
+
     }
 
     public void render() {

@@ -73,6 +73,9 @@ public class Player extends GameCharacter implements Constants{
         //TODO do not left it undone
         this.x = 800/2 + Game.getInstance().getCameraX();
         this.y = 600/2 + Game.getInstance().getCameraY();
+
+        System.out.print("X: "+ getRealX()+" ");
+        System.out.println("Y: "+ getRealY());
     }
 
     public void processInput() {

@@ -39,4 +39,11 @@ public interface Constants {
 
     // standart player speed
     public static final float PLAYER_SPEED = 2f;
+
+    //Map width in tiles
+    public static final int MAP_WIDTH = 48;
+    public static final int MAP_HEIGHT = 33;
+
+    public static final int MAP_TILE_SIZE = 32;
+
 }

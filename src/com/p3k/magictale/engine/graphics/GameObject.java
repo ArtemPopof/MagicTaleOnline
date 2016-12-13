@@ -60,6 +60,24 @@ public class GameObject {
         this.x = x;
     }
 
+    /**
+     * return right side of sprite
+     *
+     * @return
+     */
+    public float getRealX() {
+        return x;
+    }
+
+    /**
+     * return bottom side of sprite
+     *
+     * @return
+     */
+    public float getRealY() {
+        return y - getHeight()/2;
+    }
+
     public float getY() {
         return y;
     }

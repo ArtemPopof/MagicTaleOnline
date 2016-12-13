@@ -5,6 +5,7 @@ import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
+import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
@@ -36,26 +37,9 @@ public class Game {
 
     private Game() {
 
-        try {
-            resourceManager = ResourceManager.getInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            levelManager = LevelManager.getInstance();
-        } catch (Exception e) {
-            System.err.println("Error initializing levelManager manager: " + e);
-        }
-        try {
-            levelManager.load(mapName, resourceManager);
-        } catch (Exception e) {
-            System.err.println("Error render levelManager manager: " + e);
-        }
+        initLevelManager();
 
         initSoundManager();
-
-
 
         initObjects();
     }
@@ -108,6 +92,10 @@ public class Game {
         GameCharacter testChar = new GameCharacter(300, 550, 32, 64);
         objects.add(testChar);
 
+        // test bot
+        Bot testBot = new Bot(400, 400, 64, 64);
+        objects.add(testBot);
+
     }
 
     private void initSoundManager() {
@@ -134,6 +122,25 @@ public class Game {
         // Must be moved to more appropriate place?
       //  bgmSound.setLevel(0.8f).play("main_theme.wav");
         envSound.setLevel(0.8f).play("wind.wav");
+    }
+
+    private void initLevelManager() {
+        try {
+            resourceManager = ResourceManager.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            levelManager = LevelManager.getInstance();
+        } catch (Exception e) {
+            System.err.println("Error initializing levelManager manager: " + e);
+        }
+        try {
+            levelManager.load(mapName, resourceManager);
+        } catch (Exception e) {
+            System.err.println("Error render levelManager manager: " + e);
+        }
     }
 
     public Level getLevelManager() {
