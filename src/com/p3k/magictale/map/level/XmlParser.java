@@ -110,14 +110,20 @@ public class XmlParser {
                                     NamedNodeMap propAttrs = properties.item(k).getAttributes();
                                     switch (propAttrs.getNamedItem("name").getNodeValue()) {
                                         case "is_pass":
-                                            String bool = propAttrs.getNamedItem("value").getNodeValue();
-                                            if (bool.equals("true")) {
+                                            String isPass = propAttrs.getNamedItem("value").getNodeValue();
+                                            if (isPass.equals("true")) {
                                                 prop.setPass(true);
                                             }
                                             break;
                                         case "layout":
-                                            String layout = propAttrs.getNamedItem("value").getNodeValue();
-                                            prop.setLayer(Integer.parseInt(layout));
+                                            String layer = propAttrs.getNamedItem("value").getNodeValue();
+                                            prop.setLayer(Integer.parseInt(layer));
+                                            break;
+                                        case "isFly":
+                                            String isFly = propAttrs.getNamedItem("value").getNodeValue();
+                                            if (isFly.equals("true")) {
+                                                prop.setFly(true);
+                                            }
                                             break;
                                         default:
                                             System.out.println("Check Property attributes. attr = "
