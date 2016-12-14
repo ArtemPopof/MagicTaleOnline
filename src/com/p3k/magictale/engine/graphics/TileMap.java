@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine.graphics;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -27,5 +28,28 @@ public class TileMap {
 
     public void setTileObjects(LinkedList<TileObject> tileObjects) {
         this.tileObjects = tileObjects;
+    }
+
+    public boolean isPass(int layer, boolean isFly) {
+        boolean isPass = false;
+
+
+        return isPass;
+    }
+
+    public void sort() {
+        Comparator<TileObject> comparator = new Comparator<TileObject>() {
+            @Override
+            public int compare(TileObject o1, TileObject o2) {
+                if (o1.getTileProperties().getLayer() > o2.getTileProperties().getLayer()) {
+                    return 1;
+                }
+                if (o1.getTileProperties().getLayer() < o2.getTileProperties().getLayer()) {
+                    return -1;
+                }
+                return 0;
+            }
+        };
+        tileObjects.sort(comparator);
     }
 }
