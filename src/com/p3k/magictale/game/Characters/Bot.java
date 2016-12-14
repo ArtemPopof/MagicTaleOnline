@@ -265,11 +265,12 @@ public class Bot extends GameCharacter {
 
         }else if ((getRealX() - destinationX) <= 5 && (getRealY() - destinationY) <= 5) {
             // if bot come pretty close to it's destination point
-
             setBotState(BOT_WAITING_STATE);
             destinationX = -1;
             destinationY = -1;
             nextCellInPath = -1;
+
+            clearKeyStates();
         } else if (nextCellInPath == -1) {
 
             // use a brain, to generate path to target
@@ -290,11 +291,6 @@ public class Bot extends GameCharacter {
                 return;
             }
 
-            System.out.println("Bot think out new path: to ("
-                    +goal.x + ", "
-                    +goal.y + ")");
-
-
             nextCellInPath = 0;
 
         } else {
@@ -302,7 +298,7 @@ public class Bot extends GameCharacter {
             // so we know the path and can go to target
             Point currentTile = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
             Point nextTile = pathToTarget.get(nextCellInPath);
-            
+
             // reset all keys
             clearKeyStates();
 
