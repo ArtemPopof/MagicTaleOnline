@@ -2,6 +2,7 @@ package com.p3k.magictale.game.Characters;
 
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.algorithms.AStarFindAlgorithm;
+import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.map.level.LevelManager;
@@ -122,7 +123,7 @@ public class Bot extends GameCharacter {
         super(x, y, width, height);
 
         // get player animations
-        type = CharacterTypes.ABSTRACT_PLAYER;
+        type = CharacterTypes.ABSTRACT_BOT;
 
         try {
             animations = ResourceManager.getInstance().getAnimations(this);
@@ -153,13 +154,13 @@ public class Bot extends GameCharacter {
 
         // TEMP CODE NEXT
 
-        field = new int[Constants.MAP_HEIGHT][Constants.MAP_WIDTH];
+        field = new int[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
 
         // init temp map with all passable values
         // bot can move to every location.
         for (int i = 0; i < Constants.MAP_HEIGHT; i++) {
             for (int j = 0; j < Constants.MAP_WIDTH; j++) {
-                field[i][j] = 1;
+                field[j][i] = 1;
             }
         }
 
@@ -178,23 +179,27 @@ public class Bot extends GameCharacter {
             boolean isSomethingHappens = false;
 
             if (isKeyDown(KEY_W)) {
-                setState(UP_MOVE_STATE);
+                changeState(UP_MOVE_STATE);
                 move(0, 1);
+                setDirection(Direction.UP);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_S)) {
-                setState(DOWN_MOVE_STATE);
+                changeState(DOWN_MOVE_STATE);
                 move(0, -1);
+                setDirection(Direction.DOWN);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_A)) {
-                setState(LEFT_MOVE_STATE);
+                changeState(LEFT_MOVE_STATE);
                 move(-1, 0);
+                setDirection(Direction.LEFT);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_D)) {
-                setState(RIGHT_MOVE_STATE);
+                changeState(RIGHT_MOVE_STATE);
                 move(1, 0);
+                setDirection(Direction.RIGHT);
                 isSomethingHappens = true;
             }
             if (isKeyDown(KEY_SPACE)){
@@ -202,7 +207,7 @@ public class Bot extends GameCharacter {
             }
 
             if (!isSomethingHappens) {
-                setState(WAITING_STATE);
+                animations.get(getState()).pause();
             }
 
         } catch (IllegalArgumentException e) {
@@ -276,6 +281,20 @@ public class Bot extends GameCharacter {
             pathToTarget = AStarFindAlgorithm.findPath(
                     field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
 
+            // cannot go where bot wants to go =(
+            if (pathToTarget == null) {
+                setBotState(BOT_WAITING_STATE);
+                destinationX = -1;
+                destinationY = -1;
+                nextCellInPath = -1;
+                return;
+            }
+
+            System.out.println("Bot think out new path: to ("
+                    +goal.x + ", "
+                    +goal.y + ")");
+
+
             nextCellInPath = 0;
 
         } else {
@@ -283,7 +302,7 @@ public class Bot extends GameCharacter {
             // so we know the path and can go to target
             Point currentTile = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
             Point nextTile = pathToTarget.get(nextCellInPath);
-
+            
             // reset all keys
             clearKeyStates();
 
@@ -295,6 +314,7 @@ public class Bot extends GameCharacter {
                     destinationX = -1;
                     destinationY = -1;
                     nextCellInPath = -1;
+                    return;
                 }
 
                 nextCellInPath++;
@@ -307,9 +327,9 @@ public class Bot extends GameCharacter {
                 emulatekey(KEY_D);
             }
 
-            if (nextTile.y > currentTile.y) {
+            if (nextTile.y < currentTile.y) {
                 emulatekey(KEY_W);
-            } else if (nextTile.y < currentTile.y) {
+            } else if (nextTile.y > currentTile.y) {
                 emulatekey(KEY_S);
             }
         }

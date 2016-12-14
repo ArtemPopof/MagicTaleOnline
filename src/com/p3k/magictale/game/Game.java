@@ -99,7 +99,7 @@ public class Game {
         objects.add(testChar);
 
         // test bot
-        Bot testBot = new Bot(400, 400, 64, 64);
+        Bot testBot = new Bot(500, 400, 64, 64);
         objects.add(testBot);
 
     }

@@ -240,7 +240,7 @@ public class AStarFindAlgorithm {
         int result = 0;
 
         for (PathNode nextNode : list) {
-            if (node.getPosition() == nextNode.getPosition()) {
+            if (node.getPosition().equals(nextNode.getPosition())) {
                 result++;
             }
         }
@@ -257,7 +257,7 @@ public class AStarFindAlgorithm {
     private static PathNode findFirstWithEqualPosition(ArrayList<PathNode> list, PathNode node) {
 
         for (PathNode nextNode : list) {
-            if (node.getPosition() == nextNode.getPosition()) {
+            if (node.getPosition().equals(nextNode.getPosition())) {
                 return nextNode;
             }
         }

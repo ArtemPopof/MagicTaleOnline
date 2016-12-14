@@ -141,8 +141,25 @@ public class ResourceManager {
         playerTestAnims.add(downMoveAnim);
     //    playerTestAnims.add(deathAnim);
 
-
         animations.put(CharacterTypes.ABSTRACT_PLAYER, playerTestAnims);
+
+        // For bots
+
+        ArrayList<Animation> botTestAnims = new ArrayList<>();
+
+        Animation botWaitAnim = new Animation(charSprites, 0, 1);
+        Animation botRightMoveAnim = new Animation(charSprites, 11, 9);
+        Animation botLeftMoveAnim = new Animation(charSprites, 33, 8);
+        Animation botUpMoveAnim = new Animation(charSprites, 22, 8);
+        Animation botDownMoveAnim = new Animation(charSprites, 0, 8);
+
+        botTestAnims.add(botWaitAnim);
+        botTestAnims.add(botRightMoveAnim);
+        botTestAnims.add(botLeftMoveAnim);
+        botTestAnims.add(botUpMoveAnim);
+        botTestAnims.add(botDownMoveAnim);
+
+        animations.put(CharacterTypes.ABSTRACT_BOT, botTestAnims);
     }
 
     /**

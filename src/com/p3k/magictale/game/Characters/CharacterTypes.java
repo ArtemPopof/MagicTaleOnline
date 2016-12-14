@@ -12,4 +12,5 @@ public enum CharacterTypes {
 
     ABSTRACT_CHARACTER,
     ABSTRACT_PLAYER,
+    ABSTRACT_BOT,
 }

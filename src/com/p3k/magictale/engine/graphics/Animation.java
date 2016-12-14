@@ -27,6 +27,7 @@ public class Animation implements Constants {
         }
 
         isRunning = true;
+        currentFrame = 0;
 
     }
 
@@ -68,7 +69,7 @@ public class Animation implements Constants {
 
 
         currentFrame = 0;
-
+        isRunning = true;
     }
 
     public Animation(String pathToAnimationSheet,
@@ -90,6 +91,9 @@ public class Animation implements Constants {
 
         }
 
+        isRunning = true;
+        currentFrame = 0;
+
     }
 
     public Animation(SpriteSheet sprites, int horizontalTileOffset, int framesCount) {
@@ -105,6 +109,9 @@ public class Animation implements Constants {
             frames.add(nextFrame);
 
         }
+
+        isRunning = true;
+        currentFrame = 0;
     }
 
     public Sprite update() {
