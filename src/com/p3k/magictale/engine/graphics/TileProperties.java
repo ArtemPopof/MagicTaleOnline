@@ -5,13 +5,20 @@ package com.p3k.magictale.engine.graphics;
  */
 public class TileProperties {
     private boolean isPass = false;
+    private boolean isFly = false;
     private int layer = 0;
 
     public TileProperties(){
     }
 
-    public TileProperties(boolean isPass, int layer) {
+    public TileProperties(int layer, boolean isPass) {
         this.isPass = isPass;
+        this.layer = layer;
+    }
+
+    public TileProperties(int layer, boolean isPass, boolean isFly) {
+        this.isPass = isPass;
+        this.isFly = isFly;
         this.layer = layer;
     }
 
@@ -21,6 +28,14 @@ public class TileProperties {
 
     public void setPass(boolean pass) {
         isPass = pass;
+    }
+
+    public boolean isFly() {
+        return isFly;
+    }
+
+    public void setFly(boolean fly) {
+        isFly = fly;
     }
 
     public int getLayer() {
