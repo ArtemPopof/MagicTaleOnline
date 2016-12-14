@@ -1,7 +1,14 @@
 package com.p3k.magictale.engine.graphics;
 
+import com.p3k.magictale.engine.Utils;
 import com.p3k.magictale.game.Characters.CharacterTypes;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Cursor;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,6 +58,7 @@ public class ResourceManager {
 
         return instance;
     }
+
     /**
      * Load all map textures from spritesheet
      * and map them according to the given
@@ -181,5 +189,45 @@ public class ResourceManager {
      */
     public ArrayList<Animation> getAnimations(GameCharacter character) {
         return animations.get(character.getCharacterId());
+    }
+
+    public Cursor loadCursor(String path) {
+        BufferedImage img = null;
+
+        try {
+            img = Utils.loadImage(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        final int w = img.getWidth();
+        final int h = img.getHeight();
+
+        int rgbData[] = new int[w * h];
+
+        for (int i = 0; i < rgbData.length; i++)
+        {
+            int x = i % w;
+            int y = h - 1 - i / w; // this will also flip the image vertically
+
+            rgbData[i] = img.getRGB(x, y);
+        }
+
+        IntBuffer buffer = BufferUtils.createIntBuffer(w * h);
+        buffer.put(rgbData);
+        buffer.rewind();
+
+        Cursor cursor = null;
+        try {
+            cursor = new Cursor(w, h, 2, h - 2, 1, buffer, null);
+
+            return cursor;
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 }

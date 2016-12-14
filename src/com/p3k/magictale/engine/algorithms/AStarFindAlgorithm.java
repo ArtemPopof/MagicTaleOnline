@@ -1,8 +1,6 @@
 package com.p3k.magictale.engine.algorithms;
 
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**

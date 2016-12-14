@@ -64,13 +64,13 @@ public class XmlParser {
     public ArrayList<String> getLayerTextContextByName(String layerName) {
         ArrayList<String> layerTextContextByName = new ArrayList<>();
         try {
-            System.out.println(doc.getElementsByTagName("layer"));
+            //System.out.println(doc.getElementsByTagName("layer"));
             NodeList layers = doc.getElementsByTagName("layer");
             for (int i = 0; i < layers.getLength(); ++i) {
-                System.out.println(layers.item(i).getAttributes());
+               //System.out.println(layers.item(i).getAttributes());
                 NamedNodeMap attrs = layers.item(i).getAttributes();
                 Node name = attrs.getNamedItem("name");
-                System.out.println(name.getNodeValue());
+                //System.out.println(name.getNodeValue());
                 String is_gr = name.getNodeValue();
                 if (is_gr.equals(layerName)) {
 //                System.out.println(layers.item(i).getTextContent());
@@ -170,15 +170,15 @@ public class XmlParser {
 
     private static void process(Node node, int level) {
         for (int i = 0; i < level; i++) {
-            System.out.print('\t');
+            //System.out.print('\t');
         }
-        System.out.print(node.getNodeName());
-        System.out.print('\t' + node.getNodeValue());
-        System.out.print(" Attrs: " + node.getTextContent());
+        //System.out.print(node.getNodeName());
+        //System.out.print('\t' + node.getNodeValue());
+        //System.out.print(" Attrs: " + node.getTextContent());
         if (node instanceof Element){
             Element e = (Element) node;
             // работаем как с элементом (у него есть атрибуты и схема)
         }
-        System.out.println();
+        //System.out.println();
     }
 }

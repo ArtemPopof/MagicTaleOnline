@@ -1,14 +1,18 @@
 package com.p3k.magictale.game;
 
+import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.gui.GuiManager;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
+import org.lwjgl.input.Cursor;
+import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
 
@@ -16,7 +20,7 @@ import java.util.ArrayList;
  * Game routines
  * Created by artem96 on 03.12.16.
  */
-public class Game {
+public class Game implements Constants {
     private static Game instance = null;
 
     private ArrayList<GameObject> objects;
@@ -29,17 +33,38 @@ public class Game {
     private SoundSource bgmSound;
     private SoundSource envSound;
 
+    private GuiManager guiManager;
+
     private float cameraX = 0;
     private float cameraY = 0;
 
 
     private final String mapName = "forest";
 
+    private boolean isMouseMoved = false;
+    private boolean isMouseLeftPressed = false;
+    private boolean isMouseRightPressed = false;
+    private boolean isMouseLeftReleased = false;
+    private boolean isMouseRightReleased = false;
+
+    private Cursor cursor;
+
     private Game() {
 
         initLevelManager();
 
+        // INITIALIZING CURSOR
+        try {
+            cursor = ResourceManager.getInstance().loadCursor("res/cursor.png");
+
+            Mouse.setNativeCursor(cursor);
+        } catch (Exception e) {
+            System.err.println("Error loading cursor");
+        }
+
         initSoundManager();
+
+        initGuiManager();
 
         initObjects();
     }
@@ -61,6 +86,13 @@ public class Game {
                 character.processInput();
             }
         }
+
+        // Mouse handle
+        isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
+        isMouseLeftReleased = isMouseLeftPressed && !Mouse.isButtonDown(MOUSE_BTN_LEFT);
+        isMouseRightReleased = isMouseRightPressed && !Mouse.isButtonDown(MOUSE_BTN_RIGHT);
+        isMouseLeftPressed = Mouse.isButtonDown(MOUSE_BTN_LEFT);
+        isMouseRightPressed = Mouse.isButtonDown(MOUSE_BTN_RIGHT);
     }
 
     public void update() {
@@ -71,6 +103,7 @@ public class Game {
             object.update();
         }
 
+        guiManager.update();
     }
 
     public void render() {
@@ -81,6 +114,7 @@ public class Game {
             object.render();
         }
 
+        guiManager.render();
     }
 
     public void cleanUp() {
@@ -126,27 +160,30 @@ public class Game {
         }
 
         // Must be moved to more appropriate place?
-      //  bgmSound.setLevel(0.8f).play("main_theme.wav");
+        bgmSound.setLevel(0.8f).play("main_theme.wav");
         envSound.setLevel(0.8f).play("wind.wav");
     }
 
-    private void initLevelManager() {
-        try {
-            resourceManager = ResourceManager.getInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void initLevelManager(){
+        try{
+        resourceManager=ResourceManager.getInstance();
+        }catch(Exception e){
+        e.printStackTrace();
         }
 
-        try {
-            levelManager = LevelManager.getInstance();
-        } catch (Exception e) {
-            System.err.println("Error initializing levelManager manager: " + e);
+        try{
+        levelManager=LevelManager.getInstance();
+        }catch(Exception e){
+        System.err.println("Error initializing levelManager manager: "+e);
         }
-        try {
-            levelManager.load(mapName, resourceManager);
-        } catch (Exception e) {
-            System.err.println("Error render levelManager manager: " + e);
+        try{
+        levelManager.load(mapName,resourceManager);
+        }catch(Exception e){
+        System.err.println("Error render levelManager manager: "+e);
         }
+    }
+    public void initGuiManager() {
+        guiManager = new GuiManager();
     }
 
     public Level getLevelManager() {
@@ -172,5 +209,21 @@ public class Game {
     public void moveCamera(float x, float y) {
         this.cameraX += x;
         this.cameraY += y;
+    }
+
+    public boolean isMouseMoved() {
+        return isMouseMoved;
+    }
+
+    public boolean isMousePressed() {
+        return isMouseLeftPressed || isMouseRightPressed;
+    }
+
+    public boolean isMouseReleased() {
+        return isMouseLeftReleased || isMouseRightReleased;
+    }
+
+    public boolean isButtonPressed(int button) {
+        return Mouse.isButtonDown(button);
     }
 }
