@@ -2,8 +2,12 @@ package com.p3k.magictale.engine;
 
 import org.lwjgl.BufferUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.NoSuchFileException;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
@@ -57,5 +61,29 @@ public class Utils {
         return textureID;
     }
 
+    /**
+     * Reads image from fs or loads from server if need so
+     *
+     * @param path Path of resource in file system
+     * @return Buffered Image for image or IOException
+     */
+    public static BufferedImage loadImage(String path)
+            throws IOException {
+        BufferedImage image;
 
+        try {
+            File file = new File(path);
+            if ( !file.exists() ) {
+                throw new NoSuchFileException("No image found for given path: " + path);
+            }
+
+            image = ImageIO.read(file);
+        } catch (IOException e) {
+            throw e;
+        }
+
+        // TODO try to load from the server
+
+        return image;
+    }
 }
