@@ -46,4 +46,6 @@ public interface Constants {
 
     public static final int MAP_TILE_SIZE = 32;
 
+    public static final int MOUSE_BTN_LEFT = 0;
+    public static final int MOUSE_BTN_RIGHT = 1;
 }
