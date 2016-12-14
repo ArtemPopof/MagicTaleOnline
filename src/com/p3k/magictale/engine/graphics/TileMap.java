@@ -31,7 +31,7 @@ public class TileMap {
     }
 
     public boolean isPass(int layer, boolean isFly) {
-        boolean isPass = false;
+        boolean isPass = true;
 
 
         return isPass;
