@@ -96,7 +96,7 @@ public class LevelManager implements Level {
         }
         tileMap = new TileMap[lvlWidth][lvlHeight];
 
-        System.out.println(layerGrContext);
+        //System.out.println(layerGrContext);
         for (int h = lvlHeight-1, id = 0; 0 <= h; h--) {
             for (int w = 0; w < lvlWidth; w++) {
                 // TODO Replace it like: (Now for debug)
@@ -105,7 +105,7 @@ public class LevelManager implements Level {
                 int idInSprSh = Integer.parseInt(layerGrContext.get(id)) - 1;
                 int idInGl = resourceManager.getTexture(idInSprSh + 5000);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
+                //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
 //                sprites.add(sprite);
                 tileMap[w][h] = new TileMap();
