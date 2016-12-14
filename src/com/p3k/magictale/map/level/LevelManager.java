@@ -174,4 +174,11 @@ public class LevelManager implements Level {
             }
         }
     }
+
+    /**
+     * Return tileMap
+     */
+    public TileMap[][] getTileMap() {
+        return tileMap;
+    }
 }

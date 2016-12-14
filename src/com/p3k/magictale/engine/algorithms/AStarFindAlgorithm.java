@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class AStarFindAlgorithm {
 
     public static ArrayList<Point> findPath(
-            int[][] field, int fieldWidth, int fieldHeight,
+            boolean[][] field, int fieldWidth, int fieldHeight,
             Point start, Point goal) {
 
         // step 1. Initialization
@@ -160,7 +160,7 @@ public class AStarFindAlgorithm {
     }
 
     private static ArrayList<PathNode> getNeighbours(PathNode node,
-                                                     Point goal, int[][] field,
+                                                     Point goal, boolean[][] field,
                                                      int fieldWidth, int fieldHeight) {
 
         ArrayList<PathNode> result = new ArrayList<>();
@@ -197,7 +197,7 @@ public class AStarFindAlgorithm {
                 continue;
 
             // check if we can move in to this point
-            if ((field[point.x][point.y] == -1)) {
+            if ((!field[point.x][point.y])) {
                 // can't move here
                 continue;
             }

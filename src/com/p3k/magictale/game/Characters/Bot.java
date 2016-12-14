@@ -105,7 +105,7 @@ public class Bot extends GameCharacter {
 
     //TODO remove nah
     //TEMPORARY OBJECT
-    private int[][] field;
+    private boolean[][] field;
 
 
     /**
@@ -154,13 +154,17 @@ public class Bot extends GameCharacter {
 
         // TEMP CODE NEXT
 
-        field = new int[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
+        field = new boolean[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
 
         // init temp map with all passable values
         // bot can move to every location.
         for (int i = 0; i < Constants.MAP_HEIGHT; i++) {
             for (int j = 0; j < Constants.MAP_WIDTH; j++) {
-                field[j][i] = 1;
+                try {
+                    field[j][i] = LevelManager.getInstance().getTileMap()[j][i].isPass(1, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
