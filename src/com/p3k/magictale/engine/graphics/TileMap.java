@@ -32,8 +32,19 @@ public class TileMap {
 
     public boolean isPass(int layer, boolean isFly) {
         boolean isPass = true;
-
-
+        if (isFly) {
+            for (int i = 0; i < tileObjects.size(); ++i) {
+                if (tileObjects.get(i).getTileProperties().getLayer() == layer
+                        && !tileObjects.get(i).getTileProperties().isPass()) {
+                    return false;
+                }
+            }
+        }
+        for (int i = 0; i < tileObjects.size(); ++i) {
+            if (!tileObjects.get(i).getTileProperties().isPass()) {
+                return false;
+            }
+        }
         return isPass;
     }
 

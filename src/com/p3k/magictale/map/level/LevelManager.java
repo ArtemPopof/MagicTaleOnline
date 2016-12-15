@@ -29,7 +29,7 @@ public class LevelManager implements Level {
     private static final String LEVEL_DIR = "res/map/levels/";
     String mapName = "forest";
     String pathName = "res/map/levels/lvl_forest.tmx";
-//    private ArrayList<Sprite> sprites = null;
+    //    private ArrayList<Sprite> sprites = null;
 //    private ArrayList<TileObject> tileObjects = null;
     private int lvlHeight = 0;
     private int lvlWidth = 0;
@@ -97,7 +97,9 @@ public class LevelManager implements Level {
         tileMap = new TileMap[lvlWidth][lvlHeight];
 
         //System.out.println(layerGrContext);
-        for (int h = lvlHeight-1, id = 0; 0 <= h; h--) {
+        --lvlHeight;
+        for (int h = lvlHeight, id = 0; 0 <= h; h--) {
+//        for (int h = 0, id = 0; 0 <= lvlHeight - 1; h++) {
             for (int w = 0; w < lvlWidth; w++) {
                 // TODO Replace it like: (Now for debug)
                 // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
@@ -108,13 +110,12 @@ public class LevelManager implements Level {
                 //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
 //                sprites.add(sprite);
-                tileMap[w][h] = new TileMap();
-                tileMap[w][h].getTileObjects().add(new TileObject(sprite, w * sprWidth, h * sprHeight,
+                tileMap[w][lvlHeight - h] = new TileMap();
+                tileMap[w][lvlHeight - h].getTileObjects().add(new TileObject(sprite, w * sprWidth, h * sprHeight,
                         lvlTilesProperties.get(idInSprSh)));
 //                tileObjects.add(new TileObject(sprite, w * sprWidth, h * sprHeight, lvlTilesProperties.get(idInSprSh)));
                 id++;
-                if (id == 1580)
-                    System.out.print(" ");
+
             }
         }
 //        for (int h = 0, id = 0; h < lvlHeight * sprHeight; h += sprHeight) {
