@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.Characters.CharacterTypes;
@@ -23,6 +24,10 @@ public class GameCharacter extends GameObject {
     protected static final int UP_MOVE_STATE = 3;
     protected static final int DOWN_MOVE_STATE = 4;
     protected static final int DEATH_STATE = 5;
+    protected static final int LEFT_ATTACK_STATE = 6;
+    protected static final int UP_ATTACK_STATE = 7;
+    protected static final int RIGHT_ATTACK_STATE = 8;
+    protected static final int DOWN_ATTACK_STATE = 9;
 
     /**
      * Unique identifier for current class.
@@ -40,6 +45,8 @@ public class GameCharacter extends GameObject {
 
     private boolean isFlyable;
     private int layer;
+
+    protected boolean isAttacking = false;
 
     /**
      * current state of this character
@@ -150,6 +157,29 @@ public class GameCharacter extends GameObject {
      */
     public int getLayer() {
         return layer;
+    }
+
+    /**
+     * Perform attack action
+     *
+     */
+    public void doAttack() {
+        switch (direction) {
+            case LEFT:
+                changeState(LEFT_ATTACK_STATE);
+                break;
+            case RIGHT:
+                changeState(RIGHT_ATTACK_STATE);
+                break;
+            case UP:
+                changeState(UP_ATTACK_STATE);
+                break;
+            case DOWN:
+                changeState(DOWN_ATTACK_STATE);
+                break;
+        }
+
+        isAttacking = true;
     }
 
 

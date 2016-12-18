@@ -112,6 +112,12 @@ public class Player extends GameCharacter implements Constants{
             attackSound.play("user/attack_axe.wav");
         }
 
+        // mouse events
+        if (Game.getInstance().isButtonPressed(MOUSE_BTN_LEFT)) {
+            doAttack();
+            isStateChanged = false;
+        }
+
         // if nothing happens with player, then wait
         if (!isStateChanged) {
             animations.get(getState()).pause();

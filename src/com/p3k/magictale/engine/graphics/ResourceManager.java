@@ -127,27 +127,34 @@ public class ResourceManager {
 
         //next
 
-        SpriteSheet playerSprites = new SpriteSheet("res/animation/prof/play_prof.png", 64, 64);
-
         ArrayList<Animation> playerTestAnims = new ArrayList<>();
 
-        Animation waitAnim = new Animation(playerSprites, 18, 1);
-        Animation rightMoveAnim = new Animation(playerSprites, 27, 9);
-        Animation leftMoveAnim = new Animation(playerSprites, 9, 9);
-        Animation upMoveAnim = new Animation(playerSprites, 0, 9);
-        Animation downMoveAnim = new Animation(playerSprites, 18, 9);
-     //   Animation deathAnim = new Animation(playerSprites, 44, 5);
+        Animation waitAnim = new Animation(charSprites, 0, 1);
+        Animation rightMoveAnim = new Animation(charSprites, 11, 8);
+        Animation leftMoveAnim = new Animation(charSprites, 33, 7);
+        Animation upMoveAnim = new Animation(charSprites, 22, 7);
+        Animation downMoveAnim =new Animation(charSprites, 0, 7);
+        Animation deathAnim = new Animation(charSprites, 44, 5);
 
-
-        //  Animation moveAnim = new Animation("res/animation/bigfoot/bigfoot_move",
-       //         0, 5, 64, 64);
+        Animation leftAttackAnim = new Animation(charSprites, 40, 3);
+        Animation upAttackAnim = new Animation(charSprites, 29, 3);
+        Animation rightAttackAnim = new Animation(charSprites, 18, 3);
+        Animation downAttackAnim = new Animation(charSprites, 7, 3);
 
         playerTestAnims.add(waitAnim);
         playerTestAnims.add(rightMoveAnim);
         playerTestAnims.add(leftMoveAnim);
         playerTestAnims.add(upMoveAnim);
         playerTestAnims.add(downMoveAnim);
-    //    playerTestAnims.add(deathAnim);
+        playerTestAnims.add(deathAnim);
+
+        playerTestAnims.add(leftAttackAnim);
+        playerTestAnims.add(upAttackAnim);
+        playerTestAnims.add(rightAttackAnim);
+        playerTestAnims.add(downAttackAnim);
+
+
+        //    playerTestAnims.add(deathAnim);
 
         animations.put(CharacterTypes.ABSTRACT_PLAYER, playerTestAnims);
 
