@@ -1,8 +1,10 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.Characters.CharacterTypes;
+import com.p3k.magictale.map.level.LevelManager;
 
 import java.util.ArrayList;
 
@@ -36,6 +38,9 @@ public class GameCharacter extends GameObject {
     private float speed;
     private int health;
 
+    private boolean isFlyable;
+    private int layer;
+
     /**
      * current state of this character
      *
@@ -57,6 +62,9 @@ public class GameCharacter extends GameObject {
         //TODO remove hardcode
         speed = Constants.PLAYER_SPEED;
         health = 10;
+
+        isFlyable = false;
+        layer = 1;
     }
 
     public int getState() {
@@ -69,6 +77,7 @@ public class GameCharacter extends GameObject {
 
     @Override
     public void update() {
+
         // Animation must be performed here
 
         // next animation frame
@@ -127,6 +136,20 @@ public class GameCharacter extends GameObject {
         this.x += deltaX;
         this.y += deltaY;
 
+    }
+
+    /**
+     * Is this person able to fly
+     */
+    public boolean isFlyable() {
+        return isFlyable;
+    }
+
+    /**
+     * Return a layer index for this char
+     */
+    public int getLayer() {
+        return layer;
     }
 
 

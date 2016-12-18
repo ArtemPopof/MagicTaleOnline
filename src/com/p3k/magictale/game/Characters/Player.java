@@ -4,9 +4,13 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.Game;
+import com.p3k.magictale.map.level.LevelManager;
 import org.lwjgl.input.Keyboard;
+
+import java.awt.*;
 
 /**
  * Created by artem96 on 04.12.16.
@@ -128,8 +132,19 @@ public class Player extends GameCharacter implements Constants{
         float oldX = Game.getInstance().getCameraX();
         float oldY = Game.getInstance().getCameraY();
 
-        Game.getInstance().setCameraX(oldX + deltaX);
-        Game.getInstance().setCameraY(oldY + deltaY);
+        this.setX(x + deltaX);
+        this.setY(y + deltaY);
+
+        if (Collision.checkForCollision(this)) {
+            // freeze! collision!
+            this.setX(x - deltaX);
+            this.setY(y - deltaY);
+        } else {
+            Game.getInstance().setCameraX(oldX + deltaX);
+            Game.getInstance().setCameraY(oldY + deltaY);
+        }
+
+
 
     }
 

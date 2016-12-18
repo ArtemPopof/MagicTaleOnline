@@ -136,6 +136,14 @@ public class Game implements Constants {
         Bot testBot = new Bot(500, 400, 64, 64);
         objects.add(testBot);
 
+        // test bot
+       // Bot testBot2 = new Bot(200, 354, 64, 64);
+       // objects.add(testBot2);
+
+        // test bot
+       // Bot testBot3 = new Bot(252, 272, 64, 64);
+       // objects.add(testBot3);
+
     }
 
     private void initSoundManager() {
@@ -160,8 +168,8 @@ public class Game implements Constants {
         }
 
         // Must be moved to more appropriate place?
-        bgmSound.setLevel(0.8f).play("main_theme.wav");
-        envSound.setLevel(0.8f).play("wind.wav");
+       // bgmSound.setLevel(0.8f).play("main_theme.wav");
+       // envSound.setLevel(0.8f).play("wind.wav");
     }
 
     private void initLevelManager(){

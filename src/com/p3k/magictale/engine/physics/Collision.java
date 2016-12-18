@@ -1,6 +1,9 @@
 package com.p3k.magictale.engine.physics;
 
+import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
+import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
 
@@ -20,6 +23,43 @@ public class Collision {
 
         return firstRect.intersects(secondRect);
 
+    }
+
+    /**
+     * Check for collision between GameCharacter and
+     * map or another GameCharacter
+     *
+     * if collision is happen, then stops player in front of tile
+     */
+    public static boolean checkForCollision(GameCharacter character) {
+
+        try {
+            LevelManager manager = LevelManager.getInstance();
+
+            float x = character.getRealX();
+            float y = character.getRealY();
+
+            Point characterNextCell = LevelManager.getTilePointByCoordinates(x, y);
+
+             return !manager.getTileMap()[characterNextCell.x][characterNextCell.y].isPass(character.getLayer(), character.isFlyable());
+
+            /*
+            if (!result) {
+
+                Point tilePoint = LevelManager.getCoordinatesByTile(characterNextCell);
+
+                character.setX(tilePoint.x + Constants.MAP_TILE_SIZE);
+                character.setY(tilePoint.y);
+
+                return false;
+            }
+             */
+
+        } catch (Exception e) {
+            System.err.println("Collision.checkForCollision(): cannot get instance of LevelManager.");
+        }
+
+        return true;
     }
 
 }

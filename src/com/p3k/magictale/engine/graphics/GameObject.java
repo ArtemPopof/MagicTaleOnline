@@ -66,7 +66,7 @@ public class GameObject {
      * @return
      */
     public float getRealX() {
-        return x;
+        return x + getWidth()/2;
     }
 
     /**
@@ -75,7 +75,7 @@ public class GameObject {
      * @return
      */
     public float getRealY() {
-        return y - getHeight()/2;
+        return y;
     }
 
     public float getY() {
@@ -135,6 +135,13 @@ public class GameObject {
      */
     public Direction getDirection() {
         return direction;
+    }
+
+    /**
+     * Debug method. Just remove sprite from object
+     */
+    public void removeSprite() {
+        sprite = new Sprite(1f, 0, 0, getWidth(), getHeight());
     }
 
 }

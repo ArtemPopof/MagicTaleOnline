@@ -161,6 +161,21 @@ public class LevelManager implements Level {
 
     }
 
+    /**
+     * return tile coordinates.
+     *
+     * Upper left corner will be returned.
+     *
+     * @return
+     */
+    public static Point getCoordinatesByTile(Point tile) {
+
+        int tileX = tile.x * Constants.MAP_TILE_SIZE;
+        int tileY = tile.y * Constants.MAP_TILE_SIZE;
+
+        return new Point(tileX, tileY);
+    }
+
     public void render() {
 //        for (TileObject object : tileObjects) {
 //
