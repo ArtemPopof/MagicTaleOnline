@@ -103,6 +103,10 @@ public class GameObject {
         sprite.setHeight(height);
     }
 
+    public Sprite getSprite() { return sprite; }
+
+    protected void setSprite(Sprite sprite) { this.sprite = sprite; }
+
     protected void init(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;

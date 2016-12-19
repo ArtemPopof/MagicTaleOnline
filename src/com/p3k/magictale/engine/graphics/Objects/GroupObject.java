@@ -29,6 +29,15 @@ public class GroupObject{
         this.heightNum = heightNum;
         this.type = type;
         this.name = name;
+        this.groupObjectProperties = new GroupObjectProperties();
+    }
+
+    public GroupObject(int x, int y, String type, String name, GroupObjectProperties groupObjectProperties) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.name = name;
+        this.groupObjectProperties = groupObjectProperties;
     }
 
     public int getxTileSheet() {

@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
+import com.p3k.magictale.engine.graphics.Objects.GroupObjectProperties;
 import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -200,7 +201,7 @@ public class XmlParser {
 //        return objTilesProperties;
 //    }
 
-    public ArrayDeque<GroupObject> getGroupObjectsByGroupName(String gameObjects) {
+    public ArrayDeque<GroupObject> getGroupObjectsByGroupName(String gameObjects, boolean byTemplate) {
         ArrayDeque<GroupObject> waitedGroupObjects = new ArrayDeque<>();
         try {
             System.out.println(doc.getElementsByTagName("objectgroup"));
@@ -208,8 +209,8 @@ public class XmlParser {
             for (int i = 0; i < checkingObjectGroups.getLength(); ++i) {
                 NamedNodeMap objGrAttrs = checkingObjectGroups.item(i).getAttributes();
                 if (getValueOfNamedItem(objGrAttrs, "name").equals(gameObjects)) {
-                    waitedGroupObjects = getGroupObjects(checkingObjectGroups.item(i).getChildNodes(), "object")
-                            .clone();
+                    waitedGroupObjects = getGroupObjects(checkingObjectGroups.item(i).getChildNodes(),
+                            "object", byTemplate).clone();
                 }
             }
             return waitedGroupObjects;
@@ -219,7 +220,7 @@ public class XmlParser {
         return waitedGroupObjects;
     }
 
-    private ArrayDeque<GroupObject> getGroupObjects(NodeList nodeListOfObjects, String name) {
+    private ArrayDeque<GroupObject> getGroupObjects(NodeList nodeListOfObjects, String name, boolean byTemplate) {
         ArrayDeque<GroupObject> itemGroupObjects = new ArrayDeque<>();
         for (int i = 0; i < nodeListOfObjects.getLength(); ++i) {
             if (nodeListOfObjects.item(i).getNodeName().equals(name)) {
@@ -227,18 +228,24 @@ public class XmlParser {
 //                int xTileSheet = Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x"));
 //                int yTileSheet = Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y"));
                 // TODO Add constant sprWidth, sprHeight
-                GroupObject insGrObj = new GroupObject(
-                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x")) / 32,
-                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y")) / 32,
-                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "width")) / 32,
-                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "height")) / 32,
-                        getValueOfNamedItem(objGrAttrs, "type"),
-                        getValueOfNamedItem(objGrAttrs, "name"));
+                GroupObject insGrObj = null;
+                if (byTemplate) {
+                    insGrObj = new GroupObject(
+                            Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x")) / 32,
+                            Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y")) / 32,
+                            getValueOfNamedItem(objGrAttrs, "type"),
+                            getValueOfNamedItem(objGrAttrs, "name"),
+                            new GroupObjectProperties());
+                } else {
+                    insGrObj = new GroupObject(
+                            Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x")) / 32,
+                            Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y")) / 32,
+                            Integer.parseInt(getValueOfNamedItem(objGrAttrs, "width")) / 32,
+                            Integer.parseInt(getValueOfNamedItem(objGrAttrs, "height")) / 32,
+                            getValueOfNamedItem(objGrAttrs, "type"),
+                            getValueOfNamedItem(objGrAttrs, "name"));
+                }
                 itemGroupObjects.addLast(insGrObj);
-//                insGrObj.setType(getValueOfNamedItem(objGrAttrs, "type"));
-//                insGrObj.setName(getValueOfNamedItem(objGrAttrs, "name"));
-//                insGrObj.setWidthNum(Integer.parseInt(getValueOfNamedItem(objGrAttrs, "width")) / 32);
-//                insGrObj.setHeightNum(Integer.parseInt(getValueOfNamedItem(objGrAttrs, "height")) / 32);
             }
         }
         return itemGroupObjects;

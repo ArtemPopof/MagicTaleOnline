@@ -23,6 +23,8 @@ public class Tile extends GameObject {
         return tileProperties;
     }
 
+//    public Sprite getSprite() { return this.getSprite(); }
+
     public void setTileProperties(TileProperties tileProperties) {
         this.tileProperties = tileProperties;
     }

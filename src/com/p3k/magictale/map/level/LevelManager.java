@@ -21,6 +21,11 @@ public class LevelManager implements Level {
     private static LevelManager instance = null;
     private static DocumentBuilderFactory dbf = null;
     private static final String LEVEL_DIR = "res/map/levels/";
+    // TODO Add to constants. Delete it
+    public static String getLevelDir() {
+        return LEVEL_DIR;
+    }
+
     String mapName = "forest";
     String pathName = "res/map/levels/lvl_forest.tmx";
     //    private ArrayList<Sprite> sprites = null;
@@ -57,10 +62,7 @@ public class LevelManager implements Level {
         TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
         ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
 
-
-//        TreeMap<String, GroupObject> insertedGroupObject1 = new TreeMap<>();
-//        insertedGroupObject1.put("tented", insGrObj1);
-//        groupObjects.put("structure", insertedGroupObject1);
+        System.out.println("HERE Lvl load");
 
         XmlParser xml = null;
         try {
@@ -70,12 +72,11 @@ public class LevelManager implements Level {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ArrayList<String> spriteSheetPaths = null;
-        if (xml != null) {
-            spriteSheetPaths = xml.getSpriteSheetPaths();
-        }
 
-        System.out.println("HERE Load");
+//        ArrayList<String> spriteSheetPaths = null;
+//        if (xml != null) {
+//            spriteSheetPaths = xml.getSpriteSheetPaths();
+//        }
         try {
             int firstId = 5000;
 //            for (String spriteSheetPath:
@@ -117,33 +118,15 @@ public class LevelManager implements Level {
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
                 //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
-//                sprites.add(sprite);
                 tileMap[w][lvlHeight - h] = new TileMap();
                 tileMap[w][lvlHeight - h].getTiles().add(new Tile(sprite, w * sprWidth, h * sprHeight,
                         lvlTilesProperties.get(idInSprSh)));
-//                tileObjects.add(new Tile(sprite, w * sprWidth, h * sprHeight, lvlTilesProperties.get(idInSprSh)));
                 id++;
-
             }
         }
         ++lvlHeight;
-//        for (int h = 0, id = 0; h < lvlHeight * sprHeight; h += sprHeight) {
-//            for (int w = 0; w < lvlWidth * sprWidth; w += sprWidth) {
-//                // TODO Replace it like: (Now for debug)
-//                // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
-//                // WIDTH_CONST, HEIGHT_CONST));
-//                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 4999;
-//                int idInGl = resourceManager.getTexture(idInSprSh);
-//                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-//                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
-//
-//                sprites.add(sprite);
-//                tileObjects.add(new Tile(sprite, w, h));
-//                id++;
-//                if (id == 1580)
-//                    System.out.print(" ");
-//            }
-//        }
+
+        System.out.println("HERE Lvl loaded");
     }
 
     /**

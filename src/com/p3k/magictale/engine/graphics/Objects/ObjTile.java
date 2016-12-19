@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.graphics.Objects;
 
 import com.p3k.magictale.engine.graphics.GameObject;
+import com.p3k.magictale.engine.graphics.Map.Tile;
 import com.p3k.magictale.engine.graphics.Sprite;
 
 /**
@@ -20,6 +21,21 @@ public class ObjTile extends GameObject {
     public ObjTile(Sprite sprite, float x, float y, ObjTileProperties objTileProperties) {
         this.objTileProperties = objTileProperties;
         super.initBySprite(sprite, x, y);
+    }
+
+    public ObjTile(ObjTile objTile) {
+        this.objTileProperties = objTile.getObjTileProperties();
+        this.type = objTile.getType();
+        this.name = objTile.getName();
+        this.idInTypeName = objTile.getIdInTypeName();
+        super.initBySprite(objTile.getSprite(), objTile.getX(), objTile.getY());
+    }
+
+    public ObjTile(Tile tile, int x, int y) {
+        this.objTileProperties = new ObjTileProperties();
+        this.objTileProperties.setPass(tile.getTileProperties().isPass());
+        this.objTileProperties.setFly(tile.getTileProperties().isFly());
+        super.initBySprite(tile.getSprite(), x, y);
     }
 
     public ObjTileProperties getObjTileProperties() {
