@@ -177,35 +177,39 @@ public class ObjectManager implements ObjectInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ArrayDeque<GroupObject> waitedGroupObjects = xml.getGroupObjectsByGroupName("GameObjects");
-
-//
-//        TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
-//        ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
-//
-////        Test1
-//        GroupObject insGrObj = new GroupObject(1, 0);
-//        listOfGrObj.add(insGrObj);
-//        insertedGroupObject.put("tent", listOfGrObj);
-//        groupObjects.put("structure", insertedGroupObject);
-//
-////        Test2
-//        GroupObject insGrObj1 = new GroupObject(1, 1);
-//        insertedGroupObject = groupObjects.get("structured");
-////        if (groupObjects.containsKey("structure")) {
-//        if (insertedGroupObject != null) {
-//            listOfGrObj = insertedGroupObject.get("tent");
-//            if (listOfGrObj != null) {
-//                listOfGrObj.add(insGrObj1);
-//            }
-//        } else {
-//            listOfGrObj = new ArrayList<>();
-//            insertedGroupObject = new TreeMap<>();
-//            listOfGrObj.add(insGrObj1);
-//            insertedGroupObject.put("tent", listOfGrObj);
-//            groupObjects.put("structured", insertedGroupObject);
-//        }
-
+        ArrayDeque<GroupObject> waitedGroupObjects = xml.getGroupObjectsByGroupName("GameObjects").clone();
+        TreeMap<String, ArrayList<GroupObject>> waitedTreeMap = new TreeMap<>();
+        ArrayList<GroupObject> waitedArrayOfGrObj = new ArrayList<>();
+        while (true) {
+            try {
+                GroupObject insGrObj = waitedGroupObjects.pollFirst();
+                if (insGrObj != null) {
+                    waitedTreeMap = groupObjects.get(insGrObj.getType());
+//                if (!waitedTreeMap.isEmpty()) {
+                    if(waitedTreeMap != null) {
+                        waitedArrayOfGrObj = waitedTreeMap.get(insGrObj.getName());
+//                    if (!waitedArrayOfGrObj.isEmpty()) {
+                        if (waitedArrayOfGrObj != null) {
+                            waitedArrayOfGrObj.add(insGrObj);
+                        } else {
+                            waitedArrayOfGrObj = new ArrayList<>();
+                            waitedArrayOfGrObj.add(insGrObj);
+                            waitedTreeMap.put(insGrObj.getName(), waitedArrayOfGrObj);
+                        }
+                    } else {
+                        waitedTreeMap = new TreeMap<>();
+                        waitedArrayOfGrObj = new ArrayList<>();
+                        waitedArrayOfGrObj.add(insGrObj);
+                        waitedTreeMap.put(insGrObj.getName(), waitedArrayOfGrObj);
+                        groupObjects.put(insGrObj.getType(), waitedTreeMap);
+                    }
+                } else {
+                    break;
+                }
+            } catch ( Exception e ) {
+                System.out.println("Load template groupObjects: " + e);
+            }
+        }
     }
 
     public void render() {
