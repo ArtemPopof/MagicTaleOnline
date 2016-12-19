@@ -16,6 +16,7 @@ import com.p3k.magictale.map.objects.ObjectManager;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -144,12 +145,12 @@ public class Game implements Constants {
         objects.add(testBot);
 
         // test bot
-        // Bot testBot2 = new Bot(200, 354, 64, 64);
-        // objects.add(testBot2);
+       //  Bot testBot2 = new Bot(200, 354, 64, 64);
+       //  objects.add(testBot2);
 
         // test bot
         // Bot testBot3 = new Bot(252, 272, 64, 64);
-        // objects.add(testBot3);
+       //  objects.add(testBot3);
 
     }
 
@@ -175,8 +176,8 @@ public class Game implements Constants {
         }
 
         // Must be moved to more appropriate place?
-        bgmSound.setLevel(0.8f).play("main_theme.wav");
-        envSound.setLevel(0.8f).play("wind.wav");
+      //  bgmSound.setLevel(0.8f).play("main_theme.wav");
+      //  envSound.setLevel(0.8f).play("wind.wav");
     }
 
     private void initLevelManager(){
@@ -256,5 +257,32 @@ public class Game implements Constants {
 
     public boolean isButtonPressed(int button) {
         return Mouse.isButtonDown(button);
+    }
+
+    /**
+     * Is anyone is now in given cell
+     */
+    public boolean isAnyoneInCell(int cellX, int cellY) {
+
+        for (GameObject object : objects) {
+            if (!GameCharacter.class.isInstance(object))
+                continue;
+
+            GameCharacter character = (GameCharacter) object;
+
+            Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
+            if (characterPoint.x == cellX && characterPoint.y == cellY) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * return array of Game Objects
+     */
+    public ArrayList<GameObject> getObjects() {
+        return objects;
     }
 }

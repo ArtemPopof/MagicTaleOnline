@@ -115,7 +115,10 @@ public class Player extends GameCharacter implements Constants{
         // mouse events
         if (Game.getInstance().isButtonPressed(MOUSE_BTN_LEFT)) {
             doAttack();
-            isStateChanged = false;
+        }
+
+        if (isAttacking) {
+            isStateChanged = true;
         }
 
         // if nothing happens with player, then wait
@@ -128,6 +131,9 @@ public class Player extends GameCharacter implements Constants{
     // mag = magnitude
     // move player according to given params
     protected void move(float magX, float magY) {
+
+        if (isAttacking)
+            isAttacking = false;
 
         float deltaX = magX * getSpeed();
         float deltaY = magY * getSpeed();

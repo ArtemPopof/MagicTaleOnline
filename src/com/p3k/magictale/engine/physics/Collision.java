@@ -62,4 +62,17 @@ public class Collision {
         return true;
     }
 
+
+    /**
+     * Is given point within given rectangle
+     */
+    public static boolean isPointInRect(Point point, Point first, Point second) {
+
+        if (point.x >= first.x && point.x <= second.x && point.y <= first.y && point.y >= second.y) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

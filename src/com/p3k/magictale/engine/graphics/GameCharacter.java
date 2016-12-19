@@ -90,6 +90,12 @@ public class GameCharacter extends GameObject {
         // next animation frame
         this.sprite = animations.get(currentState).update();
 
+        // current animation stops, so zero some
+        // states
+        if (!animations.get(currentState).isRunning()) {
+            isAttacking = false;
+        }
+
         float cameraX = Game.getInstance().getCameraX();
         float cameraY = Game.getInstance().getCameraY();
     }

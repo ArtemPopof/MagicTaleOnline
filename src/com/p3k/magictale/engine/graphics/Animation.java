@@ -18,6 +18,8 @@ public class Animation implements Constants {
      */
     private boolean isRunning;
 
+    private boolean isLooped = true;
+
     public Animation(ArrayList<Sprite> sprites) {
 
         frames = new ArrayList<>();
@@ -124,6 +126,10 @@ public class Animation implements Constants {
             if (!frame.update()) {
                 currentFrame++;
                 currentFrame %= frames.size();
+                if (currentFrame == 0 && !isLooped) {
+                    // animation played once
+                    isRunning = false;
+                }
             }
         }
 
@@ -168,4 +174,29 @@ public class Animation implements Constants {
         setFrame(0);
         resume();
     }
+
+    /**
+     * Set loop option to the animation.
+     * If looped is true, then animation
+     * will be played, until something
+     * stops it.
+     * If looped if false, then animation
+     * will be played once.
+     */
+    public void setLooped(boolean looped) {
+        this.isLooped = looped;
+    }
+
+    public boolean isLooped() {
+        return isLooped;
+    }
+
+    /**
+     * is animation not paused
+     */
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+
 }

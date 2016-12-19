@@ -4,7 +4,10 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.algorithms.AStarFindAlgorithm;
 import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
+import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.physics.Collision;
+import com.p3k.magictale.game.Game;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
@@ -66,6 +69,10 @@ public class Bot extends GameCharacter {
     // units is tiles
     private int visionRadius;
 
+    // how far bot can see in
+    // cells
+    private int visionCellRadius;
+
     /**
      * If not aggressive, then bot
      * will be attack you only if
@@ -107,6 +114,9 @@ public class Bot extends GameCharacter {
     //TEMPORARY OBJECT
     private boolean[][] field;
 
+    //Spotted enemy
+    GameCharacter spottedEnemy ;
+
 
     /**
      *
@@ -136,7 +146,8 @@ public class Bot extends GameCharacter {
         keysState = new boolean[EMULATED_KEYS];
 
         // how many pixels is visible to bot
-        visionRadius = 10 * Constants.TILE_SIZE;
+        visionCellRadius = 10;
+        visionRadius = visionCellRadius * Constants.TILE_SIZE;
 
         isAggressive = true;
 
@@ -226,15 +237,21 @@ public class Bot extends GameCharacter {
 
         // here will be simulation of bot virtual brain
 
+        if (spottedEnemy==null && isAggressive && isAnyoneNotFriendlyAround()) {
+            setBotState(BOT_TARGETSPOTED_STATE);
+        }
+
         if (currentBotState == BOT_PATRULING_STATE) {
             doPatroling();
-        } if (currentBotState == BOT_WAITING_STATE) {
+        }
+        if (currentBotState == BOT_WAITING_STATE) {
             boolean isEnoughWaiting = doWait();
 
             if (isEnoughWaiting) {
                 setBotState(BOT_PATRULING_STATE);
             }
         }
+        if (currentBotState == BOT_TARGETSPOTED_STATE);
 
     }
 
@@ -404,5 +421,81 @@ public class Bot extends GameCharacter {
         for (int i = 0; i < keysState.length; i++) {
             keysState[i] = false;
         }
+    }
+
+    /**
+     * Is there are some enemies in view radius of this bot
+     */
+
+    public boolean isAnyoneNotFriendlyAround() {
+
+        Point currentCell = LevelManager.getTilePointByCoordinates(this.getRealX(), this.getRealY());
+
+        // Bot's vision arean
+        Point firstRectCell = new Point();
+        Point secondRectCell = new Point();
+
+
+        // CAUTION! All coordinates is supposed to be in openGL system (0.0 in bottom left corner);
+
+
+        switch (direction) {
+
+            case UP:
+                firstRectCell.x = currentCell.x - visionCellRadius;
+                firstRectCell.y = currentCell.y;
+                secondRectCell.x = currentCell.x + visionCellRadius;
+                secondRectCell.y = currentCell.y + visionCellRadius;
+                break;
+            case DOWN:
+                firstRectCell.x = currentCell.x - visionCellRadius;
+                firstRectCell.y = currentCell.y;
+                secondRectCell.x = currentCell.x + visionCellRadius;
+                secondRectCell.y = currentCell.y - visionCellRadius;
+                break;
+            case LEFT:
+                firstRectCell.x = currentCell.x - visionCellRadius;
+                firstRectCell.y = currentCell.y + visionCellRadius;
+                secondRectCell.x = currentCell.x;
+                secondRectCell.y = currentCell.y - visionCellRadius;
+                break;
+            case RIGHT:
+                firstRectCell.x = currentCell.x;
+                firstRectCell.y = currentCell.y + visionCellRadius;
+                secondRectCell.x = currentCell.x + visionCellRadius;
+                secondRectCell.y = currentCell.y - visionCellRadius;
+                break;
+            default:
+                break;
+        }
+
+        ArrayList<GameObject> objects = Game.getInstance().getObjects();
+
+        for (GameObject object : objects) {
+
+            if (GameCharacter.class.isInstance(object)) {
+                GameCharacter character = (GameCharacter) object;
+
+                if (character.equals(this)) {
+                    continue;
+                }
+
+                Point characterCell = LevelManager.
+                        getTilePointByCoordinates(character.getRealX(), character.getRealY());
+
+                if (Collision.isPointInRect(characterCell, firstRectCell, secondRectCell)) {
+                    // found the enemy
+                    spottedEnemy = character;
+                    System.out.println("FOUND ENEMY: "+ character.toString());
+
+                    return true;
+                }
+
+            }
+        }
+
+        this.isAggressive = true;
+
+        return false;
     }
 }

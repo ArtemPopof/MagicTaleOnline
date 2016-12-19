@@ -8,9 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * GameObject
  *
- * Repreresnts some dynamic object with
- * animations, states, etc
- *
+ * Some object in game
  * NPC, Player, or Bullet class should
  * be derived from this one.
  *
