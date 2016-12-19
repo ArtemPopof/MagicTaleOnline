@@ -7,11 +7,15 @@ import com.p3k.magictale.engine.graphics.Objects.ObjTile;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
+import com.p3k.magictale.map.level.LevelManager;
 import org.xml.sax.SAXException;
+import sun.awt.image.ImageWatched;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.TreeMap;
 
 /**
@@ -19,8 +23,6 @@ import java.util.TreeMap;
  */
 public class ObjectManager implements ObjectInterface {
     private static final String LEVEL_DIR = "res/map/objects/";
-    private int lvlHeight = 0;
-    private int lvlWidth = 0;
     private int lvlLayer = 4;
 
     private static ObjectManager instance = null;
@@ -40,7 +42,7 @@ public class ObjectManager implements ObjectInterface {
     }
 
     public static ObjectManager getInstance() throws Exception {
-        if ( instance == null ) {
+        if (instance == null) {
             instance = new ObjectManager();
         }
 
@@ -58,6 +60,7 @@ public class ObjectManager implements ObjectInterface {
             e.printStackTrace();
         }
 
+        // TODO Add when would be added more lvl
 //        ArrayList<String> spriteSheetPaths = null;
 //        if (xml != null) {
 //            spriteSheetPaths = xml.getSpriteSheetPaths();
@@ -71,7 +74,7 @@ public class ObjectManager implements ObjectInterface {
         int firstId = 7000;
         loadObjTexturePack(LEVEL_DIR + "pack_forest_summer.png", resourceManager, firstId);
         loadTileSheet(xml, resourceManager, firstId);
-        loadTemplateGroupObjects(xml, resourceManager, firstId);
+        loadTemplateGroupObjects(xml);
 
 
 //        ArrayList<String> layerGrContext = null;
@@ -81,16 +84,16 @@ public class ObjectManager implements ObjectInterface {
 //        if (xml != null) {
 //            layerGrContext = xml.getLayerTextContextByName("gr");
 //            lvlTilesProperties = xml.getTilesPropertiesByTilesetName("tiles_lvl_forest");
-//            lvlWidth = xml.getMapSize("width");
-//            lvlHeight = xml.getMapSize("height");
+//            tilesetWidth = xml.getMapSize("width");
+//            tilesetHeight = xml.getMapSize("height");
 //        }
-//        tileMap = new TileMap[lvlWidth][lvlHeight];
+//        tileMap = new TileMap[tilesetWidth][tilesetHeight];
 //
 //        //System.out.println(layerGrContext);
-//        --lvlHeight;
-//        for (int h = lvlHeight, id = 0; 0 <= h; h--) {
-////        for (int h = 0, id = 0; 0 <= lvlHeight - 1; h++) {
-//            for (int w = 0; w < lvlWidth; w++) {
+//        --tilesetHeight;
+//        for (int h = tilesetHeight, id = 0; 0 <= h; h--) {
+////        for (int h = 0, id = 0; 0 <= tilesetHeight - 1; h++) {
+//            for (int w = 0; w < tilesetWidth; w++) {
 //                // TODO Replace it like: (Now for debug)
 //                // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
 //                // WIDTH_CONST, HEIGHT_CONST));
@@ -100,16 +103,16 @@ public class ObjectManager implements ObjectInterface {
 //                //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 //
 ////                sprites.add(sprite);
-//                tileMap[w][lvlHeight - h] = new TileMap();
-//                tileMap[w][lvlHeight - h].getTiles().add(new Tile(sprite, w * sprWidth, h * sprHeight,
+//                tileMap[w][tilesetHeight - h] = new TileMap();
+//                tileMap[w][tilesetHeight - h].getTiles().add(new Tile(sprite, w * sprWidth, h * sprHeight,
 //                        lvlTilesProperties.get(idInSprSh)));
 ////                tileObjects.add(new Tile(sprite, w * sprWidth, h * sprHeight, lvlTilesProperties.get(idInSprSh)));
 //                id++;
 //
 //            }
 //        }
-//        for (int h = 0, id = 0; h < lvlHeight * sprHeight; h += sprHeight) {
-//            for (int w = 0; w < lvlWidth * sprWidth; w += sprWidth) {
+//        for (int h = 0, id = 0; h < tilesetHeight * sprHeight; h += sprHeight) {
+//            for (int w = 0; w < tilesetWidth * sprWidth; w += sprWidth) {
 //                // TODO Replace it like: (Now for debug)
 //                // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
 //                // WIDTH_CONST, HEIGHT_CONST));
@@ -125,37 +128,6 @@ public class ObjectManager implements ObjectInterface {
 //                    System.out.print(" ");
 //            }
 //        }
-
-    }
-
-    private void loadTileSheet(XmlParser xml, ResourceManager resourceManager, int firstId) {
-        int sprWidth = 32;
-        int sprHeight = 32;
-        ArrayList<String> layerTemplateContext = null;
-        ArrayList<TileProperties> tilesProperties = null;
-        if (xml != null) {
-            lvlWidth = xml.getMapSize("width");
-            lvlHeight = xml.getMapSize("height");
-            layerTemplateContext = xml.getLayerTextContextByName("Test");
-            tilesProperties = xml.getTilesPropertiesByTilesetName("pack_forest");
-        }
-        tileSheet = new Tile[lvlWidth][lvlHeight];
-        --lvlHeight;
-        for (int h = lvlHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
-            for (int w = 0; w < lvlWidth; w++) {
-                if (Integer.parseInt(layerTemplateContext.get(id)) == 0) {
-                    ++id;
-                    continue;
-                }
-                int idInGl = resourceManager.getTexture(idInSprSh + firstId);
-                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-                tileSheet[w][lvlHeight - h] = new Tile(sprite, w * sprWidth, h * sprHeight,
-                        tilesProperties.get(idInSprSh));
-                ++id;
-                ++idInSprSh;
-            }
-        }
-        System.out.print("HERE loadSpriteSheet");
     }
 
     public void loadObjTexturePack(String packName, ResourceManager resourceManager, int firstId) {
@@ -166,11 +138,48 @@ public class ObjectManager implements ObjectInterface {
         }
     }
 
-    private void loadTemplateGroupObjects(XmlParser xml, ResourceManager resourceManager, int firstId) {
+    private void loadTileSheet(XmlParser xml, ResourceManager resourceManager, int firstId) {
+        int sprWidth = 32;
+        int sprHeight = 32;
+        ArrayList<String> layerTemplateContext = null;
+        ArrayList<TileProperties> tilesProperties = null;
+        int tilesetWidth = 0;
+        int tilesetHeight = 0;
+        if (xml != null) {
+            tilesetWidth = xml.getMapSize("width");
+            tilesetHeight = xml.getMapSize("height");
+            layerTemplateContext = xml.getLayerTextContextByName("Test");
+            tilesProperties = xml.getTilesPropertiesByTilesetName("pack_forest");
+        }
+        tileSheet = new Tile[tilesetWidth][tilesetHeight];
+        --tilesetHeight;
+        for (int h = tilesetHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
+            for (int w = 0; w < tilesetWidth; w++) {
+                if (Integer.parseInt(layerTemplateContext.get(id)) == 0) {
+                    ++id;
+                    continue;
+                }
+                int idInGl = resourceManager.getTexture(idInSprSh + firstId);
+                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
+                tileSheet[w][tilesetHeight - h] = new Tile(sprite, w * sprWidth, h * sprHeight,
+                        tilesProperties.get(idInSprSh));
+                ++id;
+                ++idInSprSh;
+            }
+        }
+        System.out.print("HERE SpriteSheet loaded");
+    }
 
+    private void loadTemplateGroupObjects(XmlParser xml) {
+        try {
+            objTile = new ObjTile[LevelManager.getInstance().getLvlWidth()]
+                    [LevelManager.getInstance().getLvlWidth()][lvlLayer];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ArrayDeque<GroupObject> waitedGroupObjects = xml.getGroupObjectsByGroupName("GameObjects");
 
-
-//        objTile = new ObjTile[][][];
+//
 //        TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
 //        ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
 //
@@ -199,14 +208,17 @@ public class ObjectManager implements ObjectInterface {
 
     }
 
-
     public void render() {
-        for (int y = 0; y < lvlHeight; ++y) {
-            for (int x = 0; x < lvlWidth; ++x) {
-                for (int z = 0; z < lvlLayer; ++z) {
-//                    objTile[x][y][z].render();
+        try {
+            for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
+                for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
+                    for (int z = 0; z < lvlLayer; ++z) {
+    //                    objTile[x][y][z].render();
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -200,6 +200,14 @@ public class LevelManager implements Level {
         }
     }
 
+    public int getLvlHeight() {
+        return lvlHeight;
+    }
+
+    public int getLvlWidth() {
+        return lvlWidth;
+    }
+
     /**
      * Return tileMap
      */

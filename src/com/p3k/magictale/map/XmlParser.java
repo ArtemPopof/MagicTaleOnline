@@ -2,13 +2,13 @@ package com.p3k.magictale.map;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
+import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -65,7 +65,7 @@ public class XmlParser {
             //System.out.println(doc.getElementsByTagName("layer"));
             NodeList layers = doc.getElementsByTagName("layer");
             for (int i = 0; i < layers.getLength(); ++i) {
-               //System.out.println(layers.item(i).getAttributes());
+                //System.out.println(layers.item(i).getAttributes());
                 NamedNodeMap attrs = layers.item(i).getAttributes();
                 Node name = attrs.getNamedItem("name");
                 //System.out.println(name.getNodeValue());
@@ -199,6 +199,54 @@ public class XmlParser {
 //        }
 //        return objTilesProperties;
 //    }
+
+    public ArrayDeque<GroupObject> getGroupObjectsByGroupName(String gameObjects) {
+        ArrayDeque<GroupObject> waitedGroupObjects = new ArrayDeque<>();
+        try {
+            System.out.println(doc.getElementsByTagName("objectgroup"));
+            NodeList checkingObjectGroups = doc.getElementsByTagName("objectgroup");
+            for (int i = 0; i < checkingObjectGroups.getLength(); ++i) {
+                NamedNodeMap objGrAttrs = checkingObjectGroups.item(i).getAttributes();
+                if (getValueOfNamedItem(objGrAttrs, "name").equals(gameObjects)) {
+                    waitedGroupObjects = getGroupObjects(checkingObjectGroups.item(i).getChildNodes(), "object")
+                            .clone();
+                }
+            }
+            return waitedGroupObjects;
+        } catch (Exception e){
+            System.out.println("Parsing: getLayerTextContextByName() " + e);
+        }
+        return waitedGroupObjects;
+    }
+
+    private ArrayDeque<GroupObject> getGroupObjects(NodeList nodeListOfObjects, String name) {
+        ArrayDeque<GroupObject> itemGroupObjects = new ArrayDeque<>();
+        for (int i = 0; i < nodeListOfObjects.getLength(); ++i) {
+            if (nodeListOfObjects.item(i).getNodeName().equals(name)) {
+                NamedNodeMap objGrAttrs = nodeListOfObjects.item(i).getAttributes();
+//                int xTileSheet = Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x"));
+//                int yTileSheet = Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y"));
+                // TODO Add constant sprWidth, sprHeight
+                GroupObject insGrObj = new GroupObject(
+                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x")) / 32,
+                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y")) / 32,
+                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "width")) / 32,
+                        Integer.parseInt(getValueOfNamedItem(objGrAttrs, "height")) / 32,
+                        getValueOfNamedItem(objGrAttrs, "type"),
+                        getValueOfNamedItem(objGrAttrs, "name"));
+                itemGroupObjects.addLast(insGrObj);
+//                insGrObj.setType(getValueOfNamedItem(objGrAttrs, "type"));
+//                insGrObj.setName(getValueOfNamedItem(objGrAttrs, "name"));
+//                insGrObj.setWidthNum(Integer.parseInt(getValueOfNamedItem(objGrAttrs, "width")) / 32);
+//                insGrObj.setHeightNum(Integer.parseInt(getValueOfNamedItem(objGrAttrs, "height")) / 32);
+            }
+        }
+        return itemGroupObjects;
+    }
+
+    private String getValueOfNamedItem(NamedNodeMap objGrAttrs, String namedItem) {
+        return objGrAttrs.getNamedItem(namedItem).getNodeValue();
+    }
 
     public int getMapSize(String param) {
         int retValue = Integer.MIN_VALUE;
