@@ -1,17 +1,15 @@
-package com.p3k.magictale.map.level;
+package com.p3k.magictale.map;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringJoiner;
-import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.p3k.magictale.engine.graphics.Sprite;
-import com.p3k.magictale.engine.graphics.TileProperties;
+import com.p3k.magictale.engine.graphics.Map.TileProperties;
+import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -145,6 +143,17 @@ public class XmlParser {
         return tilesProperties;
     }
 
+    public ArrayList<ObjTileProperties> getObjTilesPropertiesByTilesetName(String tilesetName) {
+        ArrayList<ObjTileProperties> objTilesProperties = new ArrayList<>();
+        try {
+            System.out.println(doc.getElementsByTagName("tileset"));
+
+        } catch (Exception e){
+            System.out.println("Parsing: getLayerTextContextByName() " + e);
+        }
+        return objTilesProperties;
+    }
+
     public int getMapSize(String param) {
         int retValue = Integer.MIN_VALUE;
         try {
@@ -154,7 +163,7 @@ public class XmlParser {
             }
             retValue = Integer.parseInt(maps.item(0).getAttributes().getNamedItem(param).getNodeValue());
         } catch (Exception e){
-            System.out.println("Parsing: getWidth() " + e);
+            System.out.println("Parsing: getMapSize() " + e);
         }
         return retValue;
     }

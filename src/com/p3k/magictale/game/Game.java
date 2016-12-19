@@ -39,7 +39,7 @@ public class Game implements Constants {
     private float cameraY = 0;
 
 
-    private final String mapName = "forest";
+    private final String mapName = "forest_v2";
 
     private boolean isMouseMoved = false;
     private boolean isMouseLeftPressed = false;
@@ -168,8 +168,8 @@ public class Game implements Constants {
         }
 
         // Must be moved to more appropriate place?
-       // bgmSound.setLevel(0.8f).play("main_theme.wav");
-       // envSound.setLevel(0.8f).play("wind.wav");
+        bgmSound.setLevel(0.8f).play("main_theme.wav");
+        envSound.setLevel(0.8f).play("wind.wav");
     }
 
     private void initLevelManager(){

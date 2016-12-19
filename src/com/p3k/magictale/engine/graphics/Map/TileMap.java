@@ -1,4 +1,4 @@
-package com.p3k.magictale.engine.graphics;
+package com.p3k.magictale.engine.graphics.Map;
 
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -10,38 +10,38 @@ public class TileMap {
     // TODO Add positioning to TileMap from TileObjects
     private int xWidth = 0;
     private int yHeight = 0;
-    private LinkedList<TileObject> tileObjects = null;
+    private LinkedList<Tile> tiles = null;
 
     public TileMap() {
-        tileObjects = new LinkedList<>();
+        tiles = new LinkedList<>();
     }
 
     public TileMap(int yHeight, int xWidth) {
         this.yHeight = yHeight;
         this.xWidth = xWidth;
-        tileObjects = new LinkedList<>();
+        tiles = new LinkedList<>();
     }
 
-    public LinkedList<TileObject> getTileObjects() {
-        return tileObjects;
+    public LinkedList<Tile> getTiles() {
+        return tiles;
     }
 
-    public void setTileObjects(LinkedList<TileObject> tileObjects) {
-        this.tileObjects = tileObjects;
+    public void setTiles(LinkedList<Tile> tiles) {
+        this.tiles = tiles;
     }
 
     public boolean isPass(int layer, boolean isFly) {
         boolean isPass = true;
         if (isFly) {
-            for (int i = 0; i < tileObjects.size(); ++i) {
-                if (tileObjects.get(i).getTileProperties().getLayer() == layer
-                        && !tileObjects.get(i).getTileProperties().isPass()) {
+            for (int i = 0; i < tiles.size(); ++i) {
+                if (tiles.get(i).getTileProperties().getLayer() == layer
+                        && !tiles.get(i).getTileProperties().isPass()) {
                     return false;
                 }
             }
         }
-        for (int i = 0; i < tileObjects.size(); ++i) {
-            if (!tileObjects.get(i).getTileProperties().isPass()) {
+        for (int i = 0; i < tiles.size(); ++i) {
+            if (!tiles.get(i).getTileProperties().isPass()) {
                 return false;
             }
         }
@@ -49,9 +49,9 @@ public class TileMap {
     }
 
     public void sort() {
-        Comparator<TileObject> comparator = new Comparator<TileObject>() {
+        Comparator<Tile> comparator = new Comparator<Tile>() {
             @Override
-            public int compare(TileObject o1, TileObject o2) {
+            public int compare(Tile o1, Tile o2) {
                 if (o1.getTileProperties().getLayer() > o2.getTileProperties().getLayer()) {
                     return 1;
                 }
@@ -61,7 +61,7 @@ public class TileMap {
                 return 0;
             }
         };
-        tileObjects.sort(comparator);
+        tiles.sort(comparator);
     }
 
 }

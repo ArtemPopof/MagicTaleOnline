@@ -167,7 +167,6 @@ public class Bot extends GameCharacter {
                 }
             }
         }
-
     }
 
     /**
