@@ -620,6 +620,12 @@
     <property name="layout" type="int" value="1"/>
    </properties>
   </tile>
+  <tile id="113">
+   <properties>
+    <property name="is_pass" type="bool" value="false"/>
+    <property name="layout" type="int" value="1"/>
+   </properties>
+  </tile>
   <tile id="114">
    <properties>
     <property name="is_pass" type="bool" value="true"/>

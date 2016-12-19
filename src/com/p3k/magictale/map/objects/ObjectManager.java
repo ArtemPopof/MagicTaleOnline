@@ -4,7 +4,6 @@ import com.p3k.magictale.engine.graphics.Map.Tile;
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.graphics.Objects.ObjTile;
-import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
@@ -71,7 +70,7 @@ public class ObjectManager implements ObjectInterface {
         // TODO Add constant
         int firstId = 7000;
         loadObjTexturePack(LEVEL_DIR + "pack_forest_summer.png", resourceManager, firstId);
-        loadLayer(xml, resourceManager, firstId);
+        loadTileSheet(xml, resourceManager, firstId);
         loadTemplateGroupObjects(xml, resourceManager, firstId);
 
 
@@ -129,8 +128,7 @@ public class ObjectManager implements ObjectInterface {
 
     }
 
-    private void loadLayer(XmlParser xml, ResourceManager resourceManager, int firstId) {
-        tileSheet = new Tile[lvlWidth][lvlHeight];
+    private void loadTileSheet(XmlParser xml, ResourceManager resourceManager, int firstId) {
         int sprWidth = 32;
         int sprHeight = 32;
         ArrayList<String> layerTemplateContext = null;
@@ -141,21 +139,23 @@ public class ObjectManager implements ObjectInterface {
             layerTemplateContext = xml.getLayerTextContextByName("Test");
             tilesProperties = xml.getTilesPropertiesByTilesetName("pack_forest");
         }
+        tileSheet = new Tile[lvlWidth][lvlHeight];
         --lvlHeight;
-        for (int h = lvlHeight, id = 0; 0 <= h; h--) {
-//        for (int h = 0, id = 0; 0 <= lvlHeight - 1; h++) {
+        for (int h = lvlHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
             for (int w = 0; w < lvlWidth; w++) {
-                int idInSprSh = Integer.parseInt(layerTemplateContext.get(id)) - 1;
+                if (Integer.parseInt(layerTemplateContext.get(id)) == 0) {
+                    ++id;
+                    continue;
+                }
                 int idInGl = resourceManager.getTexture(idInSprSh + firstId);
-//                int idInGl = resourceManager.getTexture(id + firstId);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-//                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
                 tileSheet[w][lvlHeight - h] = new Tile(sprite, w * sprWidth, h * sprHeight,
-                        tilesProperties.get(id));
+                        tilesProperties.get(idInSprSh));
                 ++id;
+                ++idInSprSh;
             }
         }
-        ++lvlHeight;
+        System.out.print("HERE loadSpriteSheet");
     }
 
     public void loadObjTexturePack(String packName, ResourceManager resourceManager, int firstId) {

@@ -109,6 +109,10 @@ public class LevelManager implements Level {
                 // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
                 // WIDTH_CONST, HEIGHT_CONST));
                 int idInSprSh = Integer.parseInt(layerGrContext.get(id)) - 1;
+                if (idInSprSh == -1) {
+                    ++id;
+                    continue;
+                }
                 int idInGl = resourceManager.getTexture(idInSprSh + 5000);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
                 //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);

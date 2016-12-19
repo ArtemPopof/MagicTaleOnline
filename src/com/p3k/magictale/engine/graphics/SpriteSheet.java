@@ -88,9 +88,9 @@ public class SpriteSheet {
                     sprites.add(sprite);
                 }
             }
-            System.out.println("Sprites column count = " + sprites.size());
+//            System.out.println("Sprites column count = " + sprites.size());
         }
-        System.out.println("Sprites count = " + sprites.size());
+//        System.out.println("Sprites count = " + sprites.size());
     }
 
     /**
