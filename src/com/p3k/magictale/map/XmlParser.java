@@ -129,7 +129,6 @@ public class XmlParser {
                                             break;
                                     }
                                 }
-
                             }
                             tilesProperties.add(prop);
                         }
@@ -147,12 +146,59 @@ public class XmlParser {
         ArrayList<ObjTileProperties> objTilesProperties = new ArrayList<>();
         try {
             System.out.println(doc.getElementsByTagName("tileset"));
-
+            NodeList tilesets = doc.getElementsByTagName("tileset");
+            for (int i = 0; i < tilesets.getLength(); ++i) {
+                NamedNodeMap tilesetAttrs = tilesets.item(i).getAttributes();
+                if (tilesetAttrs.getNamedItem("name").getNodeValue().equals(tilesetName)) {
+                    for (int j = 0; j < tilesets.item(i).getChildNodes().getLength(); ++j) {
+                        if (tilesets.item(i).getChildNodes().item(j).getNodeName().equals("tile")) {
+                            NodeList properties = tilesets.item(i).getChildNodes().item(j).getChildNodes()
+                                    .item(1).getChildNodes(); // NodeList of property at .tmx
+                            ObjTileProperties prop = new ObjTileProperties();
+                            for (int k = 0; k < properties.getLength(); ++k) {
+                                if (properties.item(k).getNodeName().equals("property")) {
+                                    NamedNodeMap propAttrs = properties.item(k).getAttributes();
+                                    switch (propAttrs.getNamedItem("name").getNodeValue()) {
+                                        case "is_pass":
+                                            String isPass = propAttrs.getNamedItem("value").getNodeValue();
+                                            if (isPass.equals("true")) {
+                                                prop.setPass(true);
+                                            }
+                                            break;
+                                        case "isFly":
+                                            String isFly = propAttrs.getNamedItem("value").getNodeValue();
+                                            if (isFly.equals("true")) {
+                                                prop.setFly(true);
+                                            }
+                                            break;
+                                        default:
+                                            System.out.println("Check Property attributes. attr = "
+                                                    + propAttrs.getNamedItem("name").getNodeValue());
+                                            break;
+                                    }
+                                }
+                            }
+                            objTilesProperties.add(prop);
+                        }
+                    }
+                    return objTilesProperties;
+                }
+            }
         } catch (Exception e){
             System.out.println("Parsing: getLayerTextContextByName() " + e);
         }
         return objTilesProperties;
     }
+
+//    public ArrayList<ObjTileProperties> getObjTilesPropertiesByTilesetName(String tilesetName) {
+//        ArrayList<ObjTileProperties> objTilesProperties = new ArrayList<>();
+//        try {
+//            objTilesProperties.add(getProperties());
+//        } catch (Exception e){
+//            System.out.println("Parsing: getLayerTextContextByName() " + e);
+//        }
+//        return objTilesProperties;
+//    }
 
     public int getMapSize(String param) {
         int retValue = Integer.MIN_VALUE;

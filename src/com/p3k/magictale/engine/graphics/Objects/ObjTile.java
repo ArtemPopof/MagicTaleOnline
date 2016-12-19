@@ -8,6 +8,9 @@ import com.p3k.magictale.engine.graphics.Sprite;
  */
 public class ObjTile extends GameObject {
     private ObjTileProperties objTileProperties = null;
+    private String type = null;
+    private String name = null;
+    private int idInTypeName = 0;
 
     public ObjTile(Sprite sprite, float x, float y) {
         this.objTileProperties = new ObjTileProperties();
@@ -25,5 +28,29 @@ public class ObjTile extends GameObject {
 
     public void setObjTileProperties(ObjTileProperties objTileProperties) {
         this.objTileProperties = objTileProperties;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getIdInTypeName() {
+        return idInTypeName;
+    }
+
+    public void setIdInTypeName(int idInTypeName) {
+        this.idInTypeName = idInTypeName;
     }
 }

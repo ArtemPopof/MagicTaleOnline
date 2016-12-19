@@ -65,15 +65,18 @@ public class SpriteSheet {
         System.out.println("HERE loadSprites");
         BufferedImage image = ImageIO.read(new File(path));
         System.out.println(image.getWidth() + " " + image.getHeight());
+        System.out.println(image.getWidth()/32 + " " + image.getHeight()/32);
 
         int width = 32;
         int height = 32;
+        int imgWidth = image.getWidth();
+        int imgHeight = image.getHeight();
         int index = 0;
-        for (int x = 0; x < 320; x += width) {
-            for (int y = 0; y < 320; y += height, index++) {
+        for (int y = 0; y < imgHeight; y += height) {
+            for (int x = 0; x < imgWidth; x += width, index++) {
 //                System.out.println("x: " + x + " y: " + y + " w: " + width + " h: " + height);
-                BufferedImage subImage = image.getSubimage(y, x, width, height);
-                System.out.println("subImage x:" + subImage.getWidth() + " h: " + subImage.getHeight());
+                BufferedImage subImage = image.getSubimage(x, y, width, height);
+//                System.out.println("subImage x:" + subImage.getWidth() + " h: " + subImage.getHeight());
                 Sprite sprite = null;
                 try {
                     sprite = new Sprite(subImage, (float)width, (float)height);

@@ -11,6 +11,8 @@ import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
+import com.p3k.magictale.map.objects.ObjectInterface;
+import com.p3k.magictale.map.objects.ObjectManager;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 
@@ -26,6 +28,7 @@ public class Game implements Constants {
     private ArrayList<GameObject> objects;
     private Player player;
     private Level levelManager;
+    private ObjectInterface objectManager;
 
     private ResourceManager resourceManager;
 
@@ -67,6 +70,8 @@ public class Game implements Constants {
         initGuiManager();
 
         initObjects();
+
+        initObjectManager();
     }
 
     public static Game getInstance() {
@@ -137,12 +142,12 @@ public class Game implements Constants {
         objects.add(testBot);
 
         // test bot
-       // Bot testBot2 = new Bot(200, 354, 64, 64);
-       // objects.add(testBot2);
+        // Bot testBot2 = new Bot(200, 354, 64, 64);
+        // objects.add(testBot2);
 
         // test bot
-       // Bot testBot3 = new Bot(252, 272, 64, 64);
-       // objects.add(testBot3);
+        // Bot testBot3 = new Bot(252, 272, 64, 64);
+        // objects.add(testBot3);
 
     }
 
@@ -173,23 +178,39 @@ public class Game implements Constants {
     }
 
     private void initLevelManager(){
-        try{
-        resourceManager=ResourceManager.getInstance();
-        }catch(Exception e){
-        e.printStackTrace();
+        try {
+            resourceManager = ResourceManager.getInstance();
+        } catch(Exception e) {
+            e.printStackTrace();
         }
 
-        try{
-        levelManager=LevelManager.getInstance();
-        }catch(Exception e){
-        System.err.println("Error initializing levelManager manager: "+e);
+        try {
+            levelManager = LevelManager.getInstance();
+        } catch(Exception e) {
+            System.err.println("Error initializing levelManager manager: "+e);
         }
-        try{
-        levelManager.load(mapName,resourceManager);
-        }catch(Exception e){
-        System.err.println("Error render levelManager manager: "+e);
+
+        try {
+            levelManager.load(mapName, resourceManager);
+        } catch(Exception e) {
+            System.err.println("Error render levelManager manager: "+e);
         }
     }
+
+    private void initObjectManager(){
+        try {
+            objectManager = ObjectManager.getInstance();
+        } catch(Exception e) {
+            System.err.println("Error initializing levelManager manager: "+e);
+        }
+
+        try {
+            objectManager.load(mapName, resourceManager);
+        } catch(Exception e) {
+            System.err.println("Error render levelManager manager: "+e);
+        }
+    }
+
     public void initGuiManager() {
         guiManager = new GuiManager();
     }

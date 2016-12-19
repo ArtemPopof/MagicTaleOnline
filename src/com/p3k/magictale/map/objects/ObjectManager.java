@@ -1,9 +1,12 @@
 package com.p3k.magictale.map.objects;
 
+import com.p3k.magictale.engine.graphics.Map.Tile;
+import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.graphics.Objects.ObjTile;
 import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
 import org.xml.sax.SAXException;
 
@@ -15,14 +18,16 @@ import java.util.TreeMap;
 /**
  * Created by COMar-PC on 19.12.2016.
  */
-public class ObjectManager {
+public class ObjectManager implements ObjectInterface {
     private static final String LEVEL_DIR = "res/map/objects/";
     private int lvlHeight = 0;
     private int lvlWidth = 0;
+    private int lvlLayer = 4;
 
     private static ObjectManager instance = null;
     private static DocumentBuilderFactory dbf = null;
     private ObjTile[][][] objTile = null;
+    private Tile[][] tileSheet = null;
     private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
 
     private ObjectManager() throws Exception {
@@ -44,32 +49,6 @@ public class ObjectManager {
     }
 
     public void load(String mapName, ResourceManager resourceManager) {
-//        objTile = new ObjTile[][][];
-//        TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
-//        ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
-//
-////        Test1
-//        GroupObject insGrObj = new GroupObject(1, 0);
-//        listOfGrObj.add(insGrObj);
-//        insertedGroupObject.put("tent", listOfGrObj);
-//        groupObjects.put("structure", insertedGroupObject);
-//
-////        Test2
-//        GroupObject insGrObj1 = new GroupObject(1, 1);
-//        insertedGroupObject = groupObjects.get("structured");
-////        if (groupObjects.containsKey("structure")) {
-//        if (insertedGroupObject != null) {
-//            listOfGrObj = insertedGroupObject.get("tent");
-//            if (listOfGrObj != null) {
-//                listOfGrObj.add(insGrObj1);
-//            }
-//        } else {
-//            listOfGrObj = new ArrayList<>();
-//            insertedGroupObject = new TreeMap<>();
-//            listOfGrObj.add(insGrObj1);
-//            insertedGroupObject.put("tent", listOfGrObj);
-//            groupObjects.put("structured", insertedGroupObject);
-//        }
 
         XmlParser xml = null;
         try {
@@ -79,33 +58,21 @@ public class ObjectManager {
         } catch (SAXException e) {
             e.printStackTrace();
         }
-        ArrayList<String> spriteSheetPaths = null;
-        if (xml != null) {
-            spriteSheetPaths = xml.getSpriteSheetPaths();
-        }
 
-        System.out.println("HERE Load");
-        try {
-            int firstId = 6000;
-//            for (String spriteSheetPath:
-//                 spriteSheetPaths) {
-//                System.out.println("TRY ");
-//                resourceManager.loadMapTextures(spriteSheetPath, firstId);
-//            }
-            resourceManager.loadMapTextures(LEVEL_DIR + "pack_forest_summer.png", firstId);
-        } catch (Exception e) {
-            System.out.println("Error level load: " + e);
-        }
-
-        int sprWidth = 32;
-        int sprHeight = 32;
-        ArrayList<ObjTileProperties> objTilesProperties = null;
-        if (xml != null) {
-            objTilesProperties = xml.getObjTilesPropertiesByTilesetName("tiles_lvl_forest");
-            lvlWidth = xml.getMapSize("width");
-            lvlHeight = xml.getMapSize("height");
-        }
-
+//        ArrayList<String> spriteSheetPaths = null;
+//        if (xml != null) {
+//            spriteSheetPaths = xml.getSpriteSheetPaths();
+//        }
+//        for (String spriteSheetPath:
+//                spriteSheetPaths) {
+//            loadObjTexturePack(spriteSheetPath, resourceManager);
+//        }
+        System.out.println("HERE ObjMan load");
+        // TODO Add constant
+        int firstId = 7000;
+        loadObjTexturePack(LEVEL_DIR + "pack_forest_summer.png", resourceManager, firstId);
+        loadLayer(xml, resourceManager, firstId);
+        loadTemplateGroupObjects(xml, resourceManager, firstId);
 
 
 //        ArrayList<String> layerGrContext = null;
@@ -161,14 +128,85 @@ public class ObjectManager {
 //        }
 
     }
+
+    private void loadLayer(XmlParser xml, ResourceManager resourceManager, int firstId) {
+        tileSheet = new Tile[lvlWidth][lvlHeight];
+        int sprWidth = 32;
+        int sprHeight = 32;
+        ArrayList<String> layerTemplateContext = null;
+        ArrayList<TileProperties> tilesProperties = null;
+        if (xml != null) {
+            lvlWidth = xml.getMapSize("width");
+            lvlHeight = xml.getMapSize("height");
+            layerTemplateContext = xml.getLayerTextContextByName("Test");
+            tilesProperties = xml.getTilesPropertiesByTilesetName("pack_forest");
+        }
+        --lvlHeight;
+        for (int h = lvlHeight, id = 0; 0 <= h; h--) {
+//        for (int h = 0, id = 0; 0 <= lvlHeight - 1; h++) {
+            for (int w = 0; w < lvlWidth; w++) {
+                int idInSprSh = Integer.parseInt(layerTemplateContext.get(id)) - 1;
+                int idInGl = resourceManager.getTexture(idInSprSh + firstId);
+//                int idInGl = resourceManager.getTexture(id + firstId);
+                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
+//                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
+                tileSheet[w][lvlHeight - h] = new Tile(sprite, w * sprWidth, h * sprHeight,
+                        tilesProperties.get(id));
+                ++id;
+            }
+        }
+        ++lvlHeight;
+    }
+
+    public void loadObjTexturePack(String packName, ResourceManager resourceManager, int firstId) {
+        try {
+            resourceManager.loadMapTextures(packName, firstId);
+        } catch (Exception e) {
+            System.out.println("Error loadObjTexturePack: " + e);
+        }
+    }
+
+    private void loadTemplateGroupObjects(XmlParser xml, ResourceManager resourceManager, int firstId) {
+
+
+
+//        objTile = new ObjTile[][][];
+//        TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
+//        ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
 //
-//    public void render() {
-//        for (int y = 0; y < lvlHeight; ++y) {
-//            for (int x = 0; x < lvlWidth; ++x) {
-//                for (int z = 0; z < lvlLayer; ++z) {
-//                    objTile[x][y][z].render();
-//                }
+////        Test1
+//        GroupObject insGrObj = new GroupObject(1, 0);
+//        listOfGrObj.add(insGrObj);
+//        insertedGroupObject.put("tent", listOfGrObj);
+//        groupObjects.put("structure", insertedGroupObject);
+//
+////        Test2
+//        GroupObject insGrObj1 = new GroupObject(1, 1);
+//        insertedGroupObject = groupObjects.get("structured");
+////        if (groupObjects.containsKey("structure")) {
+//        if (insertedGroupObject != null) {
+//            listOfGrObj = insertedGroupObject.get("tent");
+//            if (listOfGrObj != null) {
+//                listOfGrObj.add(insGrObj1);
 //            }
+//        } else {
+//            listOfGrObj = new ArrayList<>();
+//            insertedGroupObject = new TreeMap<>();
+//            listOfGrObj.add(insGrObj1);
+//            insertedGroupObject.put("tent", listOfGrObj);
+//            groupObjects.put("structured", insertedGroupObject);
 //        }
-//    }
+
+    }
+
+
+    public void render() {
+        for (int y = 0; y < lvlHeight; ++y) {
+            for (int x = 0; x < lvlWidth; ++x) {
+                for (int z = 0; z < lvlLayer; ++z) {
+//                    objTile[x][y][z].render();
+                }
+            }
+        }
+    }
 }

@@ -122,6 +122,7 @@ public class LevelManager implements Level {
 
             }
         }
+        ++lvlHeight;
 //        for (int h = 0, id = 0; h < lvlHeight * sprHeight; h += sprHeight) {
 //            for (int w = 0; w < lvlWidth * sprWidth; w += sprWidth) {
 //                // TODO Replace it like: (Now for debug)
