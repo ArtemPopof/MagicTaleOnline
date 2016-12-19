@@ -116,11 +116,13 @@ public class Game implements Constants {
 
         levelManager.render();
 
-        objectManager.render();
+        objectManager.render(1);
 
         for (GameObject object : objects) {
             object.render();
         }
+
+        objectManager.render(2);
 
         guiManager.render();
     }

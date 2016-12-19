@@ -118,7 +118,8 @@ public class ObjectManager implements ObjectInterface {
         }
         tileSheet = new Tile[tilesetWidth][tilesetHeight];
         --tilesetHeight;
-        for (int h = tilesetHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
+//        for (int h = tilesetHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
+        for (int h = 0, id = 0, idInSprSh = 0; h <= tilesetHeight; ++h) {
             for (int w = 0; w < tilesetWidth; w++) {
                 if (Integer.parseInt(layerTemplateContext.get(id)) == 0) {
                     ++id;
@@ -126,12 +127,13 @@ public class ObjectManager implements ObjectInterface {
                 }
                 int idInGl = resourceManager.getTexture(idInSprSh + firstId);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-                tileSheet[w][tilesetHeight - h] = new Tile(sprite, w * sprWidth, h * sprHeight,
+                tileSheet[w][h] = new Tile(sprite, w * sprWidth, h * sprHeight,
                         tilesProperties.get(idInSprSh));
                 ++id;
                 ++idInSprSh;
             }
         }
+        ++tilesetHeight;
         System.out.print("HERE SpriteSheet loaded");
     }
 
@@ -252,8 +254,8 @@ public class ObjectManager implements ObjectInterface {
 
     public void render() {
         try {
-            for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
-                for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
+            for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
+                for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
                     for (int z = 0; z < lvlLayer; ++z) {
 //                        objTile[x][y][z].render();
                         if(objTile[x][y][z] == null) {
@@ -261,6 +263,22 @@ public class ObjectManager implements ObjectInterface {
                         } else {
                             objTile[x][y][z].render();
                         }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void render(int Layer) {
+        try {
+            for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
+                for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
+                    if(objTile[x][y][Layer] == null) {
+                        continue;
+                    } else {
+                        objTile[x][y][Layer].render();
                     }
                 }
             }
