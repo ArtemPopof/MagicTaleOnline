@@ -163,7 +163,7 @@ public class MText extends MComponent {
 
     private int getTextWidth() {
         return (int) ( text.length() * font.getSize() +
-                (text.length() - 1) * font.getSpace() );
+                (text.length()) * font.getSpace()) - 5; // TODO: move magic number
     }
 
     private int getTextHeight() {

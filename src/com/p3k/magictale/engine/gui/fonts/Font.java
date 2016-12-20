@@ -33,8 +33,8 @@ public class Font {
         this.loadFont();
 
         // Default font values
-        setSize(16);
-        space = 0.0f;
+        setSize(32);
+        space = -20.0f;
     }
 
     public Sprite getSpriteFor(char ch) throws NoSuchObjectException {

@@ -30,7 +30,7 @@ public class StdComponentFactory extends ComponentFactory {
             btnHovered = Utils.loadImage(RES_PATH + "/button_hovered.bmp");
             btnPressed = Utils.loadImage(RES_PATH + "/button_pressed.bmp");
 
-            defaultFont = new Font("default");
+            defaultFont = new Font("pixel_regular");
         } catch (IOException e) {
             System.err.println("Creating StdComponentFactory error: " + e);
             e.printStackTrace();
