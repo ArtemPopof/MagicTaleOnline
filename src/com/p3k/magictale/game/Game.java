@@ -282,6 +282,26 @@ public class Game implements Constants {
     }
 
     /**
+     * Return who is now in given cell
+     */
+    public GameCharacter getAnyoneInCell(int cellX, int cellY) {
+
+        for (GameObject object : objects) {
+            if (!GameCharacter.class.isInstance(object))
+                continue;
+
+            GameCharacter character = (GameCharacter) object;
+
+            Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
+            if (characterPoint.x == cellX && characterPoint.y == cellY) {
+                return character;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * return array of Game Objects
      */
     public ArrayList<GameObject> getObjects() {

@@ -109,7 +109,10 @@ public class Sprite {
 
     public void render() {
 
-        if (isTextured) {
+            if (!isTextured)
+                glColor3f(r, g, b);
+            else
+                glColor4f(1f, 1f, 1f, 1f);
 
             glBindTexture(GL_TEXTURE_2D, textureId);
 
@@ -138,22 +141,6 @@ public class Sprite {
             }
             glEnd();
 
-        } else {
-
-            glColor3f(r, g, b);
-
-            glBegin(GL_QUADS); {
-
-                glVertex2f(0, 0);
-                glVertex2f(width, 0);
-                glVertex2f(width, -height);
-                glVertex2f(0, -height);
-
-            }
-            glEnd();
-
-            glColor4f(1f, 1f, 1f, 1f);
-        }
     }
 
     private BufferedImage flipHorizontally(BufferedImage rawImage) {

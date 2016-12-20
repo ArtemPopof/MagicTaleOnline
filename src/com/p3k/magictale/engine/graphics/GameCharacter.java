@@ -7,6 +7,7 @@ import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import com.p3k.magictale.map.level.LevelManager;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -37,12 +38,12 @@ public class GameCharacter extends GameObject {
      * in pixels.
      *
      */
-    private static final int FULL_HP_BAR_LENGTH = 30;
+    private static final int FULL_HP_BAR_LENGTH = 40;
 
     /**
      * HP Bar height
      */
-    private static final int HP_BAR_HEIGHT = 15;
+    private static final int HP_BAR_HEIGHT = 5;
 
     /**
      * How many pixels will be between character
@@ -63,6 +64,8 @@ public class GameCharacter extends GameObject {
 
     private float speed;
     private int health;
+    private int maxHealth;
+    private int attack;
 
     private boolean isFlyable;
     private int layer;
@@ -97,6 +100,8 @@ public class GameCharacter extends GameObject {
         //TODO remove hardcode
         speed = Constants.PLAYER_SPEED;
         health = 10;
+        maxHealth = 10;
+        attack = 2;
 
         isFlyable = false;
         layer = 1;
@@ -157,6 +162,8 @@ public class GameCharacter extends GameObject {
         {
             float cameraX = Game.getInstance().getCameraX();
             float cameraY = Game.getInstance().getCameraY();
+
+            hpBar.setWidth((getCurrentHealth() / (1.0f * maxHealth)) * FULL_HP_BAR_LENGTH);
 
             glTranslatef((x - cameraX) + getWidth() / 4, y - cameraY + HP_BAR_PADDING, 0);
 
@@ -229,20 +236,40 @@ public class GameCharacter extends GameObject {
      *
      */
     public void doAttack() {
+
+        Point cellToAttack = new Point();
+
+        Point currentCell = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+
         switch (direction) {
             case LEFT:
                 changeState(LEFT_ATTACK_STATE);
+                cellToAttack = new Point(currentCell.x - 1, currentCell.y);
                 break;
             case RIGHT:
                 changeState(RIGHT_ATTACK_STATE);
+                cellToAttack = new Point(currentCell.x + 1, currentCell.y);
                 break;
             case UP:
                 changeState(UP_ATTACK_STATE);
+                cellToAttack = new Point(currentCell.x, currentCell.y - 1);
                 break;
             case DOWN:
                 changeState(DOWN_ATTACK_STATE);
+                cellToAttack = new Point(currentCell.x, currentCell.y + 1);
                 break;
         }
+
+        GameCharacter potencialEnemy;
+
+        // if someone in attack distance
+        if ((potencialEnemy = Game.getInstance().getAnyoneInCell(cellToAttack.x, cellToAttack.y)) != null) {
+            if (!isAttacking) {
+                // if first frame of attack is playing
+                potencialEnemy.doHarm(getAttack());
+            }
+        }
+
 
         isAttacking = true;
     }
@@ -259,6 +286,42 @@ public class GameCharacter extends GameObject {
      */
     public void setHPBarVisible(boolean visibility) {
         this.isHPBarVisible = visibility;
+    }
+
+    /**
+     * Set character health
+     */
+    public void setHealth(int health) {
+        this.health = health > 0 ? health : 0;
+    }
+
+    /**
+     * Decrease HP of the Character
+     *
+     * @param attackStrength
+     */
+    public void doHarm(int attackStrength) {
+        // isn't sofisticated yet
+        this.health -= attackStrength;
+
+        if (health <= 0) {
+            playDeath();
+        }
+    }
+
+    /**
+     * We have no will to live, so
+     * remove ourself from this game
+     */
+    public void playDeath() {
+        setState(DEATH_STATE);
+    }
+
+    /**
+     * return attack power of the character
+     */
+    public int getAttack() {
+        return attack;
     }
 
 
