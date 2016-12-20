@@ -71,7 +71,9 @@ public class Collision implements Constants{
      */
     public static boolean isPointInRect(Point point, Point first, Point second) {
 
-        if (point.x >= first.x && point.x <= second.x && point.y <= first.y && point.y >= second.y) {
+        if (point.x >= first.x && point.x <= second.x
+                && point.y >= first.y && point.y <= second.y) {
+
             return true;
         }
 

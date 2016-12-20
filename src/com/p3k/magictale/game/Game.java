@@ -147,12 +147,12 @@ public class Game implements Constants {
         objects.add(testBot);
 
         // test bot
-       //  Bot testBot2 = new Bot(200, 354, 64, 64);
-       //  objects.add(testBot2);
+         Bot testBot2 = new Bot(200, 354, 64, 64);
+         objects.add(testBot2);
 
         // test bot
-        // Bot testBot3 = new Bot(252, 272, 64, 64);
-       //  objects.add(testBot3);
+         Bot testBot3 = new Bot(252, 272, 64, 64);
+         objects.add(testBot3);
 
     }
 

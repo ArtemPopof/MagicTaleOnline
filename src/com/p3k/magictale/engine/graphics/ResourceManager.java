@@ -175,12 +175,26 @@ public class ResourceManager {
         botDeathAnim.setLooped(false);
         botDeathAnim.setShouldStartOver(false);
 
+        Animation botLeftAttackAnim = new Animation(charSprites, 40, 3);
+        leftAttackAnim.setLooped(false);
+        Animation botUpAttackAnim = new Animation(charSprites, 29, 3);
+        upAttackAnim.setLooped(false);
+        Animation botRightAttackAnim = new Animation(charSprites, 18, 3);
+        rightAttackAnim.setLooped(false);
+        Animation botDownAttackAnim = new Animation(charSprites, 7, 3);
+        downAttackAnim.setLooped(false);
+
         botTestAnims.add(botWaitAnim);
         botTestAnims.add(botRightMoveAnim);
         botTestAnims.add(botLeftMoveAnim);
         botTestAnims.add(botUpMoveAnim);
         botTestAnims.add(botDownMoveAnim);
         botTestAnims.add(botDeathAnim);
+
+        botTestAnims.add(botLeftAttackAnim);
+        botTestAnims.add(botUpAttackAnim);
+        botTestAnims.add(botRightAttackAnim);
+        botTestAnims.add(botDownAttackAnim);
 
         animations.put(CharacterTypes.ABSTRACT_BOT, botTestAnims);
     }

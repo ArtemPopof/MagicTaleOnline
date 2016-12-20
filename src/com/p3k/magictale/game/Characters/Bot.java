@@ -156,8 +156,8 @@ public class Bot extends GameCharacter {
 
         random = new Random(System.currentTimeMillis());
 
-        destinationX = getRealX();
-        destinationY = getRealY();
+        destinationX = -1;
+        destinationY = -1;
 
         pathToTarget = null;
         nextCellInPath = -1;
@@ -225,6 +225,10 @@ public class Bot extends GameCharacter {
                 // nothing's here yet
             }
 
+            if (isAttacking) {
+                isSomethingHappens = true;
+            }
+
             if (!isSomethingHappens) {
                 animations.get(getState()).pause();
             }
@@ -261,10 +265,78 @@ public class Bot extends GameCharacter {
                 setBotState(BOT_PATRULING_STATE);
             }
         }
-        if (currentBotState == BOT_TARGETSPOTED_STATE);
+        if (currentBotState == BOT_TARGETSPOTED_STATE) {
+            seekAndDetroy();
+        }
 
     }
 
+    /**
+     * Go to target and attack it!
+     */
+    private void seekAndDetroy() {
+
+        Point spottedEnemyCell = LevelManager
+                .getTilePointByCoordinates(spottedEnemy.getRealX(), spottedEnemy.getRealY());
+        Point botCell = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+
+        // estimate distance from target
+
+        int deltaX =  (Math.abs(spottedEnemyCell.x - botCell.x));
+        int deltaY =  (Math.abs(spottedEnemyCell.y - botCell.y));
+
+        int heuristicDistanceFromTarget = deltaX + deltaY;
+
+        if (heuristicDistanceFromTarget > visionCellRadius) {
+            // he runned for his life
+            // so calm down and patruling again
+            setBotState(BOT_WAITING_STATE);
+            spottedEnemy = null;
+
+            System.out.println("LOST TARGET");
+            return;
+        }
+
+        // start walking to target
+        if (destinationY == -1) {
+            Point destination = botCell;
+
+            if (deltaX > deltaY) {
+                // we should attack from left or right
+
+                if (botCell.x > spottedEnemyCell.x) {
+                    // attack from left
+                    destination.x--;
+
+                } else {
+                    // attack from right
+                    destination.x++;
+                }
+
+            } else {
+                // we should attack from up or down side
+                if (botCell.y < spottedEnemyCell.y) {
+                    // attack from upper side
+                    destination.y--;
+                } else {
+                    // attack from bottom
+                    destination.y++;
+                }
+            }
+        }
+
+        int resultOfWalking = walkToTarget();
+
+        if (resultOfWalking == 1) {
+            // we know he's around here now
+            doAttack();
+        } else if (resultOfWalking == 0) {
+            return;
+        } else {
+            setBotState(WAITING_STATE);
+        }
+
+    }
     /**
      * Just walk around the current spot in
      * random manner
@@ -293,70 +365,13 @@ public class Bot extends GameCharacter {
             //here will be collision check, so we can be
             //sure that destination is reachable
 
-        }else if ((getRealX() - destinationX) <= 5 && (getRealY() - destinationY) <= 5) {
-            // if bot come pretty close to it's destination point
-            setBotState(BOT_WAITING_STATE);
-            destinationX = -1;
-            destinationY = -1;
-            nextCellInPath = -1;
-
-            clearKeyStates();
-        } else if (nextCellInPath == -1) {
-
-            // use a brain, to generate path to target
-            // a* algorithm?
-
-            Point start = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
-            Point goal  = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
-
-            pathToTarget = AStarFindAlgorithm.findPath(
-                    field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
-
-            // cannot go where bot wants to go =(
-            if (pathToTarget == null) {
-                setBotState(BOT_WAITING_STATE);
-                destinationX = -1;
-                destinationY = -1;
-                nextCellInPath = -1;
-                return;
-            }
-
-            nextCellInPath = 0;
-
         } else {
 
-            // so we know the path and can go to target
-            Point currentTile = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
-            Point nextTile = pathToTarget.get(nextCellInPath);
+            int resultOfWalking = walkToTarget();
 
-            // reset all keys
-            clearKeyStates();
-
-            if (currentTile.equals(nextTile)) {
-
-                // destination arrived
-                if (nextCellInPath == pathToTarget.size()-1) {
-                    setBotState(BOT_WAITING_STATE);
-                    destinationX = -1;
-                    destinationY = -1;
-                    nextCellInPath = -1;
-                    return;
-                }
-
-                nextCellInPath++;
-                return;
-            }
-
-            if (nextTile.x < currentTile.x) {
-                emulatekey(KEY_A);
-            } else if (nextTile.x > currentTile.x) {
-                emulatekey(KEY_D);
-            }
-
-            if (nextTile.y < currentTile.y) {
-                emulatekey(KEY_W);
-            } else if (nextTile.y > currentTile.y) {
-                emulatekey(KEY_S);
+            // if bot come pretty close to it's destination point
+            if (resultOfWalking == 1 || resultOfWalking == -1) {
+                setBotState(BOT_WAITING_STATE);
             }
         }
 
@@ -408,7 +423,7 @@ public class Bot extends GameCharacter {
      *
      * @param keyCode - key to be simulated
      */
-    private void emulatekey(int keyCode) {
+    private void emulateKey(int keyCode) {
         if (keyCode < 0 || keyCode >= EMULATED_KEYS) {
             System.err.print("Bot.emulateKey("+keyCode+"): invalid argument");
         } else {
@@ -455,13 +470,13 @@ public class Bot extends GameCharacter {
                 firstRectCell.x = currentCell.x - visionCellRadius;
                 firstRectCell.y = currentCell.y;
                 secondRectCell.x = currentCell.x + visionCellRadius;
-                secondRectCell.y = currentCell.y + visionCellRadius;
+                secondRectCell.y = currentCell.y - visionCellRadius;
                 break;
             case DOWN:
                 firstRectCell.x = currentCell.x - visionCellRadius;
                 firstRectCell.y = currentCell.y;
                 secondRectCell.x = currentCell.x + visionCellRadius;
-                secondRectCell.y = currentCell.y - visionCellRadius;
+                secondRectCell.y = currentCell.y + visionCellRadius;
                 break;
             case LEFT:
                 firstRectCell.x = currentCell.x - visionCellRadius;
@@ -509,5 +524,83 @@ public class Bot extends GameCharacter {
         this.isAggressive = true;
 
         return false;
+    }
+
+    /**
+     * Walks to current target, specified in destinationX and destinationY
+     * or make up new route to target
+     *
+     * @return if we're around target returns 1, if not yet 0
+     * and if we cannot reach the target, then returns -1;
+     */
+    private int walkToTarget() {
+
+        if ((getRealX() - destinationX) <= 2 && (getRealY() - destinationY) <= 2) {
+            // ok we're on the spot
+            destinationX = -1;
+            destinationY = -1;
+            nextCellInPath = -1;
+
+            clearKeyStates();
+
+            return 1;
+        } else if (nextCellInPath == -1) {
+
+            // use a brain, to generate path to target
+            // a* algorithm?
+
+            Point start = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+            Point goal  = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
+
+            pathToTarget = AStarFindAlgorithm.findPath(
+                    field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
+
+            // cannot go where bot wants to go =(
+            if (pathToTarget == null) {
+                destinationX = -1;
+                destinationY = -1;
+                nextCellInPath = -1;
+                return -1;
+            }
+
+            nextCellInPath = 0;
+        } else {
+
+            // so we know the path and can go to target
+            Point currentTile = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+            Point nextTile = pathToTarget.get(nextCellInPath);
+
+            // reset all keys
+            clearKeyStates();
+
+            if (currentTile.equals(nextTile)) {
+
+                // destination arrived
+                if (nextCellInPath == pathToTarget.size()-1) {
+                    setBotState(BOT_WAITING_STATE);
+                    destinationX = -1;
+                    destinationY = -1;
+                    nextCellInPath = -1;
+                    return 1;
+                }
+
+                nextCellInPath++;
+                return 0;
+            }
+
+            if (nextTile.x < currentTile.x) {
+                emulateKey(KEY_A);
+            } else if (nextTile.x > currentTile.x) {
+                emulateKey(KEY_D);
+            }
+
+            if (nextTile.y < currentTile.y) {
+                emulateKey(KEY_W);
+            } else if (nextTile.y > currentTile.y) {
+                emulateKey(KEY_S);
+            }
+        }
+
+        return 0;
     }
 }
