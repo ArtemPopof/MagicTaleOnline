@@ -9,6 +9,8 @@ import com.p3k.magictale.map.level.LevelManager;
 
 import java.util.ArrayList;
 
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * GameCharacter class represent any living thing.
  * NPC or Players classes should be derived from
@@ -30,6 +32,25 @@ public class GameCharacter extends GameObject {
     protected static final int DOWN_ATTACK_STATE = 9;
 
     /**
+     * Length of full hp bar
+     *
+     * in pixels.
+     *
+     */
+    private static final int FULL_HP_BAR_LENGTH = 30;
+
+    /**
+     * HP Bar height
+     */
+    private static final int HP_BAR_HEIGHT = 15;
+
+    /**
+     * How many pixels will be between character
+     * and hp bar
+     */
+    private static final int HP_BAR_PADDING = 10;
+
+    /**
      * Unique identifier for current class.
      * for derived classes it value must be changed.
      *
@@ -47,6 +68,13 @@ public class GameCharacter extends GameObject {
     private int layer;
 
     protected boolean isAttacking = false;
+
+    /**
+     * HpBar Sprite
+     */
+    protected Sprite hpBar;
+
+    protected boolean isHPBarVisible;
 
     /**
      * current state of this character
@@ -72,6 +100,10 @@ public class GameCharacter extends GameObject {
 
         isFlyable = false;
         layer = 1;
+
+        //init hp bar
+        hpBar = new Sprite(1f, 0f, 0f, FULL_HP_BAR_LENGTH, HP_BAR_HEIGHT);
+        isHPBarVisible = true;
     }
 
     public int getState() {
@@ -105,6 +137,33 @@ public class GameCharacter extends GameObject {
      */
     public void processInput() {
 
+    }
+
+    /**
+     * render character
+     */
+    public void render() {
+        super.render();
+
+        if (isHPBarVisible)
+            renderHPBar();
+    }
+
+    /**
+     * Render HP Bar on top of char
+     */
+    private void renderHPBar() {
+        glPushMatrix();
+        {
+            float cameraX = Game.getInstance().getCameraX();
+            float cameraY = Game.getInstance().getCameraY();
+
+            glTranslatef((x - cameraX) + getWidth() / 4, y - cameraY + HP_BAR_PADDING, 0);
+
+            hpBar.render();
+
+        }
+        glPopMatrix();
     }
 
     /**
@@ -186,6 +245,20 @@ public class GameCharacter extends GameObject {
         }
 
         isAttacking = true;
+    }
+
+    /**
+     * Is HP Bar is visible
+     */
+    public boolean isHPBarVisible() {
+        return isHPBarVisible;
+    }
+
+    /**
+     * Set visibility for hp bar
+     */
+    public void setHPBarVisible(boolean visibility) {
+        this.isHPBarVisible = visibility;
     }
 
 

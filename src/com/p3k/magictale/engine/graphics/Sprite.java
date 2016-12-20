@@ -23,6 +23,12 @@ public class Sprite {
 
     private int textureId;
 
+    /**
+     * Is sprite has texture or
+     * it will be filled by color
+     */
+    private boolean isTextured = true;
+
 
     public Sprite(float r, float g, float b, float width, float height) {
         this.r = r;
@@ -33,6 +39,7 @@ public class Sprite {
         this.height = height;
 
         textureId = -1;
+        isTextured = false;
     }
 
     public Sprite(String texturePath, float width, float height) throws IOException {
@@ -102,32 +109,46 @@ public class Sprite {
 
     public void render() {
 
-        glBindTexture(GL_TEXTURE_2D, textureId);
+        if (isTextured) {
 
-        glBegin(GL_QUADS); {
+            glBindTexture(GL_TEXTURE_2D, textureId);
 
-            glVertex2f(0, 0);
-            //glTexCoord2f(0, 1);
-            //glTexCoord2f(1, 1);
-            glTexCoord2f(0, 0);
+            glBegin(GL_QUADS); {
 
-            glVertex2f(width, 0);
-           // glTexCoord2f(1, 1);
-           // glTexCoord2f(1, 0);
-              glTexCoord2f(0, 1);
+                glVertex2f(0, 0);
+                //glTexCoord2f(0, 1);
+                //glTexCoord2f(1, 1);
+                glTexCoord2f(0, 0);
 
-            glVertex2f(width, -height);
-           // glTexCoord2f(1, 0);
-           // glTexCoord2f(0, 0);
-              glTexCoord2f(1, 1);
+                glVertex2f(width, 0);
+                // glTexCoord2f(1, 1);
+                // glTexCoord2f(1, 0);
+                glTexCoord2f(0, 1);
 
-            glVertex2f(0, -height);
-            //glTexCoord2f(0, 0);
-            //glTexCoord2f(0, 1);
-              glTexCoord2f(1, 0);
+                glVertex2f(width, -height);
+                // glTexCoord2f(1, 0);
+                // glTexCoord2f(0, 0);
+                glTexCoord2f(1, 1);
 
+            }
+            glEnd();
+
+        } else {
+
+            glColor3f(r, g, b);
+
+            glBegin(GL_QUADS); {
+
+                glVertex2f(0, 0);
+                glVertex2f(width, 0);
+                glVertex2f(width, -height);
+                glVertex2f(0, -height);
+
+            }
+            glEnd();
+
+            glColor4f(1f, 1f, 1f, 1f);
         }
-        glEnd();
     }
 
     private BufferedImage flipHorizontally(BufferedImage rawImage) {
