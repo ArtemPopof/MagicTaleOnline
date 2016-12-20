@@ -117,9 +117,7 @@ public class ObjectManager implements ObjectInterface {
             tilesProperties = xml.getTilesPropertiesByTilesetName("pack_forest");
         }
         tileSheet = new Tile[tilesetWidth][tilesetHeight];
-        --tilesetHeight;
-//        for (int h = tilesetHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
-        for (int h = 0, id = 0, idInSprSh = 0, idInTileProp = 0; h <= tilesetHeight; ++h) {
+        for (int h = 0, id = 0, idInSprSh = 0, idInTileProp = 0; h < tilesetHeight; ++h) {
             for (int w = 0; w < tilesetWidth; w++) {
                 if (Integer.parseInt(layerTemplateContext.get(id)) == 0) {
                     ++id;
@@ -135,7 +133,6 @@ public class ObjectManager implements ObjectInterface {
                 ++idInTileProp;
             }
         }
-        ++tilesetHeight;
         System.out.print("HERE SpriteSheet loaded");
     }
 
@@ -243,19 +240,19 @@ public class ObjectManager implements ObjectInterface {
             for (int w = 0; w < widthNum; ++w) {
                 Tile tile = tileSheet[xTileSheet + w][yTileSheet + h];
                 insObjTile = new ObjTile(tile.getSprite(), (x + w) * 32, (lvlHeight - y - h) * 32);
-                System.out.println("x=" + (x+w) + "   y=" + (y+h) + "   lvl-y-h=" + (lvlHeight - y - h)
-                + "     tsX=" + (xTileSheet + w) + "    tsY=" + (yTileSheet + h));
+//                System.out.println("x=" + (x+w) + "   y=" + (y+h) + "   lvl-y-h=" + (lvlHeight - y - h)
+//                + "     tsX=" + (xTileSheet + w) + "    tsY=" + (yTileSheet + h));
                 insObjTile.setType(type);
                 insObjTile.setName(name);
                 insObjTile.setIdInTypeName(id);
                 objTile[x + w][lvlHeight - y - h][tile.getTileProperties().getLayer()] = insObjTile;
             }
         }
-        System.out.println("Type=" + insObjTile.getType()
-                + "   Name=" + insObjTile.getName()
-                + " id=" + insObjTile.getIdInTypeName()
-                + " spr=" + insObjTile.getSprite().getTextureId()
-                + " sheet=" + (insObjTile.getSprite().getTextureId() - 162));
+//        System.out.println("Type=" + insObjTile.getType()
+//                + "   Name=" + insObjTile.getName()
+//                + " id=" + insObjTile.getIdInTypeName()
+//                + " spr=" + insObjTile.getSprite().getTextureId()
+//                + " sheet=" + (insObjTile.getSprite().getTextureId() - 162));
         ++lvlHeight;
     }
 
