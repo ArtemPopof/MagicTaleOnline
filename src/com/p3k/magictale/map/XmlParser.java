@@ -21,9 +21,9 @@ public class XmlParser {
     private Document doc = null;
 
     public XmlParser() throws IOException, SAXException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); //создали фабрику строителей, сложный и грамосткий процесс (по реже выполняйте это действие)
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         // f.setValidating(false); // не делать проверку валидации
-        DocumentBuilder db = null; // создали конкретного строителя документа
+        DocumentBuilder db = null;
         try {
             db = dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
@@ -32,13 +32,11 @@ public class XmlParser {
         if (doc != null) {
             doc = db.parse(new File("res/map/level/lvl_forest.tmx"));
         }
-        // стооитель построил документ
-//        visit(doc, 0);
     }
 
     public XmlParser(DocumentBuilderFactory dbf, String pathName) throws IOException, SAXException {
         // f.setValidating(false); // не делать проверку валидации
-        DocumentBuilder db = null; // создали конкретного строителя документа
+        DocumentBuilder db = null;
         try {
             db = dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
@@ -47,10 +45,6 @@ public class XmlParser {
         if (db != null) {
             doc = db.parse(new File(pathName));
         }
-//        if (doc != null) {
-//            visit(doc, 0);
-//            System.out.println("el = " + doc.getElementsByTagName("data"));
-//        }
         System.out.println(doc.getStrictErrorChecking());
     }
 
@@ -63,10 +57,10 @@ public class XmlParser {
     public ArrayList<String> getLayerTextContextByName(String layerName) {
         ArrayList<String> layerTextContextByName = new ArrayList<>();
         try {
-            //System.out.println(doc.getElementsByTagName("layer"));
+//            System.out.println(doc.getElementsByTagName("layer"));
             NodeList layers = doc.getElementsByTagName("layer");
             for (int i = 0; i < layers.getLength(); ++i) {
-                //System.out.println(layers.item(i).getAttributes());
+//                System.out.println(layers.item(i).getAttributes());
                 NamedNodeMap attrs = layers.item(i).getAttributes();
                 Node name = attrs.getNamedItem("name");
                 //System.out.println(name.getNodeValue());
@@ -225,10 +219,8 @@ public class XmlParser {
         for (int i = 0; i < nodeListOfObjects.getLength(); ++i) {
             if (nodeListOfObjects.item(i).getNodeName().equals(name)) {
                 NamedNodeMap objGrAttrs = nodeListOfObjects.item(i).getAttributes();
-//                int xTileSheet = Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x"));
-//                int yTileSheet = Integer.parseInt(getValueOfNamedItem(objGrAttrs, "y"));
                 // TODO Add constant sprWidth, sprHeight
-                GroupObject insGrObj = null;
+                GroupObject insGrObj;
                 if (byTemplate) {
                     insGrObj = new GroupObject(
                             Integer.parseInt(getValueOfNamedItem(objGrAttrs, "x")) / 32,
@@ -267,28 +259,5 @@ public class XmlParser {
             System.out.println("Parsing: getMapSize() " + e);
         }
         return retValue;
-    }
-
-    private static void visit(Node node, int level) {
-        NodeList list = node.getChildNodes();
-        for (int i = 0; i < list.getLength(); ++i) {
-            Node childNode = list.item(i); // текущий нод
-            process(childNode, level + 1); // обработка
-            visit(childNode, level + 1); // рекурсия
-        }
-    }
-
-    private static void process(Node node, int level) {
-        for (int i = 0; i < level; i++) {
-            //System.out.print('\t');
-        }
-        //System.out.print(node.getNodeName());
-        //System.out.print('\t' + node.getNodeValue());
-        //System.out.print(" Attrs: " + node.getTextContent());
-        if (node instanceof Element){
-            Element e = (Element) node;
-            // работаем как с элементом (у него есть атрибуты и схема)
-        }
-        //System.out.println();
     }
 }

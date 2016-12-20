@@ -119,18 +119,20 @@ public class ObjectManager implements ObjectInterface {
         tileSheet = new Tile[tilesetWidth][tilesetHeight];
         --tilesetHeight;
 //        for (int h = tilesetHeight, id = 0, idInSprSh = 0; 0 <= h; h--) {
-        for (int h = 0, id = 0, idInSprSh = 0; h <= tilesetHeight; ++h) {
+        for (int h = 0, id = 0, idInSprSh = 0, idInTileProp = 0; h <= tilesetHeight; ++h) {
             for (int w = 0; w < tilesetWidth; w++) {
                 if (Integer.parseInt(layerTemplateContext.get(id)) == 0) {
                     ++id;
+                    ++idInSprSh;
                     continue;
                 }
                 int idInGl = resourceManager.getTexture(idInSprSh + firstId);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
                 tileSheet[w][h] = new Tile(sprite, w * sprWidth, h * sprHeight,
-                        tilesProperties.get(idInSprSh));
+                        tilesProperties.get(idInTileProp));
                 ++id;
                 ++idInSprSh;
+                ++idInTileProp;
             }
         }
         ++tilesetHeight;
@@ -235,16 +237,25 @@ public class ObjectManager implements ObjectInterface {
             e.printStackTrace();
         }
         --lvlHeight;
+        ObjTile insObjTile;
+        insObjTile = new ObjTile(tileSheet[xTileSheet][yTileSheet].getSprite(), (x) * 32, (lvlHeight - y) * 32);
         for (int h = 0; h < heightNum; ++h) {
             for (int w = 0; w < widthNum; ++w) {
                 Tile tile = tileSheet[xTileSheet + w][yTileSheet + h];
-                ObjTile insObjTile = new ObjTile(tile.getSprite(), (x + w) * 32, (lvlHeight - y - h) * 32);
+                insObjTile = new ObjTile(tile.getSprite(), (x + w) * 32, (lvlHeight - y - h) * 32);
+                System.out.println("x=" + (x+w) + "   y=" + (y+h) + "   lvl-y-h=" + (lvlHeight - y - h)
+                + "     tsX=" + (xTileSheet + w) + "    tsY=" + (yTileSheet + h));
                 insObjTile.setType(type);
                 insObjTile.setName(name);
                 insObjTile.setIdInTypeName(id);
                 objTile[x + w][lvlHeight - y - h][tile.getTileProperties().getLayer()] = insObjTile;
             }
         }
+        System.out.println("Type=" + insObjTile.getType()
+                + "   Name=" + insObjTile.getName()
+                + " id=" + insObjTile.getIdInTypeName()
+                + " spr=" + insObjTile.getSprite().getTextureId()
+                + " sheet=" + (insObjTile.getSprite().getTextureId() - 162));
         ++lvlHeight;
     }
 
@@ -257,7 +268,6 @@ public class ObjectManager implements ObjectInterface {
             for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
                 for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
                     for (int z = 0; z < lvlLayer; ++z) {
-//                        objTile[x][y][z].render();
                         if(objTile[x][y][z] == null) {
                             continue;
                         } else {
