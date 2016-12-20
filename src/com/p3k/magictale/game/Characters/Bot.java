@@ -8,6 +8,7 @@ import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Game;
+import com.p3k.magictale.game.GameObjects;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
@@ -469,9 +470,11 @@ public class Bot extends GameCharacter {
                 break;
         }
 
-        ArrayList<GameObject> objects = Game.getInstance().getObjects();
+        GameObjects objects = Game.getInstance().getObjects();
 
-        for (GameObject object : objects) {
+        for (int i = 0; i < objects.size(); i++) {
+
+            GameObject object = objects.get(i);
 
             if (GameCharacter.class.isInstance(object)) {
                 GameCharacter character = (GameCharacter) object;

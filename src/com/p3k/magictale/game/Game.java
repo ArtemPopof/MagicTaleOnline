@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class Game implements Constants {
     private static Game instance = null;
 
-    private ArrayList<GameObject> objects;
+    private GameObjects objects;
     private Player player;
     private Level levelManager;
     private ObjectInterface objectManager;
@@ -86,7 +86,9 @@ public class Game implements Constants {
 
     public void processInput() {
 
-        for(GameObject object : objects) {
+        for(int i = 0; i < objects.size(); i ++) {
+            GameObject object = objects.get(i);
+
             if (GameCharacter.class.isInstance(object)) {
                 GameCharacter character = (GameCharacter) object;
                 character.processInput();
@@ -105,7 +107,8 @@ public class Game implements Constants {
 
 //        levelManager.update();
 
-        for (GameObject object : objects) {
+        for (int i = 0; i < objects.size(); i ++) {
+            GameObject object = objects.get(i);
             object.update();
         }
 
@@ -118,7 +121,8 @@ public class Game implements Constants {
 
         objectManager.render(1);
 
-        for (GameObject object : objects) {
+        for (int i = 0; i < objects.size(); i ++) {
+            GameObject object = objects.get(i);
             object.render();
         }
 
@@ -132,7 +136,7 @@ public class Game implements Constants {
     }
 
     private void initObjects() {
-        objects = new ArrayList<>();
+        objects = new GameObjects();
 
         player = new Player(100 , 520);
 
@@ -266,7 +270,8 @@ public class Game implements Constants {
      */
     public boolean isAnyoneInCell(int cellX, int cellY) {
 
-        for (GameObject object : objects) {
+        for (int i = 0; i < objects.size(); i ++) {
+            GameObject object = objects.get(i);
             if (!GameCharacter.class.isInstance(object))
                 continue;
 
@@ -286,7 +291,8 @@ public class Game implements Constants {
      */
     public GameCharacter getAnyoneInCell(int cellX, int cellY) {
 
-        for (GameObject object : objects) {
+        for (int i = 0; i < objects.size(); i ++) {
+            GameObject object = objects.get(i);
             if (!GameCharacter.class.isInstance(object))
                 continue;
 
@@ -304,7 +310,7 @@ public class Game implements Constants {
     /**
      * return array of Game Objects
      */
-    public ArrayList<GameObject> getObjects() {
+    public GameObjects getObjects() {
         return objects;
     }
 }
