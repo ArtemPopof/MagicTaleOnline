@@ -3,6 +3,8 @@ package com.p3k.magictale.engine;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -85,5 +87,25 @@ public class Utils {
         // TODO try to load from the server
 
         return image;
+    }
+
+    static public BufferedImage flipHorizontally(BufferedImage rawImage) {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-rawImage.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        rawImage = op.filter(rawImage, null);
+
+        return rawImage;
+    }
+
+    static public BufferedImage flipVerticaly(BufferedImage rawImage) {
+        AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+        tx.translate(0, -rawImage.getHeight());
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        rawImage = op.filter(rawImage, null);
+
+        return rawImage;
     }
 }
