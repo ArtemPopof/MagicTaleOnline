@@ -20,13 +20,22 @@ public class GuiManager implements Constants {
         objects = new HashMap<>();
         factory = new StdComponentFactory();
 
-        MButton hello = factory.createButton("Hello, button!", 50.0f, 140.0f);
-        hello.resize(54, 18);
-        MButton goodbye = factory.createButton("Goodbye, button!", 50.0f, 100.0f);
-        goodbye.resize(54, 18);
+        float offset = 70.0f;
 
-        objects.put("hello", hello);
-        objects.put("goodbye", goodbye);
+
+        MButton character = factory.createButton("Character", 0, 50.0f);
+        character.resize(200, 50);
+        MButton inventory = factory.createButton("Inventory", 200f, 50.0f);
+        inventory.resize(200, 50);
+        MButton chat = factory.createButton("Chat", 400f, 50.0f);
+        chat.resize(200, 50);
+        MButton exit = factory.createButton("Exit", 600f, 50.0f);
+        exit.resize(200, 50);
+
+        objects.put("char", character);
+        objects.put("inventory", inventory);
+        objects.put("chat", chat);
+        objects.put("exit", exit);
     }
 
     public void render() {

@@ -9,13 +9,14 @@ public class StdButton extends MButton {
 
     private Sprite normalSprite, hoverSprite, pressedSprite;
 
-    public StdButton(String text, float x, float y) {
+    /**
+     * Need by factory constructor
+     * @param text
+     * @param x
+     * @param y
+     */
+    public StdButton(MText text, float x, float y) {
         super(text, x, y);
-    }
-
-    @Override
-    public void update() {
-
     }
 
     // EVENTS

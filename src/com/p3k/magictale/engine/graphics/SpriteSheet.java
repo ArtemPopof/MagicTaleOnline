@@ -27,6 +27,9 @@ public class SpriteSheet {
     }
 
 
+    public SpriteSheet(String path, int width, int height) {
+        this(path, width, height, true, false);
+    }
     /**
      *
      * Creates spritesheet representation of png image,
@@ -36,7 +39,7 @@ public class SpriteSheet {
      * @param width width of single tile
      * @param height height of single tile
      */
-    public SpriteSheet(String path, int width, int height) {
+    public SpriteSheet(String path, int width, int height, boolean fliph, boolean flipv) {
 
         tileHeight = height;
         tileWidth = width;
@@ -44,7 +47,7 @@ public class SpriteSheet {
         sprites = new ArrayList<>();
 
         try {
-            loadSpritesCommon(path);
+            loadSpritesCommon(path, fliph, flipv);
         } catch (IOException e) {
             System.err.println("SpriteSheet: Error while trying to cut "+path+" sprite sheet.");
         }
@@ -102,7 +105,7 @@ public class SpriteSheet {
      * @param path
      * @throws IOException
      */
-    private void loadSpritesCommon(String path) throws IOException {
+    private void loadSpritesCommon(String path, boolean fliph, boolean flipv) throws IOException {
 
         BufferedImage spriteSheet = ImageIO.read(new File(path));
 
@@ -113,7 +116,7 @@ public class SpriteSheet {
             for (int j = 0; j < width; j+= tileWidth) {
                 BufferedImage nextTile = spriteSheet.getSubimage(j, i, tileWidth, tileHeight);
 
-                sprites.add(new Sprite(nextTile, tileWidth, tileHeight));
+                sprites.add(new Sprite(nextTile, tileWidth, tileHeight, fliph, flipv));
             }
         }
 

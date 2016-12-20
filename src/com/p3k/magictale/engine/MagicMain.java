@@ -63,7 +63,7 @@ public class MagicMain {
                 System.out.println("choose mode: " + max);
                 Display.setDisplayModeAndFullscreen(max);
             } else {
-                Display.setDisplayMode(new DisplayMode(800, 600));
+                Display.setDisplayMode(new DisplayMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
             }
 
             Display.create();
