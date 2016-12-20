@@ -4,13 +4,12 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.map.level.LevelManager;
-
 import java.awt.*;
 
 /**
  * Created by artem96 on 04.12.16.
  */
-public class Collision {
+public class Collision implements Constants{
 
     public static boolean checkCollision(GameObject first, GameObject second) {
 
@@ -38,6 +37,10 @@ public class Collision {
 
             float x = character.getRealX();
             float y = character.getRealY();
+
+            if (x <= 0 || x >= MAP_WIDTH * MAP_TILE_SIZE || y <= 0 || y >= MAP_HEIGHT * MAP_TILE_SIZE) {
+                return true;
+            }
 
             Point characterNextCell = LevelManager.getTilePointByCoordinates(x, y);
 

@@ -191,6 +191,10 @@ public class Bot extends GameCharacter {
 
         try {
 
+            if (isDead()) {
+                return;
+            }
+
             boolean isSomethingHappens = false;
 
             if (isKeyDown(KEY_W)) {
@@ -235,6 +239,11 @@ public class Bot extends GameCharacter {
     public void update() {
 
         super.update();
+
+
+        if (isDead()) {
+            return;
+        }
 
         // here will be simulation of bot virtual brain
 

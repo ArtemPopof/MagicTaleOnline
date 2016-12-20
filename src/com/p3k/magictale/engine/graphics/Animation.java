@@ -18,7 +18,16 @@ public class Animation implements Constants {
      */
     private boolean isRunning;
 
+    /**
+     * animation will be repeted when played
+     */
     private boolean isLooped = true;
+
+    /**
+     * if animation is played once it will set
+     * frame to 0
+     */
+    private boolean shouldStartOver = true;
 
     public Animation(ArrayList<Sprite> sprites) {
 
@@ -129,6 +138,10 @@ public class Animation implements Constants {
                 if (currentFrame == 0 && !isLooped) {
                     // animation played once
                     isRunning = false;
+
+                    if (!shouldStartOver) {
+                        currentFrame = frames.size() -1;
+                    }
                 }
             }
         }
@@ -196,6 +209,20 @@ public class Animation implements Constants {
      */
     public boolean isRunning() {
         return isRunning;
+    }
+
+    /**
+     * Is animation should start over when played
+     */
+    public boolean isShouldStartOver() {
+        return shouldStartOver;
+    }
+
+    /**
+     * sets should start over var
+     */
+    public void setShouldStartOver(boolean should) {
+        this.shouldStartOver = should;
     }
 
 

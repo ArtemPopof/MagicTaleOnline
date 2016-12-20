@@ -172,13 +172,15 @@ public class ResourceManager {
         Animation botUpMoveAnim = new Animation(charSprites, 22, 8);
         Animation botDownMoveAnim = new Animation(charSprites, 0, 8);
         Animation botDeathAnim = new Animation(charSprites, 44, 5);
+        botDeathAnim.setLooped(false);
+        botDeathAnim.setShouldStartOver(false);
 
         botTestAnims.add(botWaitAnim);
         botTestAnims.add(botRightMoveAnim);
         botTestAnims.add(botLeftMoveAnim);
         botTestAnims.add(botUpMoveAnim);
         botTestAnims.add(botDownMoveAnim);
-        botTestAnims.add(deathAnim);
+        botTestAnims.add(botDeathAnim);
 
         animations.put(CharacterTypes.ABSTRACT_BOT, botTestAnims);
     }

@@ -142,10 +142,6 @@ public class Game implements Constants {
 
         objects.add(player);
 
-        // test character
-        GameCharacter testChar = new GameCharacter(300, 550, 32, 64);
-        objects.add(testChar);
-
         // test bot
         Bot testBot = new Bot(500, 400, 64, 64);
         objects.add(testBot);

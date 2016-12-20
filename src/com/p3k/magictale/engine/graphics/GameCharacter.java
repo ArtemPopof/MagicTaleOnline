@@ -1,8 +1,6 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.engine.enums.Direction;
-import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import com.p3k.magictale.map.level.LevelManager;
@@ -84,6 +82,16 @@ public class GameCharacter extends GameObject {
      *
      */
     private int currentState;
+
+    private boolean isDead = false;
+
+    /**
+     * Basic constructor for GameCharacter
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
 
     public GameCharacter(float x, float y, float width, float height) {
 
@@ -266,7 +274,7 @@ public class GameCharacter extends GameObject {
         if ((potencialEnemy = Game.getInstance().getAnyoneInCell(cellToAttack.x, cellToAttack.y)) != null) {
             if (!isAttacking) {
                 // if first frame of attack is playing
-                potencialEnemy.doHarm(getAttack());
+                potencialEnemy.takeHarm(getAttack());
             }
         }
 
@@ -300,12 +308,13 @@ public class GameCharacter extends GameObject {
      *
      * @param attackStrength
      */
-    public void doHarm(int attackStrength) {
+    public void takeHarm(int attackStrength) {
         // isn't sofisticated yet
         this.health -= attackStrength;
 
         if (health <= 0) {
             playDeath();
+            health = 0;
         }
     }
 
@@ -314,7 +323,9 @@ public class GameCharacter extends GameObject {
      * remove ourself from this game
      */
     public void playDeath() {
+
         setState(DEATH_STATE);
+        isDead = true;
     }
 
     /**
@@ -324,5 +335,11 @@ public class GameCharacter extends GameObject {
         return attack;
     }
 
+    /**
+     * return is character alive or dead
+     */
+    public boolean isDead() {
+        return isDead;
+    }
 
 }
