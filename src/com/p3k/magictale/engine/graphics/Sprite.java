@@ -35,10 +35,13 @@ public class Sprite {
         textureId = -1;
     }
 
+    public Sprite(String texturePath, float width, float height) throws IOException {
+
+    }
     // Don't use this constructor, if there are more
     // objects of that type
     //
-    public Sprite(String texturePath, float width, float height) throws IOException {
+    public Sprite(String texturePath, float width, float height, boolean flip) throws IOException {
 
         //TODO This method seems to me little slow,
         // if someone knows how to rotate image
@@ -59,8 +62,17 @@ public class Sprite {
     }
 
     public Sprite(BufferedImage rawImage, float width, float height) {
+        this(rawImage, width, height, true, false);
+    }
 
-        rawImage = flipHorizontally(rawImage);
+    public Sprite(BufferedImage rawImage, float width, float height, boolean fliph, boolean flipv) {
+
+        if ( fliph ) {
+            rawImage = flipHorizontally(rawImage);
+        }
+        if ( flipv ) {
+            rawImage = flipVerticaly(rawImage);
+        }
 
         textureId = Utils.loadTexture(rawImage);
 
@@ -114,11 +126,8 @@ public class Sprite {
             //glTexCoord2f(0, 1);
               glTexCoord2f(1, 0);
 
-
-
         }
         glEnd();
-
     }
 
     private BufferedImage flipHorizontally(BufferedImage rawImage) {
