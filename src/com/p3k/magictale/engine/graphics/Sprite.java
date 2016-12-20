@@ -130,6 +130,11 @@ public class Sprite {
                 // glTexCoord2f(0, 0);
                 glTexCoord2f(1, 1);
 
+                glVertex2f(0, -height);
+                //glTexCoord2f(0, 0);
+                //glTexCoord2f(0, 1);
+                glTexCoord2f(1, 0);
+
             }
             glEnd();
 
