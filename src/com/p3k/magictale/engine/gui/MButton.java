@@ -1,12 +1,8 @@
 package com.p3k.magictale.engine.gui;
 
 import com.p3k.magictale.engine.graphics.Sprite;
-import com.p3k.magictale.game.Game;
 
 import static org.lwjgl.opengl.GL11.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -21,24 +17,21 @@ public abstract class MButton extends MComponent {
     }
 
     protected ButtonState state = ButtonState.NORMAL;
-    protected String text = null;
+    protected MText text = null;
 
     private Runnable action = null;
 
     /**
      * Constructor for factory
-     * @param text
-     * @param x
-     * @param y
      */
-    public MButton(String text, float x, float y) {
+    public MButton(MText text, float x, float y) {
         super(null);
 
-        this.text = text;
         this.x = x;
         this.y = y;
-    }
 
+        this.text = text;
+    }
 
     // GET/SET
 
@@ -71,14 +64,24 @@ public abstract class MButton extends MComponent {
     }
 
     public String getText() {
-        return text;
+        return text.getText();
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.text.setText(text);
     }
 
     // OVERRIDES
+
+    @Override
+    public void update() {
+        int textWidth   = text.getWidth();
+        int textHeight  = text.getHeight();
+        float paddingLeft    = (this.width - textWidth) / 2;
+        float paddingTop  = (this.height - textHeight) / 2;
+
+        text.move(this.x + paddingLeft, this.y - paddingTop);
+    }
 
     @Override
     public void render() {
@@ -110,17 +113,18 @@ public abstract class MButton extends MComponent {
         {
             glTranslatef(x, y, 0);
             currentSprite.render();
-
-            // Render centered text
-
         }
         glPopMatrix();
+
+        // Render centered text
+        text.render();
     }
 
     protected void onResized() {
         normalSprite.setWidth(this.width);  normalSprite.setHeight(this.height);
-        hoveredSprite.setWidth(this.width);   hoveredSprite.setHeight(this.height);
+        hoveredSprite.setWidth(this.width); hoveredSprite.setHeight(this.height);
         pressedSprite.setWidth(this.width); pressedSprite.setHeight(this.height);
+        update();
     }
 
     // MOUSE
