@@ -11,5 +11,5 @@ public abstract class ComponentFactory {
     //public abstract MWindow createWindow();
 
     // TODO more components
-
+    public abstract  MText createText(String text);
 }
