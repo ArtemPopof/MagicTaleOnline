@@ -28,15 +28,19 @@ public class ObjectManager implements ObjectInterface {
 
     private static ObjectManager instance = null;
     private static DocumentBuilderFactory dbf = null;
-    private ObjTile[][][] objTile = null;
+//    private ObjTile[][][] objTile = null;
+    private SharedObjTile objTile = null;
     private Tile[][] tileSheet = null;
     private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
 
     private ObjectManager() throws Exception {
         groupObjects = new TreeMap<>();
         try {
-            objTile = new ObjTile[LevelManager.getInstance().getLvlWidth()]
-                    [LevelManager.getInstance().getLvlWidth()][lvlLayer];
+//            objTile = new ObjTile[LevelManager.getInstance().getLvlWidth()]
+//                    [LevelManager.getInstance().getLvlHeight()][lvlLayer];
+            objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
+                    LevelManager.getInstance().getLvlHeight(),
+                    lvlLayer);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -245,7 +249,8 @@ public class ObjectManager implements ObjectInterface {
                 insObjTile.setType(type);
                 insObjTile.setName(name);
                 insObjTile.setIdInTypeName(id);
-                objTile[x + w][lvlHeight - y - h][tile.getTileProperties().getLayer()] = insObjTile;
+//                objTile[x + w][lvlHeight - y - h][tile.getTileProperties().getLayer()] = insObjTile;
+                objTile.setObjTileByXYZ(x + w, lvlHeight - y - h, tile.getTileProperties().getLayer(), insObjTile);
             }
         }
 //        System.out.println("Type=" + insObjTile.getType()
@@ -265,10 +270,9 @@ public class ObjectManager implements ObjectInterface {
             for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
                 for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
                     for (int z = 0; z < lvlLayer; ++z) {
-                        if(objTile[x][y][z] == null) {
-                            continue;
-                        } else {
-                            objTile[x][y][z].render();
+                        ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y , z);
+                        if(waitedObjTile != null) {
+                            waitedObjTile.render();
                         }
                     }
                 }
@@ -278,14 +282,13 @@ public class ObjectManager implements ObjectInterface {
         }
     }
 
-    public void render(int Layer) {
+    public void render(int layer) {
         try {
             for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
                 for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
-                    if(objTile[x][y][Layer] == null) {
-                        continue;
-                    } else {
-                        objTile[x][y][Layer].render();
+                    ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y , layer);
+                    if(waitedObjTile != null) {
+                        waitedObjTile.render();
                     }
                 }
             }

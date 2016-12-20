@@ -4,10 +4,12 @@ import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Map.Tile;
 import com.p3k.magictale.engine.graphics.Sprite;
 
+import java.io.Serializable;
+
 /**
  * Created by COMar-PC on 19.12.2016.
  */
-public class ObjTile extends GameObject {
+public class ObjTile extends GameObject implements Serializable {
     private ObjTileProperties objTileProperties = null;
     private String type = null;
     private String name = null;
