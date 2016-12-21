@@ -35,7 +35,7 @@ public class Game implements Constants {
     private IGameObjects objects;
     private Player player;
     private Level levelManager;
-    private ObjectInterface objectManager;
+//    private ObjectInterface objectManager;
     private ResourceManager resourceManager;
     private SoundManager soundManager;
     private SoundSource bgmSound;
@@ -136,7 +136,7 @@ public class Game implements Constants {
 
         levelManager.render();
 
-        objectManager.render(1);
+        //objectManager.render(1);
 
         try {
             for (int i = 0; i < objects.size(); i++) {
