@@ -121,14 +121,15 @@ public class Game implements Constants {
     public void update() {
 
 //        levelManager.update();
-
-        try {
-            for (int i = 0; i < objects.size(); i++) {
-                GameObject object = objects.get(i);
-                object.update();
+        if (System.getenv("IP") == null) {
+            try {
+                for (int i = 0; i < objects.size(); i++) {
+                    GameObject object = objects.get(i);
+                    object.update();
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
 
         guiManager.update();

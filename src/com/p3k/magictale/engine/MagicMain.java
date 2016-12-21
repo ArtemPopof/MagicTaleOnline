@@ -91,14 +91,11 @@ public class MagicMain {
 
         long timer = System.currentTimeMillis();
         long step = 20;
-        boolean remote = System.getenv("IP") != null;
         while (isRunning && !Display.isCloseRequested()) {
 
             if (System.currentTimeMillis() - timer > step) {
                 getInput();
-                if (!remote) {
-                    update();
-                }
+                update();
                 timer += step;
             }
             render();
