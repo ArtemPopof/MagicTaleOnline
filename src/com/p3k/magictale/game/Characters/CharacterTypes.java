@@ -1,5 +1,7 @@
 package com.p3k.magictale.game.Characters;
 
+import java.io.Serializable;
+
 /**
  * All character types in game
  * if Mage character has Swordman type
@@ -8,7 +10,7 @@ package com.p3k.magictale.game.Characters;
  *
  * Created by artem96 on 06.12.16.
  */
-public enum CharacterTypes {
+public enum CharacterTypes implements Serializable {
 
     ABSTRACT_CHARACTER,
     ABSTRACT_PLAYER,

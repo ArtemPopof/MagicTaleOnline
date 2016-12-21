@@ -11,10 +11,19 @@ import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
+import com.p3k.magictale.map.objects.ObjectInterface;
+import com.p3k.magictale.map.objects.ObjectManager;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 /**
  * Game routines
@@ -23,24 +32,19 @@ import java.util.ArrayList;
 public class Game implements Constants {
     private static Game instance = null;
 
-    private ArrayList<GameObject> objects;
+    private final String mapName = "forest_v2";
+    private IGameObjects objects;
+
     private Player player;
     private Level levelManager;
-
+    private ObjectInterface objectManager;
     private ResourceManager resourceManager;
-
     private SoundManager soundManager;
     private SoundSource bgmSound;
     private SoundSource envSound;
-
     private GuiManager guiManager;
-
     private float cameraX = 0;
     private float cameraY = 0;
-
-
-    private final String mapName = "forest";
-
     private boolean isMouseMoved = false;
     private boolean isMouseLeftPressed = false;
     private boolean isMouseRightPressed = false;
@@ -50,6 +54,13 @@ public class Game implements Constants {
     private Cursor cursor;
 
     private Game() {
+        if (System.getenv("IP") == null) {
+            try {
+                LocateRegistry.createRegistry(1099);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
 
         initLevelManager();
 
@@ -66,7 +77,13 @@ public class Game implements Constants {
 
         initGuiManager();
 
-        initObjects();
+        try {
+            initObjects();
+        } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        initObjectManager();
     }
 
     public static Game getInstance() {
@@ -80,11 +97,17 @@ public class Game implements Constants {
 
     public void processInput() {
 
-        for(GameObject object : objects) {
-            if (GameCharacter.class.isInstance(object)) {
-                GameCharacter character = (GameCharacter) object;
-                character.processInput();
+        try {
+            for (int i = 0; i < objects.size(); i++) {
+                GameObject object = objects.get(i);
+
+                if (GameCharacter.class.isInstance(object)) {
+                    GameCharacter character = (GameCharacter) object;
+                    character.processInput();
+                }
             }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
 
         // Mouse handle
@@ -99,8 +122,13 @@ public class Game implements Constants {
 
 //        levelManager.update();
 
-        for (GameObject object : objects) {
-            object.update();
+        try {
+            for (int i = 0; i < objects.size(); i++) {
+                GameObject object = objects.get(i);
+                object.update();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
 
         guiManager.update();
@@ -110,9 +138,18 @@ public class Game implements Constants {
 
         levelManager.render();
 
-        for (GameObject object : objects) {
-            object.render();
+        objectManager.render(1);
+
+        try {
+            for (int i = 0; i < objects.size(); i++) {
+                GameObject object = objects.get(i);
+                object.render();
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
+
+        objectManager.render(2);
 
         guiManager.render();
     }
@@ -121,20 +158,33 @@ public class Game implements Constants {
 
     }
 
-    private void initObjects() {
-        objects = new ArrayList<>();
+    private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
+        String remoteIP = System.getenv("IP");
+        if (remoteIP == null) {
+            objects = new GameObjects();
+            Naming.bind("GameObjects", objects);
+            System.out.println("RMI backend for objects created");
+        } else {
+            Registry registry = LocateRegistry.getRegistry(remoteIP);
+            objects = (IGameObjects) registry.lookup("GameObjects");
+            System.out.println("remote objects in use");
+        }
 
-        player = new Player(100 , 520);
+        player = new Player(100, 520);
 
         objects.add(player);
-
-        // test character
-        GameCharacter testChar = new GameCharacter(300, 550, 32, 64);
-        objects.add(testChar);
 
         // test bot
         Bot testBot = new Bot(500, 400, 64, 64);
         objects.add(testBot);
+
+        // test bot
+        Bot testBot2 = new Bot(200, 354, 64, 64);
+        objects.add(testBot2);
+
+        // test bot
+        Bot testBot3 = new Bot(252, 272, 64, 64);
+        objects.add(testBot3);
 
     }
 
@@ -160,30 +210,46 @@ public class Game implements Constants {
         }
 
         // Must be moved to more appropriate place?
-        bgmSound.setLevel(0.8f).play("main_theme.wav");
-        envSound.setLevel(0.8f).play("wind.wav");
+        //  bgmSound.setLevel(0.8f).play("main_theme.wav");
+        //  envSound.setLevel(0.8f).play("wind.wav");
     }
 
-    private void initLevelManager(){
-        try{
-        resourceManager=ResourceManager.getInstance();
-        }catch(Exception e){
-        e.printStackTrace();
+    private void initLevelManager() {
+        try {
+            resourceManager = ResourceManager.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        try{
-        levelManager=LevelManager.getInstance();
-        }catch(Exception e){
-        System.err.println("Error initializing levelManager manager: "+e);
+        try {
+            levelManager = LevelManager.getInstance();
+        } catch (Exception e) {
+            System.err.println("Error initializing levelManager manager: " + e);
         }
-        try{
-        levelManager.load(mapName,resourceManager);
-        }catch(Exception e){
-        System.err.println("Error render levelManager manager: "+e);
+
+        try {
+            levelManager.load(mapName, resourceManager);
+        } catch (Exception e) {
+            System.err.println("Error render levelManager manager: " + e);
         }
     }
+
+    private void initObjectManager() {
+        try {
+            objectManager = ObjectManager.getInstance();
+        } catch (Exception e) {
+            System.err.println("Error initializing levelManager manager: " + e);
+        }
+
+        try {
+            objectManager.load(mapName, resourceManager);
+        } catch (Exception e) {
+            System.err.println("Error render levelManager manager: " + e);
+        }
+    }
+
     public void initGuiManager() {
-        guiManager = new GuiManager();
+        guiManager = new GuiManager(player);
     }
 
     public Level getLevelManager() {
@@ -226,4 +292,70 @@ public class Game implements Constants {
     public boolean isButtonPressed(int button) {
         return Mouse.isButtonDown(button);
     }
+
+    /**
+     * Is anyone is now in given cell
+     */
+    public boolean isAnyoneInCell(int cellX, int cellY) {
+
+        try {
+            for (int i = 0; i < objects.size(); i++) {
+                GameObject object = objects.get(i);
+                if (!GameCharacter.class.isInstance(object))
+                    continue;
+
+                GameCharacter character = (GameCharacter) object;
+
+                Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
+                if (characterPoint.x == cellX && characterPoint.y == cellY) {
+                    return true;
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    /**
+     * Return who is now in given cell
+     */
+    public GameCharacter getAnyoneInCell(int cellX, int cellY) {
+
+        try {
+            for (int i = 0; i < objects.size(); i++) {
+                GameObject object = objects.get(i);
+                if (!GameCharacter.class.isInstance(object))
+                    continue;
+
+                GameCharacter character = (GameCharacter) object;
+
+                Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
+                if (characterPoint.x == cellX && characterPoint.y == cellY) {
+                    return character;
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * return array of Game Objects
+     */
+    public IGameObjects getObjects() {
+        return objects;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
 }

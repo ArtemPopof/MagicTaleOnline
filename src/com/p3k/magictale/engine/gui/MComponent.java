@@ -1,8 +1,5 @@
 package com.p3k.magictale.engine.gui;
 
-import sun.font.TrueTypeFont;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +7,8 @@ import java.util.List;
  * Created by jorgen on 06.12.16.
  */
 public abstract class MComponent {
-    private static final int MIN_HEIGHT = 20;
-    private static final int MIN_WIDTH = 20;
+    protected static final int MIN_HEIGHT = 20;
+    protected static final int MIN_WIDTH = 20;
 
     protected MComponent parent;
     protected List<MComponent> children;
@@ -47,6 +44,7 @@ public abstract class MComponent {
         this.x = x;
         this.y = y;
 
+
         return this;
     }
 
@@ -64,6 +62,19 @@ public abstract class MComponent {
         children.add(child);
         child.setParent(this);
 
+        this.update();
+
+        return this;
+    }
+
+    public MComponent putAll(ArrayList<MComponent> children) {
+        children.forEach(child -> {
+            child.setParent(this);
+            this.children.add(child);
+        });
+
+        this.update();
+
         return this;
     }
 
@@ -78,6 +89,8 @@ public abstract class MComponent {
 
     public MComponent removeChild(MComponent child) {
         children.remove(child);
+
+        update();
 
         return this;
     }
@@ -126,7 +139,7 @@ public abstract class MComponent {
     }
 
     public void setX(float x) {
-        this.x = x;
+        this.move(x, y);
     }
 
     public float getY() {
@@ -134,7 +147,7 @@ public abstract class MComponent {
     }
 
     public void setY(float y) {
-        this.y = y;
+        this.move(x, y);
     }
 
     public int getWidth() {

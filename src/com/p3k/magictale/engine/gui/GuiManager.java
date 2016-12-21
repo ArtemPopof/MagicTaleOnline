@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.gui;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.game.Game;
 import org.lwjgl.input.Mouse;
 
@@ -13,20 +14,47 @@ import static org.lwjgl.opengl.GL11.*;
  * Created by jorgen on 13.12.16.
  */
 public class GuiManager implements Constants {
-    ComponentFactory factory;
-    Map<String, MComponent> objects;
 
-    public GuiManager() {
+    private ComponentFactory factory;
+    private Map<String, MComponent> objects;
+
+    private Player player; // An user of all this stuff
+
+    public GuiManager(Player player) {
+        this.player = player;
+
         objects = new HashMap<>();
         factory = new StdComponentFactory();
 
-        MButton hello = factory.createButton("Hello, button!", 50.0f, 140.0f);
-        hello.resize(54, 18);
-        MButton goodbye = factory.createButton("Goodbye, button!", 50.0f, 100.0f);
-        goodbye.resize(54, 18);
+        createHud();
+    }
 
-        objects.put("hello", hello);
-        objects.put("goodbye", goodbye);
+    /**
+     * Creates all top level
+     * widgets (HUD)
+     */
+    private void createHud() {
+
+        // Status bar
+        StatusBar statusBar = factory.createStatusBar(player);
+        statusBar.resize((int) (statusBar.getWidth() * 1.5f), (int) (statusBar.getHeight() * 1.5f));
+        statusBar.move(8, WINDOW_HEIGHT - 8);
+
+        // Action bar
+        ActionBar actionBar = factory.createActionBar(player);
+        actionBar.resize((int) (actionBar.getWidth() * 1.5f), (int) (actionBar.getHeight() * 1.5f));
+        actionBar.move(((WINDOW_WIDTH - actionBar.getWidth()) / 2), actionBar.getHeight() + 5);
+
+        // Player menu
+        PlayerMenu playerMenu = factory.createPlayerMenu();
+        playerMenu.setHeight((int) (playerMenu.height * 1.5));
+        playerMenu.move(WINDOW_WIDTH - playerMenu.getWidth(), playerMenu.getHeight());
+
+        // Inventory
+
+        objects.put("statusBar", statusBar);
+        objects.put("actionBar", actionBar);
+        objects.put("playerMenu", playerMenu);
     }
 
     public void render() {

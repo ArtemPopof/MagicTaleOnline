@@ -127,27 +127,38 @@ public class ResourceManager {
 
         //next
 
-        SpriteSheet playerSprites = new SpriteSheet("res/animation/prof/play_prof.png", 64, 64);
-
         ArrayList<Animation> playerTestAnims = new ArrayList<>();
 
-        Animation waitAnim = new Animation(playerSprites, 18, 1);
-        Animation rightMoveAnim = new Animation(playerSprites, 27, 9);
-        Animation leftMoveAnim = new Animation(playerSprites, 9, 9);
-        Animation upMoveAnim = new Animation(playerSprites, 0, 9);
-        Animation downMoveAnim = new Animation(playerSprites, 18, 9);
-     //   Animation deathAnim = new Animation(playerSprites, 44, 5);
+        Animation waitAnim = new Animation(charSprites, 0, 1);
+        Animation rightMoveAnim = new Animation(charSprites, 11, 8);
+        Animation leftMoveAnim = new Animation(charSprites, 33, 7);
+        Animation upMoveAnim = new Animation(charSprites, 22, 7);
+        Animation downMoveAnim =new Animation(charSprites, 0, 7);
+        Animation deathAnim = new Animation(charSprites, 44, 5);
 
-
-        //  Animation moveAnim = new Animation("res/animation/bigfoot/bigfoot_move",
-       //         0, 5, 64, 64);
+        Animation leftAttackAnim = new Animation(charSprites, 40, 3);
+        leftAttackAnim.setLooped(false);
+        Animation upAttackAnim = new Animation(charSprites, 29, 3);
+        upAttackAnim.setLooped(false);
+        Animation rightAttackAnim = new Animation(charSprites, 18, 3);
+        rightAttackAnim.setLooped(false);
+        Animation downAttackAnim = new Animation(charSprites, 7, 3);
+        downAttackAnim.setLooped(false);
 
         playerTestAnims.add(waitAnim);
         playerTestAnims.add(rightMoveAnim);
         playerTestAnims.add(leftMoveAnim);
         playerTestAnims.add(upMoveAnim);
         playerTestAnims.add(downMoveAnim);
-    //    playerTestAnims.add(deathAnim);
+        playerTestAnims.add(deathAnim);
+
+        playerTestAnims.add(leftAttackAnim);
+        playerTestAnims.add(upAttackAnim);
+        playerTestAnims.add(rightAttackAnim);
+        playerTestAnims.add(downAttackAnim);
+
+
+        //    playerTestAnims.add(deathAnim);
 
         animations.put(CharacterTypes.ABSTRACT_PLAYER, playerTestAnims);
 
@@ -160,12 +171,30 @@ public class ResourceManager {
         Animation botLeftMoveAnim = new Animation(charSprites, 33, 8);
         Animation botUpMoveAnim = new Animation(charSprites, 22, 8);
         Animation botDownMoveAnim = new Animation(charSprites, 0, 8);
+        Animation botDeathAnim = new Animation(charSprites, 44, 5);
+        botDeathAnim.setLooped(false);
+        botDeathAnim.setShouldStartOver(false);
+
+        Animation botLeftAttackAnim = new Animation(charSprites, 40, 3);
+        leftAttackAnim.setLooped(false);
+        Animation botUpAttackAnim = new Animation(charSprites, 29, 3);
+        upAttackAnim.setLooped(false);
+        Animation botRightAttackAnim = new Animation(charSprites, 18, 3);
+        rightAttackAnim.setLooped(false);
+        Animation botDownAttackAnim = new Animation(charSprites, 7, 3);
+        downAttackAnim.setLooped(false);
 
         botTestAnims.add(botWaitAnim);
         botTestAnims.add(botRightMoveAnim);
         botTestAnims.add(botLeftMoveAnim);
         botTestAnims.add(botUpMoveAnim);
         botTestAnims.add(botDownMoveAnim);
+        botTestAnims.add(botDeathAnim);
+
+        botTestAnims.add(botLeftAttackAnim);
+        botTestAnims.add(botUpAttackAnim);
+        botTestAnims.add(botRightAttackAnim);
+        botTestAnims.add(botDownAttackAnim);
 
         animations.put(CharacterTypes.ABSTRACT_BOT, botTestAnims);
     }

@@ -1,4 +1,4 @@
-package com.p3k.magictale.engine.graphics;
+package com.p3k.magictale.engine.graphics.Map;
 
 /**
  * Created by COMar-PC on 13.12.2016.

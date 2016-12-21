@@ -4,19 +4,22 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.Game;
 import org.lwjgl.input.Keyboard;
 
+import java.io.Serializable;
+
 /**
  * Created by artem96 on 04.12.16.
  */
-public class Player extends GameCharacter implements Constants{
+public class Player extends GameCharacter implements Constants, Serializable {
 
     private float xp;
 
-    private SoundSource mainSound;
-    private SoundSource attackSound;
+    //private SoundSource mainSound;
+    //private SoundSource attackSound;
 
 
     public Player(float x, float y) {
@@ -44,12 +47,12 @@ public class Player extends GameCharacter implements Constants{
 
         xp = 0;
 
-        initSounds();
+        //initSounds();
 
         //SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
     }
 
-    private void initSounds() {
+    /*private void initSounds() {
 
         try {
             mainSound = new SoundSource(null, true);
@@ -60,19 +63,19 @@ public class Player extends GameCharacter implements Constants{
             System.err.println("Error initializing sound for player!");
         }
 
-        if ( mainSound != null ) {
+        if (mainSound != null) {
             mainSound.play("user/baphomet_breath.wav");
         }
 
-    }
+    }*/
 
     @Override
     public void update() {
         super.update();
 
         //TODO do not left it undone
-        this.x = 800/2 + Game.getInstance().getCameraX();
-        this.y = 600/2 + Game.getInstance().getCameraY();
+        this.x = 800 / 2 + Game.getInstance().getCameraX();
+        this.y = 600 / 2 + Game.getInstance().getCameraY();
 
     }
 
@@ -105,7 +108,16 @@ public class Player extends GameCharacter implements Constants{
             isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            attackSound.play("user/attack_axe.wav");
+            //attackSound.play("user/attack_axe.wav");
+        }
+
+        // mouse events
+        if (Game.getInstance().isButtonPressed(MOUSE_BTN_LEFT)) {
+            doAttack();
+        }
+
+        if (isAttacking) {
+            isStateChanged = true;
         }
 
         // if nothing happens with player, then wait
@@ -119,6 +131,9 @@ public class Player extends GameCharacter implements Constants{
     // move player according to given params
     protected void move(float magX, float magY) {
 
+        if (isAttacking)
+            isAttacking = false;
+
         float deltaX = magX * getSpeed();
         float deltaY = magY * getSpeed();
 
@@ -128,8 +143,18 @@ public class Player extends GameCharacter implements Constants{
         float oldX = Game.getInstance().getCameraX();
         float oldY = Game.getInstance().getCameraY();
 
-        Game.getInstance().setCameraX(oldX + deltaX);
-        Game.getInstance().setCameraY(oldY + deltaY);
+        this.setX(x + deltaX);
+        this.setY(y + deltaY);
+
+        if (Collision.checkForCollision(this)) {
+            // freeze! collision!
+            this.setX(x - deltaX);
+            this.setY(y - deltaY);
+        } else {
+            Game.getInstance().setCameraX(oldX + deltaX);
+            Game.getInstance().setCameraY(oldY + deltaY);
+        }
+
 
     }
 

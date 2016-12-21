@@ -2,6 +2,7 @@ package com.p3k.magictale.engine;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.Serializable;
 
 /**
  * Основные константы, определяющую конфигурацию движка.
@@ -14,13 +15,13 @@ import java.awt.Toolkit;
  * @author Артём Попов
  * @version 0.1
  */
-public interface Constants {
+public interface Constants extends Serializable {
 
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
     public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 
-    public static final int WINDOW_WIDTH = 600;
+    public static final int WINDOW_WIDTH = 800;
     public static final int WINDOW_HEIGHT = WINDOW_WIDTH * 9 / 16;
     public static final Dimension WINDOW_SIZE = new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT);
 

@@ -3,20 +3,20 @@ package com.p3k.magictale.engine.graphics;
 import com.p3k.magictale.game.Game;
 import com.p3k.magictale.engine.enums.Direction;
 
+import java.io.Serializable;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
  * GameObject
  *
- * Repreresnts some dynamic object with
- * animations, states, etc
- *
+ * Some object in game
  * NPC, Player, or Bullet class should
  * be derived from this one.
  *
  * Created by artem96 on 03.12.16.
  */
-public class GameObject {
+public class GameObject implements Serializable {
     protected float x;
     protected float y;
 
@@ -66,7 +66,7 @@ public class GameObject {
      * @return
      */
     public float getRealX() {
-        return x;
+        return x + getWidth()/2;
     }
 
     /**
@@ -75,7 +75,7 @@ public class GameObject {
      * @return
      */
     public float getRealY() {
-        return y - getHeight()/2;
+        return y;
     }
 
     public float getY() {
@@ -102,6 +102,10 @@ public class GameObject {
     public void setHeight(float height) {
         sprite.setHeight(height);
     }
+
+    public Sprite getSprite() { return sprite; }
+
+    protected void setSprite(Sprite sprite) { this.sprite = sprite; }
 
     protected void init(float x, float y, float width, float height) {
         this.x = x;
@@ -135,6 +139,13 @@ public class GameObject {
      */
     public Direction getDirection() {
         return direction;
+    }
+
+    /**
+     * Debug method. Just remove sprite from object
+     */
+    public void removeSprite() {
+        sprite = new Sprite(1f, 0, 0, getWidth(), getHeight());
     }
 
 }

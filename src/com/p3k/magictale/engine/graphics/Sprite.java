@@ -8,13 +8,14 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by artem96 on 03.12.16.
  */
-public class Sprite {
+public class Sprite implements Serializable {
 
     private float r, g, b;
 
@@ -22,6 +23,12 @@ public class Sprite {
     private float height;
 
     private int textureId;
+
+    /**
+     * Is sprite has texture or
+     * it will be filled by color
+     */
+    private boolean isTextured = true;
 
 
     public Sprite(float r, float g, float b, float width, float height) {
@@ -33,12 +40,16 @@ public class Sprite {
         this.height = height;
 
         textureId = -1;
+        isTextured = false;
     }
 
+    public Sprite(String texturePath, float width, float height) throws IOException {
+
+    }
     // Don't use this constructor, if there are more
     // objects of that type
     //
-    public Sprite(String texturePath, float width, float height) throws IOException {
+    public Sprite(String texturePath, float width, float height, boolean flip) throws IOException {
 
         //TODO This method seems to me little slow,
         // if someone knows how to rotate image
@@ -59,8 +70,17 @@ public class Sprite {
     }
 
     public Sprite(BufferedImage rawImage, float width, float height) {
+        this(rawImage, width, height, true, false);
+    }
 
-        rawImage = flipHorizontally(rawImage);
+    public Sprite(BufferedImage rawImage, float width, float height, boolean fliph, boolean flipv) {
+
+        if ( fliph ) {
+            rawImage = flipHorizontally(rawImage);
+        }
+        if ( flipv ) {
+            rawImage = flipVerticaly(rawImage);
+        }
 
         textureId = Utils.loadTexture(rawImage);
 
@@ -90,34 +110,37 @@ public class Sprite {
 
     public void render() {
 
-        glBindTexture(GL_TEXTURE_2D, textureId);
+            if (!isTextured)
+                glColor3f(r, g, b);
+            else
+                glColor4f(1f, 1f, 1f, 1f);
 
-        glBegin(GL_QUADS); {
+            glBindTexture(GL_TEXTURE_2D, textureId);
 
-            glVertex2f(0, 0);
-            //glTexCoord2f(0, 1);
-            //glTexCoord2f(1, 1);
-            glTexCoord2f(0, 0);
+            glBegin(GL_QUADS); {
 
-            glVertex2f(width, 0);
-           // glTexCoord2f(1, 1);
-           // glTexCoord2f(1, 0);
-              glTexCoord2f(0, 1);
+                glVertex2f(0, 0);
+                //glTexCoord2f(0, 1);
+                //glTexCoord2f(1, 1);
+                glTexCoord2f(0, 0);
 
-            glVertex2f(width, -height);
-           // glTexCoord2f(1, 0);
-           // glTexCoord2f(0, 0);
-              glTexCoord2f(1, 1);
+                glVertex2f(width, 0);
+                // glTexCoord2f(1, 1);
+                // glTexCoord2f(1, 0);
+                glTexCoord2f(0, 1);
 
-            glVertex2f(0, -height);
-            //glTexCoord2f(0, 0);
-            //glTexCoord2f(0, 1);
-              glTexCoord2f(1, 0);
+                glVertex2f(width, -height);
+                // glTexCoord2f(1, 0);
+                // glTexCoord2f(0, 0);
+                glTexCoord2f(1, 1);
 
+                glVertex2f(0, -height);
+                //glTexCoord2f(0, 0);
+                //glTexCoord2f(0, 1);
+                glTexCoord2f(1, 0);
 
-
-        }
-        glEnd();
+            }
+            glEnd();
 
     }
 

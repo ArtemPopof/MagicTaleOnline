@@ -1,25 +1,19 @@
 package com.p3k.magictale.map.level;
 
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.engine.MagicMain;
-import com.p3k.magictale.engine.graphics.GameObject;
-import com.p3k.magictale.engine.graphics.ResourceManager;
-import com.p3k.magictale.engine.graphics.Sprite;
-import com.p3k.magictale.engine.graphics.TileObject;
-import com.p3k.magictale.engine.graphics.TileProperties;
-import com.p3k.magictale.engine.graphics.TileMap;
-import com.p3k.magictale.game.Game;
+import com.p3k.magictale.engine.graphics.*;
+import com.p3k.magictale.engine.graphics.Map.TileMap;
+import com.p3k.magictale.engine.graphics.Map.Tile;
+import com.p3k.magictale.engine.graphics.Map.TileProperties;
+import com.p3k.magictale.engine.graphics.Objects.GroupObject;
+import com.p3k.magictale.map.XmlParser;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Arrays;
-
-import static org.lwjgl.opengl.GL11.*;
+import java.util.TreeMap;
 
 // TODO Static constant
 
@@ -27,20 +21,26 @@ public class LevelManager implements Level {
     private static LevelManager instance = null;
     private static DocumentBuilderFactory dbf = null;
     private static final String LEVEL_DIR = "res/map/levels/";
+    // TODO Add to constants. Delete it
+    public static String getLevelDir() {
+        return LEVEL_DIR;
+    }
+
     String mapName = "forest";
     String pathName = "res/map/levels/lvl_forest.tmx";
-//    private ArrayList<Sprite> sprites = null;
-//    private ArrayList<TileObject> tileObjects = null;
+    //    private ArrayList<Sprite> sprites = null;
+//    private ArrayList<Tile> tileObjects = null;
     private int lvlHeight = 0;
     private int lvlWidth = 0;
     private TileMap[][] tileMap = null;
-//    private LinkedList<TileObject> tileMap[][] = null;
+    private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
+//    private LinkedList<Tile> tileMap[][] = null;
 
 
     private LevelManager() throws Exception {
 //        sprites = new ArrayList<>();
 //        tileObjects = new ArrayList<>();
-//        LinkedList<TileObject>[][] tileMap = new LinkedList[48][32];
+//        LinkedList<Tile>[][] tileMap = new LinkedList[48][32];
 
         try {
             dbf = DocumentBuilderFactory.newInstance();
@@ -58,6 +58,12 @@ public class LevelManager implements Level {
     }
 
     public void load(String mapName, ResourceManager resourceManager) {
+        groupObjects = new TreeMap<>();
+        TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
+        ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
+
+        System.out.println("HERE Lvl load");
+
         XmlParser xml = null;
         try {
             xml = new XmlParser(dbf, LEVEL_DIR + "lvl_" + mapName + ".tmx");
@@ -66,12 +72,11 @@ public class LevelManager implements Level {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ArrayList<String> spriteSheetPaths = null;
-        if (xml != null) {
-            spriteSheetPaths = xml.getSpriteSheetPaths();
-        }
 
-        System.out.println("HERE Load");
+//        ArrayList<String> spriteSheetPaths = null;
+//        if (xml != null) {
+//            spriteSheetPaths = xml.getSpriteSheetPaths();
+//        }
         try {
             int firstId = 5000;
 //            for (String spriteSheetPath:
@@ -97,43 +102,31 @@ public class LevelManager implements Level {
         tileMap = new TileMap[lvlWidth][lvlHeight];
 
         //System.out.println(layerGrContext);
-        for (int h = lvlHeight-1, id = 0; 0 <= h; h--) {
+        --lvlHeight;
+        for (int h = lvlHeight, id = 0; 0 <= h; h--) {
+//        for (int h = 0, id = 0; 0 <= lvlHeight - 1; h++) {
             for (int w = 0; w < lvlWidth; w++) {
                 // TODO Replace it like: (Now for debug)
                 // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
                 // WIDTH_CONST, HEIGHT_CONST));
                 int idInSprSh = Integer.parseInt(layerGrContext.get(id)) - 1;
+                if (idInSprSh == -1) {
+                    ++id;
+                    continue;
+                }
                 int idInGl = resourceManager.getTexture(idInSprSh + 5000);
                 Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
                 //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
-//                sprites.add(sprite);
-                tileMap[w][h] = new TileMap();
-                tileMap[w][h].getTileObjects().add(new TileObject(sprite, w * sprWidth, h * sprHeight,
+                tileMap[w][lvlHeight - h] = new TileMap();
+                tileMap[w][lvlHeight - h].getTiles().add(new Tile(sprite, w * sprWidth, h * sprHeight,
                         lvlTilesProperties.get(idInSprSh)));
-//                tileObjects.add(new TileObject(sprite, w * sprWidth, h * sprHeight, lvlTilesProperties.get(idInSprSh)));
                 id++;
-                if (id == 1580)
-                    System.out.print(" ");
             }
         }
-//        for (int h = 0, id = 0; h < lvlHeight * sprHeight; h += sprHeight) {
-//            for (int w = 0; w < lvlWidth * sprWidth; w += sprWidth) {
-//                // TODO Replace it like: (Now for debug)
-//                // sprites.add(new Sprite(resourceManager.getTexture(Integer.parseInt(id) + LVL_CONST),
-//                // WIDTH_CONST, HEIGHT_CONST));
-//                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) + 4999;
-//                int idInGl = resourceManager.getTexture(idInSprSh);
-//                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-//                System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
-//
-//                sprites.add(sprite);
-//                tileObjects.add(new TileObject(sprite, w, h));
-//                id++;
-//                if (id == 1580)
-//                    System.out.print(" ");
-//            }
-//        }
+        ++lvlHeight;
+
+        System.out.println("HERE Lvl loaded");
     }
 
     /**
@@ -160,19 +153,42 @@ public class LevelManager implements Level {
 
     }
 
+    /**
+     * return tile coordinates.
+     *
+     * Upper left corner will be returned.
+     *
+     * @return
+     */
+    public static Point getCoordinatesByTile(Point tile) {
+
+        int tileX = tile.x * Constants.MAP_TILE_SIZE;
+        int tileY = tile.y * Constants.MAP_TILE_SIZE;
+
+        return new Point(tileX, tileY);
+    }
+
     public void render() {
-//        for (TileObject object : tileObjects) {
+//        for (Tile object : tileObjects) {
 //
 //            object.render();
 //
 //        }
         for (int y = 0; y < lvlHeight; ++y) {
             for (int x = 0; x < lvlWidth; ++x) {
-                for (TileObject object : tileMap[x][y].getTileObjects()) {
+                for (Tile object : tileMap[x][y].getTiles()) {
                     object.render();
                 }
             }
         }
+    }
+
+    public int getLvlHeight() {
+        return lvlHeight;
+    }
+
+    public int getLvlWidth() {
+        return lvlWidth;
     }
 
     /**
