@@ -160,11 +160,11 @@ public class Game implements Constants {
         String remoteIP = System.getenv("IP");
         if (remoteIP == null) {
             objects = new GameObjects();
-            Naming.bind("objects", objects);
+            Naming.bind("GameObjects", objects);
             System.out.println("RMI backend for objects created");
         } else {
             Registry registry = LocateRegistry.getRegistry(remoteIP);
-            objects = (GameObjects) registry.lookup("objects");
+            objects = (GameObjects) registry.lookup("GameObjects");
             System.out.println("remote objects in use");
         }
 
