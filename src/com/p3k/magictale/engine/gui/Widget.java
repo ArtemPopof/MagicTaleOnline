@@ -54,27 +54,10 @@ public class Widget extends MComponent {
 
     @Override
     public void onMouseOver() {
-        children.forEach(child -> {
-            if ( child.isPointBelongs(
-                    (int) (Mouse.getX() - this.x),
-                    (int) (Mouse.getY() - this.y)) ) {
-                child.setHovered(true);
-                onMouseOver();
-            }
-        });
     }
 
     @Override
     public void onMouseOut() {
-        children.forEach(child -> {
-            if ( child.isPointBelongs(
-                    (int) (Mouse.getX() - this.x),
-                    (int) (Mouse.getY() - this.y)) ) {
-                child.setHovered(false);
-                child.setPressed(false);
-                child.onMouseOut();
-            }
-        });
     }
 
     @Override
@@ -83,13 +66,17 @@ public class Widget extends MComponent {
             if ( child.isPointBelongs(
                     (int) (Mouse.getX() - this.x),
                     (int) (Mouse.getY() - this.y)) ) {
-                child.onMouseMove();
-            } else {
-                if ( child.isHovered() || child.isPressed() ) {
-                    child.setHovered(false);
-                    child.setPressed(false);
-                    child.onMouseOut();
+
+                // That element has already been over'ed
+                if ( child.isHovered() ) {
+                    child.onMouseMove();
+                } else {
+                    child.setHovered(true);
+                    child.onMouseOver();
                 }
+            } else if ( child.isHovered() ) { // Mouse not on object yet
+                child.setHovered(false);
+                child.onMouseOut();
             }
         });
     }

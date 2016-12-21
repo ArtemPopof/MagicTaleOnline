@@ -5,6 +5,7 @@ import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.game.Game;
 import org.lwjgl.input.Mouse;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import static org.lwjgl.opengl.GL11.*;
 /**
  * Created by jorgen on 13.12.16.
  */
-public class GuiManager implements Constants {
+public class GuiManager extends MComponent implements Constants {
 
     private ComponentFactory factory;
     private Map<String, MComponent> objects;
@@ -21,6 +22,8 @@ public class GuiManager implements Constants {
     private Player player; // An user of all this stuff
 
     public GuiManager(Player player) {
+        super(null);
+
         this.player = player;
 
         objects = new HashMap<>();
@@ -52,11 +55,12 @@ public class GuiManager implements Constants {
 
         // Inventory
 
-        objects.put("statusBar", statusBar);
-        objects.put("actionBar", actionBar);
-        objects.put("playerMenu", playerMenu);
+        this.put("statusBar", statusBar);
+        this.put("actionBar", actionBar);
+        this.put("playerMenu", playerMenu);
     }
 
+    @Override
     public void render() {
 
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -68,53 +72,85 @@ public class GuiManager implements Constants {
         });
     }
 
+    @Override
     public void update() {
-
-        MComponent obj;
 
         // MOUSE MOVE
         if ( Game.getInstance().isMouseMoved() ) {
-            for ( String key : objects.keySet() ) {
-                obj = objects.get(key);
+            for ( MComponent child : children) {
 
-                if ( obj.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
+                if ( child.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
 
                     // That element has already been over'ed
-                    if ( obj.isHovered() ) {
-                        obj.onMouseMove();
+                    if ( child.isHovered() ) {
+                        child.onMouseMove();
                     } else {
-                        obj.setHovered(true);
-                        obj.onMouseOver();
+                        child.setHovered(true);
+                        child.onMouseOver();
                     }
-                } else if ( obj.isHovered() ) { // Mouse not on object yet
-                    obj.setHovered(false);
-                    obj.onMouseOut();
+                } else if ( child.isHovered() ) { // Mouse not on object yet
+                    child.setHovered(false);
+                    child.onMouseOut();
                 }
             }
         }
 
         // MOUSE PRESSED
         if ( Game.getInstance().isMousePressed() ) {
-            for ( String key : objects.keySet() ) {
+            for ( MComponent child : children ) {
 
-                obj = objects.get(key);
-
-                if ( obj.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
-                    obj.setPressed(true);
-                    obj.onMousePressed();
+                if ( child.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
+                    child.setPressed(true);
+                    child.onMousePressed();
                 }
             }
         } else if ( Game.getInstance().isMouseReleased() ) {
-            for ( String key : objects.keySet() ) {
+            for ( MComponent child : children ) {
 
-                obj = objects.get(key);
-
-                if ( obj.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
-                    obj.setPressed(false);
-                    obj.onMouseReleased();
+                if ( child.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
+                    child.setPressed(false);
+                    child.onMouseReleased();
                 }
             }
         }
+
+    }
+
+    public MComponent put(String name, MComponent child) {
+        this.objects.put(name, child);
+        this.children.add(child);
+        child.setParent(this);
+
+        return this;
+    }
+
+    @Override
+    protected void onResized() {
+
+    }
+
+    @Override
+    public void onMouseOver() {
+
+    }
+
+    @Override
+    public void onMouseOut() {
+
+    }
+
+    @Override
+    public void onMouseMove() {
+
+    }
+
+    @Override
+    public void onMousePressed() {
+
+    }
+
+    @Override
+    public void onMouseReleased() {
 
     }
 

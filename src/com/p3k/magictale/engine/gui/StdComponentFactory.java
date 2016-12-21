@@ -133,6 +133,9 @@ public class StdComponentFactory extends ComponentFactory {
         map.resize(24, 18);
         Button mainMenu  = this.createButtonSmall(mainMenuButton, 0, 0);
         mainMenu.resize(24, 18);
+        mainMenu.setAction(() -> {
+            System.exit(0);
+        });
 
         buttons.add(character);
         buttons.add(inventory);
