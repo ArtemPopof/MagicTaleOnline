@@ -2,6 +2,7 @@ package com.p3k.magictale.map.objects;
 
 import com.p3k.magictale.engine.graphics.Objects.ObjTile;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -15,11 +16,11 @@ public class SharedObjTile extends UnicastRemoteObject {
         objTile = new ObjTile[x][y][z];
     }
 
-    public ObjTile getObjTileByXYZ(int x, int y, int z) {
+    public ObjTile getObjTileByXYZ(int x, int y, int z) throws RemoteException {
         return objTile[x][y][z];
     }
 
-    public void setObjTileByXYZ(int x, int y, int z, ObjTile objTile) {
+    public void setObjTileByXYZ(int x, int y, int z, ObjTile objTile) throws RemoteException {
         this.objTile[x][y][z] = objTile;
     }
 }
