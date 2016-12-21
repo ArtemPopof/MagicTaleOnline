@@ -8,7 +8,7 @@ import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Game;
-import com.p3k.magictale.game.GameObjects;
+import com.p3k.magictale.game.IGameObjects;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
@@ -17,10 +17,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- *
  * Just player class with auto-pilot mode =)
- *
- *
+ * <p>
+ * <p>
  * Created by artem96 on 12.12.16.
  */
 public class Bot extends GameCharacter {
@@ -44,16 +43,10 @@ public class Bot extends GameCharacter {
      * Bot has the target, so find a way to destroy it
      */
     private static final int BOT_TARGETSPOTED_STATE = 2;
-
-
-    private int currentBotState;
-
     /**
      * How many keyboard keys will be emulated
-     *
      */
     private static final int EMULATED_KEYS = 10;
-
     /**
      * Keys for emulation of pressing
      */
@@ -61,72 +54,58 @@ public class Bot extends GameCharacter {
     private static final int KEY_S = 1;
     private static final int KEY_A = 2;
     private static final int KEY_D = 3;
-
     private static final int KEY_SPACE = 4;
-
+    //Spotted enemy
+    GameCharacter spottedEnemy;
+    private int currentBotState;
     private boolean[] keysState;
-
     // bot can see you if you
     // in this imaginary circle
     // units is tiles
     private int visionRadius;
-
     // how far bot can see in
     // cells
     private int visionCellRadius;
-
     /**
      * If not aggressive, then bot
      * will be attack you only if
      * you trying to hurt him.
-     *
      */
     private boolean isAggressive;
-
     /**
      * Just a random generator
      */
     private Random random;
-
     /**
      * Patruling mode variables
      */
 
     private float destinationX;
     private float destinationY;
-
     /**
      * path to target
      */
     private ArrayList<Point> pathToTarget;
-
     /**
      * Next cell to go
      */
     private int nextCellInPath;
-
     /**
      * Waiting mode variables
      */
 
     private int framesToWait;
-
-
     //TODO remove nah
     //TEMPORARY OBJECT
     private boolean[][] field;
 
-    //Spotted enemy
-    GameCharacter spottedEnemy ;
-
 
     /**
-     *
      * Basic constructor for bot, almost like GameCharacter one
      *
-     * @param x x coord of bot
-     * @param y y coord of bot
-     * @param width width of bot
+     * @param x      x coord of bot
+     * @param y      y coord of bot
+     * @param width  width of bot
      * @param height height of bot
      */
 
@@ -222,7 +201,7 @@ public class Bot extends GameCharacter {
                 setDirection(Direction.RIGHT);
                 isSomethingHappens = true;
             }
-            if (isKeyDown(KEY_SPACE)){
+            if (isKeyDown(KEY_SPACE)) {
                 // nothing's here yet
             }
 
@@ -252,7 +231,7 @@ public class Bot extends GameCharacter {
 
         // here will be simulation of bot virtual brain
 
-        if (spottedEnemy==null && isAggressive && isAnyoneNotFriendlyAround()) {
+        if (spottedEnemy == null && isAggressive && isAnyoneNotFriendlyAround()) {
             setBotState(BOT_TARGETSPOTED_STATE);
         }
 
@@ -283,8 +262,8 @@ public class Bot extends GameCharacter {
 
         // estimate distance from target
 
-        int deltaX =  (Math.abs(spottedEnemyCell.x - botCell.x));
-        int deltaY =  (Math.abs(spottedEnemyCell.y - botCell.y));
+        int deltaX = (Math.abs(spottedEnemyCell.x - botCell.x));
+        int deltaY = (Math.abs(spottedEnemyCell.y - botCell.y));
 
         int heuristicDistanceFromTarget = deltaX + deltaY;
 
@@ -338,6 +317,7 @@ public class Bot extends GameCharacter {
         }
 
     }
+
     /**
      * Just walk around the current spot in
      * random manner
@@ -348,8 +328,8 @@ public class Bot extends GameCharacter {
             // state has been changed just now
             // so generate random destination to follow
 
-            int randomX = random.nextInt( visionRadius * 2);
-            int randomY = random.nextInt( visionRadius * 2);
+            int randomX = random.nextInt(visionRadius * 2);
+            int randomY = random.nextInt(visionRadius * 2);
 
             randomX = (-1 * visionRadius) + randomX;
 
@@ -402,7 +382,6 @@ public class Bot extends GameCharacter {
     }
 
 
-
     /**
      * Check if virtual bot pressed the given key
      *
@@ -426,7 +405,7 @@ public class Bot extends GameCharacter {
      */
     private void emulateKey(int keyCode) {
         if (keyCode < 0 || keyCode >= EMULATED_KEYS) {
-            System.err.print("Bot.emulateKey("+keyCode+"): invalid argument");
+            System.err.print("Bot.emulateKey(" + keyCode + "): invalid argument");
         } else {
             keysState[keyCode] = true;
         }
@@ -495,7 +474,7 @@ public class Bot extends GameCharacter {
                 break;
         }
 
-        GameObjects objects = Game.getInstance().getObjects();
+        IGameObjects objects = Game.getInstance().getObjects();
 
         try {
             for (int i = 0; i < objects.size(); i++) {
@@ -515,7 +494,7 @@ public class Bot extends GameCharacter {
                     if (Collision.isPointInRect(characterCell, firstRectCell, secondRectCell)) {
                         // found the enemy
                         spottedEnemy = character;
-                        System.out.println("FOUND ENEMY: "+ character.toString());
+                        System.out.println("FOUND ENEMY: " + character.toString());
 
                         return true;
                     }
@@ -555,7 +534,7 @@ public class Bot extends GameCharacter {
             // a* algorithm?
 
             Point start = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
-            Point goal  = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
+            Point goal = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
 
             pathToTarget = AStarFindAlgorithm.findPath(
                     field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
@@ -581,7 +560,7 @@ public class Bot extends GameCharacter {
             if (currentTile.equals(nextTile)) {
 
                 // destination arrived
-                if (nextCellInPath == pathToTarget.size()-1) {
+                if (nextCellInPath == pathToTarget.size() - 1) {
                     setBotState(BOT_WAITING_STATE);
                     destinationX = -1;
                     destinationY = -1;

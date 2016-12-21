@@ -32,7 +32,7 @@ import java.rmi.registry.Registry;
 public class Game implements Constants {
     private static Game instance = null;
     private final String mapName = "forest_v2";
-    private GameObjects objects;
+    private IGameObjects objects;
     private Player player;
     private Level levelManager;
     private ObjectInterface objectManager;
@@ -164,7 +164,7 @@ public class Game implements Constants {
             System.out.println("RMI backend for objects created");
         } else {
             Registry registry = LocateRegistry.getRegistry(remoteIP);
-            objects = (GameObjects) registry.lookup("GameObjects");
+            objects = (IGameObjects) registry.lookup("GameObjects");
             System.out.println("remote objects in use");
         }
 
@@ -344,7 +344,7 @@ public class Game implements Constants {
     /**
      * return array of Game Objects
      */
-    public GameObjects getObjects() {
+    public IGameObjects getObjects() {
         return objects;
     }
 }

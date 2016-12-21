@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>
  * Created by artem96 on 20.12.16.
  */
-public class GameObjects extends UnicastRemoteObject {
+public class GameObjects extends UnicastRemoteObject implements IGameObjects {
 
     private final ConcurrentHashMap<Integer, GameObject> objects;
 

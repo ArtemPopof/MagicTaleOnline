@@ -8,6 +8,7 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
 import com.p3k.magictale.map.level.LevelManager;
+import com.sun.org.apache.bcel.internal.generic.ISHL;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +30,7 @@ public class ObjectManager implements ObjectInterface {
     private static DocumentBuilderFactory dbf = null;
     private int lvlLayer = 3;
     //    private ObjTile[][][] objTile = null;
-    private SharedObjTile objTile = null;
+    private ISharedObjTile objTile = null;
     private Tile[][] tileSheet = null;
     private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
 
@@ -47,7 +48,7 @@ public class ObjectManager implements ObjectInterface {
                 System.out.println("objTile RMI ready");
             } else {
                 Registry registry = LocateRegistry.getRegistry(remoteIP);
-                objTile = (SharedObjTile) registry.lookup("objTile");
+                objTile = (ISharedObjTile) registry.lookup("objTile");
                 System.out.println("remote objTile in use");
             }
         } catch (Exception e) {

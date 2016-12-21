@@ -9,7 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by COMar-PC on 20.12.2016.
  */
-public class SharedObjTile extends UnicastRemoteObject {
+public class SharedObjTile extends UnicastRemoteObject implements ISharedObjTile {
     private ObjTile[][][] objTile = null;
 
     protected SharedObjTile(int x, int y, int z) throws RemoteException {
