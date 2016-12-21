@@ -7,15 +7,14 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.Game;
-import com.p3k.magictale.map.level.LevelManager;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Created by artem96 on 04.12.16.
  */
-public class Player extends GameCharacter implements Constants{
+public class Player extends GameCharacter implements Constants, Serializable {
 
     private float xp;
 
@@ -64,7 +63,7 @@ public class Player extends GameCharacter implements Constants{
             System.err.println("Error initializing sound for player!");
         }
 
-        if ( mainSound != null ) {
+        if (mainSound != null) {
             mainSound.play("user/baphomet_breath.wav");
         }
 
@@ -75,8 +74,8 @@ public class Player extends GameCharacter implements Constants{
         super.update();
 
         //TODO do not left it undone
-        this.x = 800/2 + Game.getInstance().getCameraX();
-        this.y = 600/2 + Game.getInstance().getCameraY();
+        this.x = 800 / 2 + Game.getInstance().getCameraX();
+        this.y = 600 / 2 + Game.getInstance().getCameraY();
 
     }
 
@@ -155,7 +154,6 @@ public class Player extends GameCharacter implements Constants{
             Game.getInstance().setCameraX(oldX + deltaX);
             Game.getInstance().setCameraY(oldY + deltaY);
         }
-
 
 
     }
