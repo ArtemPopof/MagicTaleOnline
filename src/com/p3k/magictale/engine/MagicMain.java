@@ -95,7 +95,7 @@ public class MagicMain {
             update();
             render();
             try {
-                Thread.sleep(20);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
