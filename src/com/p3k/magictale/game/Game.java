@@ -17,6 +17,8 @@ import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 
 /**
@@ -54,6 +56,13 @@ public class Game implements Constants {
     private Cursor cursor;
 
     private Game() {
+        if (System.getenv("IP") == null) {
+            try {
+                LocateRegistry.createRegistry(1099);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
 
         initLevelManager();
 
