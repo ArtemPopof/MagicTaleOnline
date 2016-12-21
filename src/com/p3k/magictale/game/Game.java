@@ -31,8 +31,10 @@ import java.rmi.registry.Registry;
  */
 public class Game implements Constants {
     private static Game instance = null;
+
     private final String mapName = "forest_v2";
     private IGameObjects objects;
+
     private Player player;
     private Level levelManager;
     private ObjectInterface objectManager;
@@ -247,7 +249,7 @@ public class Game implements Constants {
     }
 
     public void initGuiManager() {
-        guiManager = new GuiManager();
+        guiManager = new GuiManager(player);
     }
 
     public Level getLevelManager() {
@@ -347,4 +349,13 @@ public class Game implements Constants {
     public IGameObjects getObjects() {
         return objects;
     }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
 }
