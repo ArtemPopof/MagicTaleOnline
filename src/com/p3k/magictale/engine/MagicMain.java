@@ -89,10 +89,15 @@ public class MagicMain {
 
     private void gameLoop() {
 
+        long timer = System.currentTimeMillis();
+        long step = 30;
         while (isRunning && !Display.isCloseRequested()) {
 
-            getInput();
-            update();
+            if (System.currentTimeMillis() - timer > step) {
+                getInput();
+                update();
+                timer += step;
+            }
             render();
 
         }
