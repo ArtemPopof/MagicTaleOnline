@@ -7,16 +7,17 @@ import com.p3k.magictale.engine.graphics.Objects.ObjTile;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
-import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import org.xml.sax.SAXException;
-import sun.awt.image.ImageWatched;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.TreeMap;
 
 /**
@@ -24,11 +25,10 @@ import java.util.TreeMap;
  */
 public class ObjectManager implements ObjectInterface {
     private static final String LEVEL_DIR = "res/map/objects/";
-    private int lvlLayer = 3;
-
     private static ObjectManager instance = null;
     private static DocumentBuilderFactory dbf = null;
-//    private ObjTile[][][] objTile = null;
+    private int lvlLayer = 3;
+    //    private ObjTile[][][] objTile = null;
     private SharedObjTile objTile = null;
     private Tile[][] tileSheet = null;
     private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
@@ -38,9 +38,18 @@ public class ObjectManager implements ObjectInterface {
         try {
 //            objTile = new ObjTile[LevelManager.getInstance().getLvlWidth()]
 //                    [LevelManager.getInstance().getLvlHeight()][lvlLayer];
-            objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
-                    LevelManager.getInstance().getLvlHeight(),
-                    lvlLayer);
+            String remoteIP = System.getenv("IP");
+            if (remoteIP == null) {
+                objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
+                        LevelManager.getInstance().getLvlHeight(),
+                        lvlLayer);
+                Naming.bind("objTile", objTile);
+                System.out.println("objTile RMI ready");
+            } else {
+                Registry registry = LocateRegistry.getRegistry(remoteIP);
+                objTile = (SharedObjTile) registry.lookup("objTile");
+                System.out.println("remote objTile in use");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,7 +164,7 @@ public class ObjectManager implements ObjectInterface {
                 } else {
                     break;
                 }
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 System.out.println("Load template groupObjects: " + e);
             }
         }
@@ -186,7 +195,7 @@ public class ObjectManager implements ObjectInterface {
                 int id = waitedArrayOfGrObj.indexOf(waitedGroupObject);
                 return id;
             }
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             System.out.println("Load template groupObjects: " + e);
         }
         int id = waitedArrayOfGrObj.indexOf(waitedGroupObject);
@@ -221,7 +230,7 @@ public class ObjectManager implements ObjectInterface {
                 } else {
                     break;
                 }
-            } catch ( Exception e ) {
+            } catch (Exception e) {
                 System.out.println("Load template groupObjects: " + e);
             }
         }
@@ -250,7 +259,11 @@ public class ObjectManager implements ObjectInterface {
                 insObjTile.setName(name);
                 insObjTile.setIdInTypeName(id);
 //                objTile[x + w][lvlHeight - y - h][tile.getTileProperties().getLayer()] = insObjTile;
-                objTile.setObjTileByXYZ(x + w, lvlHeight - y - h, tile.getTileProperties().getLayer(), insObjTile);
+                try {
+                    objTile.setObjTileByXYZ(x + w, lvlHeight - y - h, tile.getTileProperties().getLayer(), insObjTile);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         }
 //        System.out.println("Type=" + insObjTile.getType()
@@ -270,8 +283,8 @@ public class ObjectManager implements ObjectInterface {
             for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
                 for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
                     for (int z = 0; z < lvlLayer; ++z) {
-                        ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y , z);
-                        if(waitedObjTile != null) {
+                        ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y, z);
+                        if (waitedObjTile != null) {
                             waitedObjTile.render();
                         }
                     }
@@ -286,8 +299,8 @@ public class ObjectManager implements ObjectInterface {
         try {
             for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
                 for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
-                    ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y , layer);
-                    if(waitedObjTile != null) {
+                    ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y, layer);
+                    if (waitedObjTile != null) {
                         waitedObjTile.render();
                     }
                 }
