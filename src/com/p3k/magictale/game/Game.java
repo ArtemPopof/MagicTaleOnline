@@ -35,7 +35,7 @@ public class Game implements Constants {
     private IGameObjects objects;
     private Player player;
     private Level levelManager;
-//    private ObjectInterface objectManager;
+    private ObjectInterface objectManager;
     private ResourceManager resourceManager;
     private SoundManager soundManager;
     private SoundSource bgmSound;
@@ -81,7 +81,7 @@ public class Game implements Constants {
             e.printStackTrace();
         }
 
-        //initObjectManager();
+        initObjectManager();
     }
 
     public static Game getInstance() {
@@ -234,13 +234,13 @@ public class Game implements Constants {
 
     private void initObjectManager() {
         try {
-//            objectManager = ObjectManager.getInstance();
+            objectManager = ObjectManager.getInstance();
         } catch (Exception e) {
             System.err.println("Error initializing levelManager manager: " + e);
         }
 
         try {
-//            objectManager.load(mapName, resourceManager);
+            objectManager.load(mapName, resourceManager);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
