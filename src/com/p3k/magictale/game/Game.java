@@ -136,7 +136,7 @@ public class Game implements Constants {
 
         levelManager.render();
 
-        //objectManager.render(1);
+        objectManager.render(1);
 
         try {
             for (int i = 0; i < objects.size(); i++) {
@@ -147,7 +147,7 @@ public class Game implements Constants {
             e.printStackTrace();
         }
 
-        //objectManager.render(2);
+        objectManager.render(2);
 
         guiManager.render();
     }
