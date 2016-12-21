@@ -231,7 +231,7 @@ public class Bot extends GameCharacter {
 
         // here will be simulation of bot virtual brain
 
-        if (spottedEnemy == null && isAggressive && isAnyoneNotFriendlyAround()) {
+        if (spottedEnemy == null && !isAggressive && isAnyoneNotFriendlyAround()) {
             setBotState(BOT_TARGETSPOTED_STATE);
         }
 
