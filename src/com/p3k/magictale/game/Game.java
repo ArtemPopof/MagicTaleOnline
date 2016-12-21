@@ -147,7 +147,7 @@ public class Game implements Constants {
             e.printStackTrace();
         }
 
-        objectManager.render(2);
+        //objectManager.render(2);
 
         guiManager.render();
     }
@@ -234,13 +234,13 @@ public class Game implements Constants {
 
     private void initObjectManager() {
         try {
-            objectManager = ObjectManager.getInstance();
+//            objectManager = ObjectManager.getInstance();
         } catch (Exception e) {
             System.err.println("Error initializing levelManager manager: " + e);
         }
 
         try {
-            objectManager.load(mapName, resourceManager);
+//            objectManager.load(mapName, resourceManager);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
