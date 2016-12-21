@@ -22,6 +22,17 @@ public class SharedObjTile extends UnicastRemoteObject implements ISharedObjTile
         return objTile.get(new TripleKey(x, y, z));
     }
 
+    @Override
+    public ObjTile[][][] getObjTile(int x, int y, int z) throws RemoteException {
+        ObjTile[][][] copy = new ObjTile[x][y][1];
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                copy[i][j][0] = objTile.get(new TripleKey(i, j, z));
+            }
+        }
+        return copy;
+    }
+
     public void setObjTileByXYZ(int x, int y, int z, ObjTile objTile) throws RemoteException {
         this.objTile.put(new TripleKey(x, y, z), objTile);
     }

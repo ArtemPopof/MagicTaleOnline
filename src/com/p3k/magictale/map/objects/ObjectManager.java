@@ -8,7 +8,6 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
 import com.p3k.magictale.map.level.LevelManager;
-import com.sun.org.apache.bcel.internal.generic.ISHL;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -298,9 +297,12 @@ public class ObjectManager implements ObjectInterface {
 
     public void render(int layer) {
         try {
+            ObjTile[][][] waitedObjTiles = objTile.getObjTile(LevelManager.getInstance().getLvlWidth(),
+                    LevelManager.getInstance().getLvlHeight(),
+                    layer);
             for (int x = 0; x < LevelManager.getInstance().getLvlWidth(); ++x) {
                 for (int y = 0; y < LevelManager.getInstance().getLvlHeight(); ++y) {
-                    ObjTile waitedObjTile = objTile.getObjTileByXYZ(x, y, layer);
+                    ObjTile waitedObjTile = waitedObjTiles[x][y][0];
                     if (waitedObjTile != null) {
                         waitedObjTile.render();
                     }
