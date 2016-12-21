@@ -6,6 +6,7 @@ import com.p3k.magictale.game.Characters.CharacterTypes;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -17,7 +18,7 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * Created by artem96 on 06.12.16.
  */
-public class GameCharacter extends GameObject {
+public class GameCharacter extends GameObject implements Serializable {
 
     protected static final int WAITING_STATE = 0;
     protected static final int RIGHT_MOVE_STATE = 1;

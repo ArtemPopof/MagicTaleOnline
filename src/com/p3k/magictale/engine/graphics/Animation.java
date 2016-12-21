@@ -3,12 +3,13 @@ package com.p3k.magictale.engine.graphics;
 import com.p3k.magictale.engine.Constants;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by artem96 on 03.12.16.
  */
-public class Animation implements Constants {
+public class Animation implements Constants, Serializable {
 
     private ArrayList<Frame> frames;
     private int currentFrame;

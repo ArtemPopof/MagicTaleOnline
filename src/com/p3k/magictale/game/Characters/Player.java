@@ -18,8 +18,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
     private float xp;
 
-    private SoundSource mainSound;
-    private SoundSource attackSound;
+    //private SoundSource mainSound;
+    //private SoundSource attackSound;
 
 
     public Player(float x, float y) {
@@ -47,12 +47,12 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
         xp = 0;
 
-        initSounds();
+        //initSounds();
 
         //SoundManager.getInstance().setListenerPos(10.0f, 10.0f);
     }
 
-    private void initSounds() {
+    /*private void initSounds() {
 
         try {
             mainSound = new SoundSource(null, true);
@@ -67,7 +67,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
             mainSound.play("user/baphomet_breath.wav");
         }
 
-    }
+    }*/
 
     @Override
     public void update() {
@@ -108,7 +108,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
             isStateChanged = true;
         }
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            attackSound.play("user/attack_axe.wav");
+            //attackSound.play("user/attack_axe.wav");
         }
 
         // mouse events

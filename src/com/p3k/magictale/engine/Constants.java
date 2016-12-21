@@ -2,6 +2,7 @@ package com.p3k.magictale.engine;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.Serializable;
 
 /**
  * Основные константы, определяющую конфигурацию движка.
@@ -14,7 +15,7 @@ import java.awt.Toolkit;
  * @author Артём Попов
  * @version 0.1
  */
-public interface Constants {
+public interface Constants extends Serializable {
 
     public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
     public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
