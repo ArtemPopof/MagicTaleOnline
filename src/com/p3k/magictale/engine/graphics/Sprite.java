@@ -8,13 +8,14 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by artem96 on 03.12.16.
  */
-public class Sprite {
+public class Sprite implements Serializable {
 
     private float r, g, b;
 

@@ -3,6 +3,8 @@ package com.p3k.magictale.engine.graphics;
 import com.p3k.magictale.game.Game;
 import com.p3k.magictale.engine.enums.Direction;
 
+import java.io.Serializable;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -14,7 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * Created by artem96 on 03.12.16.
  */
-public class GameObject {
+public class GameObject implements Serializable {
     protected float x;
     protected float y;
 
