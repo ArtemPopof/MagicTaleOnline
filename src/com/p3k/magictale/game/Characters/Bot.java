@@ -12,6 +12,7 @@ import com.p3k.magictale.game.GameObjects;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -496,29 +497,33 @@ public class Bot extends GameCharacter {
 
         GameObjects objects = Game.getInstance().getObjects();
 
-        for (int i = 0; i < objects.size(); i++) {
+        try {
+            for (int i = 0; i < objects.size(); i++) {
 
-            GameObject object = objects.get(i);
+                GameObject object = objects.get(i);
 
-            if (GameCharacter.class.isInstance(object)) {
-                GameCharacter character = (GameCharacter) object;
+                if (GameCharacter.class.isInstance(object)) {
+                    GameCharacter character = (GameCharacter) object;
 
-                if (character.equals(this)) {
-                    continue;
+                    if (character.equals(this)) {
+                        continue;
+                    }
+
+                    Point characterCell = LevelManager.
+                            getTilePointByCoordinates(character.getRealX(), character.getRealY());
+
+                    if (Collision.isPointInRect(characterCell, firstRectCell, secondRectCell)) {
+                        // found the enemy
+                        spottedEnemy = character;
+                        System.out.println("FOUND ENEMY: "+ character.toString());
+
+                        return true;
+                    }
+
                 }
-
-                Point characterCell = LevelManager.
-                        getTilePointByCoordinates(character.getRealX(), character.getRealY());
-
-                if (Collision.isPointInRect(characterCell, firstRectCell, secondRectCell)) {
-                    // found the enemy
-                    spottedEnemy = character;
-                    System.out.println("FOUND ENEMY: "+ character.toString());
-
-                    return true;
-                }
-
             }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
 
         this.isAggressive = true;
