@@ -6,8 +6,6 @@ import com.p3k.magictale.engine.graphics.SpriteSheet;
 import java.awt.*;
 import java.io.*;
 import java.rmi.NoSuchObjectException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jorgen on 16.12.16.
