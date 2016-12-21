@@ -81,7 +81,7 @@ public class Game implements Constants {
             e.printStackTrace();
         }
 
-        initObjectManager();
+        //initObjectManager();
     }
 
     public static Game getInstance() {

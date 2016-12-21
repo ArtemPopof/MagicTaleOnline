@@ -94,11 +94,7 @@ public class MagicMain {
             getInput();
             update();
             render();
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
