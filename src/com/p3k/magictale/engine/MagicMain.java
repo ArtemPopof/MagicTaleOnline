@@ -90,12 +90,15 @@ public class MagicMain {
     private void gameLoop() {
 
         long timer = System.currentTimeMillis();
-        long step = 30;
+        long step = 20;
+        boolean remote = System.getenv("IP") != null;
         while (isRunning && !Display.isCloseRequested()) {
 
             if (System.currentTimeMillis() - timer > step) {
                 getInput();
-                update();
+                if (!remote) {
+                    update();
+                }
                 timer += step;
             }
             render();
