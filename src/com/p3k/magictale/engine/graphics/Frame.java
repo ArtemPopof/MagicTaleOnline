@@ -1,9 +1,11 @@
 package com.p3k.magictale.engine.graphics;
 
+import java.io.Serializable;
+
 /**
  * Created by artem96 on 03.12.16.
  */
-public class Frame {
+public class Frame implements Serializable {
 
     private int length;
     private int numberDisplayed;
