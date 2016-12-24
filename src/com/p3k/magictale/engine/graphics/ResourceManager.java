@@ -135,6 +135,8 @@ public class ResourceManager {
         Animation upMoveAnim = new Animation(charSprites, 22, 7);
         Animation downMoveAnim =new Animation(charSprites, 0, 7);
         Animation deathAnim = new Animation(charSprites, 44, 5);
+        deathAnim.setLooped(false);
+        deathAnim.setShouldStartOver(false);
 
         Animation leftAttackAnim = new Animation(charSprites, 40, 3);
         leftAttackAnim.setLooped(false);

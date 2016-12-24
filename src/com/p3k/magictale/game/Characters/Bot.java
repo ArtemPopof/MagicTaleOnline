@@ -99,6 +99,11 @@ public class Bot extends GameCharacter {
     //TEMPORARY OBJECT
     private boolean[][] field;
 
+    /**
+     * true if we can attack enemy now
+     */
+    private boolean isAroundEnemy;
+
 
     /**
      * Basic constructor for bot, almost like GameCharacter one
@@ -143,6 +148,8 @@ public class Bot extends GameCharacter {
         nextCellInPath = -1;
 
         framesToWait = -1;
+
+        isAroundEnemy = false;
 
         // TEMP CODE NEXT
 
@@ -229,9 +236,11 @@ public class Bot extends GameCharacter {
             return;
         }
 
+        isAttacking = false;
+
         // here will be simulation of bot virtual brain
 
-        if (spottedEnemy == null && !isAggressive && isAnyoneNotFriendlyAround()) {
+        if (spottedEnemy == null && isAggressive && isAnyoneNotFriendlyAround()) {
             setBotState(BOT_TARGETSPOTED_STATE);
         }
 
@@ -279,12 +288,12 @@ public class Bot extends GameCharacter {
 
         // start walking to target
         if (destinationY == -1) {
-            Point destination = botCell;
+            Point destination = spottedEnemyCell;
 
             if (deltaX > deltaY) {
                 // we should attack from left or right
 
-                if (botCell.x > spottedEnemyCell.x) {
+                if (botCell.x < spottedEnemyCell.x) {
                     // attack from left
                     destination.x--;
 
@@ -303,15 +312,28 @@ public class Bot extends GameCharacter {
                     destination.y++;
                 }
             }
+
+            destinationX = destination.x * Constants.MAP_TILE_SIZE;
+            destinationY = (Constants.MAP_HEIGHT - destination.y) * Constants.MAP_TILE_SIZE;
         }
+
+
 
         int resultOfWalking = walkToTarget();
 
         if (resultOfWalking == 1) {
             // we know he's around here now
             doAttack();
+
+            if (spottedEnemy.isDead()) {
+                // we win
+                destinationY = -1;
+                spottedEnemy = null;
+                setBotState(WAITING_STATE);
+            }
+
         } else if (resultOfWalking == 0) {
-            return;
+
         } else {
             setBotState(WAITING_STATE);
         }
@@ -434,16 +456,29 @@ public class Bot extends GameCharacter {
 
     public boolean isAnyoneNotFriendlyAround() {
 
-        Point currentCell = LevelManager.getTilePointByCoordinates(this.getRealX(), this.getRealY());
+        Point currentCell = new Point((int) getRealX(), (int) getRealY());
 
         // Bot's vision arean
         Point firstRectCell = new Point();
         Point secondRectCell = new Point();
 
+        ArrayList<GameCharacter> characters = Game.getInstance().getCharactersNearPoint(currentCell, visionRadius);
 
-        // CAUTION! All coordinates is supposed to be in openGL system (0.0 in bottom left corner);
+        for (GameCharacter character : characters) {
+            if (Player.class.isInstance(character)) {
+                // found the player
+                if (character.isDead()) {
+                    // he's alredy dead, so leave him alone
+                    continue;
+                }
+                spottedEnemy = character;
+                System.out.println("Spotted enemy: "+character.toString());
+                return true;
+            }
+        }
 
 
+        /*
         switch (direction) {
 
             case UP:
@@ -504,6 +539,7 @@ public class Bot extends GameCharacter {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        */
 
         this.isAggressive = true;
 
@@ -519,7 +555,7 @@ public class Bot extends GameCharacter {
      */
     private int walkToTarget() {
 
-        if ((getRealX() - destinationX) <= 2 && (getRealY() - destinationY) <= 2) {
+        if (Math.abs(getRealX() - destinationX) <= 2 && Math.abs(getRealY() - destinationY) <= 2) {
             // ok we're on the spot
             destinationX = -1;
             destinationY = -1;
@@ -561,7 +597,6 @@ public class Bot extends GameCharacter {
 
                 // destination arrived
                 if (nextCellInPath == pathToTarget.size() - 1) {
-                    setBotState(BOT_WAITING_STATE);
                     destinationX = -1;
                     destinationY = -1;
                     nextCellInPath = -1;

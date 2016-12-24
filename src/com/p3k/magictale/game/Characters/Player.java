@@ -81,6 +81,11 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
     public void processInput() {
 
+        if (isDead()) {
+            System.out.println("WASTED BUDDY!");
+            return;
+        }
+
         boolean isStateChanged = false;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
