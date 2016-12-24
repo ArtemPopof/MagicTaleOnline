@@ -5,6 +5,7 @@ import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.gui.GuiManager;
+import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.Characters.Bot;
@@ -24,6 +25,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 
 /**
  * Game routines
@@ -345,6 +347,36 @@ public class Game implements Constants {
     }
 
     /**
+     * Return first GameCharacter founded in given rect
+     * @param startPoint - rectangle in pixels, where
+     *                  should seek for characters
+     */
+    public GameCharacter getAnyoneInRect(Point startPoint, Point endPoint) {
+
+        try {
+
+            for (int i = 0; i < objects.size(); i++) {
+                if (!GameCharacter.class.isInstance(objects.get(i))) {
+                    continue;
+                }
+
+                GameCharacter character = (GameCharacter) objects.get(i);
+
+                Point charPoint = new Point((int) character.getRealX(), (int) character.getRealY());
+
+                if (Collision.isPointInRect(charPoint, startPoint, endPoint)) {
+                    return character;
+                }
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
      * return array of Game Objects
      */
     public IGameObjects getObjects() {
@@ -357,6 +389,52 @@ public class Game implements Constants {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    /**
+     * Creates specified gameObject
+     */
+    public void createGameObject(float x, float y, float width, float height, int r, int g, int b) {
+        GameObject object = new GameObject(x, y, width, height, r, g, b);
+
+        try {
+            objects.add(object);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns characters around specified point
+     * radius - how far can be character from point
+     * to be returned
+     */
+    public ArrayList<GameCharacter> getCharactersNearPoint(Point position, int radius) {
+
+        ArrayList<GameCharacter> characters = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < objects.size(); i++) {
+                Object object;
+                    object = objects.get(i);
+
+
+                if (!GameCharacter.class.isInstance(object)) continue;
+
+                GameCharacter character = (GameCharacter) object;
+
+                if (Math.abs(position.x - character.getRealX()) < radius
+                        && Math.abs(position.y - character.getRealY()) < radius) {
+
+                    characters.add(character);
+
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return characters;
     }
 
 }

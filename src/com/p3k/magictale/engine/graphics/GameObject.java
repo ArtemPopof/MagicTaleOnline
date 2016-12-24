@@ -31,6 +31,24 @@ public class GameObject implements Serializable {
      */
     protected Sprite sprite;
 
+    // all values will be
+    // specified later
+    public GameObject() {
+
+    }
+
+    public GameObject(float x, float y, float width, float height, int r, int g, int b) {
+        this.init(x, y, width, height, r, g, b);
+    }
+
+    public GameObject(float x, float y, float width, float height) {
+        init(x, y, width, height);
+    }
+
+    public GameObject(Sprite sprite, float width, float height) {
+        initBySprite(sprite, width, height);
+    }
+
     public void render() {
 
         glEnable(GL_BLEND);
@@ -113,6 +131,12 @@ public class GameObject implements Serializable {
         this.sprite = new Sprite(0, 1f, 0, width, height);
 
         direction = Direction.DOWN;
+    }
+
+    protected void init(float x, float y, float width, float height, int r, int g, int b) {
+        this.x = x;
+        this.y = y;
+        this.sprite = new Sprite(r, g, b, width, height);
     }
 
     protected void initBySprite(Sprite sprite, float x, float y) {

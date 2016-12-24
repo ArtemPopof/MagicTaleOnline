@@ -66,6 +66,11 @@ public class GameCharacter extends GameObject implements Serializable {
     private int maxHealth;
     private int attack;
 
+    /**
+     * How far can damage other character
+     */
+    private int attackDistance;
+
     private boolean isFlyable;
     private int layer;
 
@@ -96,7 +101,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
     public GameCharacter(float x, float y, float width, float height) {
 
-        super.init(x, y, width, height);
+        super(x, y, width, height);
 
         currentState = WAITING_STATE;
 
@@ -111,6 +116,7 @@ public class GameCharacter extends GameObject implements Serializable {
         health = 10;
         maxHealth = 10;
         attack = 2;
+        attackDistance = Constants.MAP_TILE_SIZE + 20;
 
         isFlyable = false;
         layer = 1;
@@ -246,37 +252,41 @@ public class GameCharacter extends GameObject implements Serializable {
      */
     public void doAttack() {
 
-        Point cellToAttack = new Point();
-
-        Point currentCell = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
+        Point currentPosition = new Point((int) getRealX(), (int) getRealY());
 
         switch (direction) {
             case LEFT:
                 changeState(LEFT_ATTACK_STATE);
-                cellToAttack = new Point(currentCell.x - 1, currentCell.y);
+
                 break;
             case RIGHT:
                 changeState(RIGHT_ATTACK_STATE);
-                cellToAttack = new Point(currentCell.x + 1, currentCell.y);
+
                 break;
             case UP:
                 changeState(UP_ATTACK_STATE);
-                cellToAttack = new Point(currentCell.x, currentCell.y - 1);
+
                 break;
             case DOWN:
                 changeState(DOWN_ATTACK_STATE);
-                cellToAttack = new Point(currentCell.x, currentCell.y + 1);
+
                 break;
         }
 
         GameCharacter potencialEnemy;
 
-        // if someone in attack distance
-        if ((potencialEnemy = Game.getInstance().getAnyoneInCell(cellToAttack.x, cellToAttack.y)) != null) {
-            if (!isAttacking) {
-                // if first frame of attack is playing
-                potencialEnemy.takeHarm(getAttack());
+        ArrayList<GameCharacter> enemies= Game.getInstance().getCharactersNearPoint(currentPosition, attackDistance);
+
+
+        if (!isAttacking) {
+
+            for(GameCharacter character : enemies) {
+                if (character.equals(this)) continue;
+
+                character.takeHarm(attack);
+                break;
             }
+
         }
 
 
