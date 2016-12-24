@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.p3k.magictale.engine.graphics.ITileProperties;
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.graphics.Objects.GroupObjectProperties;
@@ -79,51 +80,35 @@ public class XmlParser {
                     return layerTextContextByName;
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Parsing: getLayerTextContextByName() " + e);
         }
         return layerTextContextByName;
     }
 
-    public ArrayList<TileProperties> getTilesPropertiesByTilesetName(String tilesetName) {
-        ArrayList<TileProperties> tilesProperties = new ArrayList<>();
+    public ArrayList<ITileProperties> getTilesPropertiesByTilesetName(String tilesetName, String ITilePropertyClassName) {
+        ArrayList<ITileProperties> tilesProperties = new ArrayList<>();
         try {
-            System.out.println(doc.getElementsByTagName("tileset"));
+//            System.out.println(doc.getElementsByTagName("tileset"));
             NodeList tilesets = doc.getElementsByTagName("tileset");
             for (int i = 0; i < tilesets.getLength(); ++i) {
                 NamedNodeMap tilesetAttrs = tilesets.item(i).getAttributes();
-                if (tilesetAttrs.getNamedItem("name").getNodeValue().equals(tilesetName)) {
+                if (getValueOfNamedItem(tilesetAttrs, "name").equals(tilesetName)) {
                     for (int j = 0; j < tilesets.item(i).getChildNodes().getLength(); ++j) {
                         if (tilesets.item(i).getChildNodes().item(j).getNodeName().equals("tile")) {
                             NodeList properties = tilesets.item(i).getChildNodes().item(j).getChildNodes()
                                     .item(1).getChildNodes(); // NodeList of property at .tmx
-                            TileProperties prop = new TileProperties();
-                            for (int k = 0; k < properties.getLength(); ++k) {
-                                if (properties.item(k).getNodeName().equals("property")) {
-                                    NamedNodeMap propAttrs = properties.item(k).getAttributes();
-                                    switch (propAttrs.getNamedItem("name").getNodeValue()) {
-                                        case "is_pass":
-                                            String isPass = propAttrs.getNamedItem("value").getNodeValue();
-                                            if (isPass.equals("true")) {
-                                                prop.setPass(true);
-                                            }
-                                            break;
-                                        case "layout":
-                                            String layer = propAttrs.getNamedItem("value").getNodeValue();
-                                            prop.setLayer(Integer.parseInt(layer));
-                                            break;
-                                        case "isFly":
-                                            String isFly = propAttrs.getNamedItem("value").getNodeValue();
-                                            if (isFly.equals("true")) {
-                                                prop.setFly(true);
-                                            }
-                                            break;
-                                        default:
-                                            System.out.println("Check Property attributes. attr = "
-                                                    + propAttrs.getNamedItem("name").getNodeValue());
-                                            break;
-                                    }
-                                }
+                            ITileProperties prop = null;
+                            switch (ITilePropertyClassName) {
+                                case "tile":
+                                    prop = getTileProperties(properties);
+                                    break;
+                                case "objTile":
+                                    prop = getObjTileProperties(properties);
+                                    break;
+                                default:
+                                    System.out.println("Check ITileProperties properties.");
+                                    break;
                             }
                             tilesProperties.add(prop);
                         }
@@ -131,69 +116,71 @@ public class XmlParser {
                     return tilesProperties;
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Parsing: getLayerTextContextByName() " + e);
         }
         return tilesProperties;
     }
 
-    public ArrayList<ObjTileProperties> getObjTilesPropertiesByTilesetName(String tilesetName) {
-        ArrayList<ObjTileProperties> objTilesProperties = new ArrayList<>();
-        try {
-            System.out.println(doc.getElementsByTagName("tileset"));
-            NodeList tilesets = doc.getElementsByTagName("tileset");
-            for (int i = 0; i < tilesets.getLength(); ++i) {
-                NamedNodeMap tilesetAttrs = tilesets.item(i).getAttributes();
-                if (tilesetAttrs.getNamedItem("name").getNodeValue().equals(tilesetName)) {
-                    for (int j = 0; j < tilesets.item(i).getChildNodes().getLength(); ++j) {
-                        if (tilesets.item(i).getChildNodes().item(j).getNodeName().equals("tile")) {
-                            NodeList properties = tilesets.item(i).getChildNodes().item(j).getChildNodes()
-                                    .item(1).getChildNodes(); // NodeList of property at .tmx
-                            ObjTileProperties prop = new ObjTileProperties();
-                            for (int k = 0; k < properties.getLength(); ++k) {
-                                if (properties.item(k).getNodeName().equals("property")) {
-                                    NamedNodeMap propAttrs = properties.item(k).getAttributes();
-                                    switch (propAttrs.getNamedItem("name").getNodeValue()) {
-                                        case "is_pass":
-                                            String isPass = propAttrs.getNamedItem("value").getNodeValue();
-                                            if (isPass.equals("true")) {
-                                                prop.setPass(true);
-                                            }
-                                            break;
-                                        case "isFly":
-                                            String isFly = propAttrs.getNamedItem("value").getNodeValue();
-                                            if (isFly.equals("true")) {
-                                                prop.setFly(true);
-                                            }
-                                            break;
-                                        default:
-                                            System.out.println("Check Property attributes. attr = "
-                                                    + propAttrs.getNamedItem("name").getNodeValue());
-                                            break;
-                                    }
-                                }
-                            }
-                            objTilesProperties.add(prop);
+    private TileProperties getTileProperties(NodeList properties) {
+        TileProperties prop = new TileProperties();
+        for (int k = 0; k < properties.getLength(); ++k) {
+            if (properties.item(k).getNodeName().equals("property")) {
+                NamedNodeMap propAttrs = properties.item(k).getAttributes();
+                switch (propAttrs.getNamedItem("name").getNodeValue()) {
+                    case "is_pass":
+                        String isPass = getValueOfNamedItem(propAttrs, "value");
+                        if (isPass.equals("true")) {
+                            prop.setPass(true);
                         }
-                    }
-                    return objTilesProperties;
+                        break;
+                    case "layout":
+                        String layer = getValueOfNamedItem(propAttrs, "value");
+                        prop.setLayer(Integer.parseInt(layer));
+                        break;
+                    case "isFly":
+                        String isFly = getValueOfNamedItem(propAttrs, "value");
+                        if (isFly.equals("true")) {
+                            prop.setFly(true);
+                        }
+                        break;
+                    default:
+                        System.out.println("Check TileProperty attributes. attr = "
+                                + propAttrs.getNamedItem("name").getNodeValue());
+                        break;
                 }
             }
-        } catch (Exception e){
-            System.out.println("Parsing: getLayerTextContextByName() " + e);
         }
-        return objTilesProperties;
+        return prop;
     }
 
-//    public ArrayList<ObjTileProperties> getObjTilesPropertiesByTilesetName(String tilesetName) {
-//        ArrayList<ObjTileProperties> objTilesProperties = new ArrayList<>();
-//        try {
-//            objTilesProperties.add(getProperties());
-//        } catch (Exception e){
-//            System.out.println("Parsing: getLayerTextContextByName() " + e);
-//        }
-//        return objTilesProperties;
-//    }
+    private ObjTileProperties getObjTileProperties(NodeList properties) {
+        ObjTileProperties prop = new ObjTileProperties();
+        for (int k = 0; k < properties.getLength(); ++k) {
+            if (properties.item(k).getNodeName().equals("property")) {
+                NamedNodeMap propAttrs = properties.item(k).getAttributes();
+                switch (getValueOfNamedItem(propAttrs, "name")) {
+                    case "is_pass":
+                        String isPass = getValueOfNamedItem(propAttrs, "value");
+                        if (isPass.equals("true")) {
+                            prop.setPass(true);
+                        }
+                        break;
+                    case "isFly":
+                        String isFly = getValueOfNamedItem(propAttrs, "value");
+                        if (isFly.equals("true")) {
+                            prop.setFly(true);
+                        }
+                        break;
+                    default:
+                        System.out.println("Check ObjTileProperty attributes. attr = "
+                                + propAttrs.getNamedItem("name").getNodeValue());
+                        break;
+                }
+            }
+        }
+        return prop;
+    }
 
     public ArrayDeque<GroupObject> getGroupObjectsByGroupName(String gameObjects, boolean byTemplate) {
         ArrayDeque<GroupObject> waitedGroupObjects = new ArrayDeque<>();
@@ -208,7 +195,7 @@ public class XmlParser {
                 }
             }
             return waitedGroupObjects;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Parsing: getLayerTextContextByName() " + e);
         }
         return waitedGroupObjects;
@@ -255,7 +242,7 @@ public class XmlParser {
                 System.err.println("Only one map for .tmx file!");
             }
             retValue = Integer.parseInt(maps.item(0).getAttributes().getNamedItem(param).getNodeValue());
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Parsing: getMapSize() " + e);
         }
         return retValue;

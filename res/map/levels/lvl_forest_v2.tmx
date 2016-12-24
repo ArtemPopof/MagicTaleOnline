@@ -208,7 +208,7 @@
   </tile>
   <tile id="34">
    <properties>
-    <property name="is_pass" type="bool" value="false"/>
+    <property name="is_pass" type="bool" value="true"/>
     <property name="layout" value="0"/>
    </properties>
   </tile>

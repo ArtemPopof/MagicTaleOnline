@@ -2,6 +2,7 @@ package com.p3k.magictale.engine.graphics.Objects;
 
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Map.Tile;
+import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Sprite;
 
 import java.io.Serializable;
@@ -48,6 +49,11 @@ public class ObjTile extends GameObject implements Serializable {
         this.objTileProperties = objTileProperties;
     }
 
+    public void setObjTileProperties(TileProperties tileProperties) {
+        this.objTileProperties.setPass(tileProperties.isPass());
+        this.objTileProperties.setFly(tileProperties.isFly());
+    }
+
     public String getType() {
         return type;
     }
@@ -70,5 +76,9 @@ public class ObjTile extends GameObject implements Serializable {
 
     public void setIdInTypeName(int idInTypeName) {
         this.idInTypeName = idInTypeName;
+    }
+
+    public boolean isPass() {
+        return objTileProperties.isPass();
     }
 }

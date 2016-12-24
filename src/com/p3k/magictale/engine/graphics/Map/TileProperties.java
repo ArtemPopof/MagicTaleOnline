@@ -1,9 +1,11 @@
 package com.p3k.magictale.engine.graphics.Map;
 
+import com.p3k.magictale.engine.graphics.ITileProperties;
+
 /**
  * Created by COMar-PC on 13.12.2016.
  */
-public class TileProperties {
+public class TileProperties implements ITileProperties{
     private boolean isPass = false;
     private boolean isFly = false;
     private int layer = 0;

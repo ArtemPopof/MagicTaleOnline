@@ -1,11 +1,13 @@
 package com.p3k.magictale.engine.graphics.Objects;
 
+import com.p3k.magictale.engine.graphics.ITileProperties;
+
 import java.io.Serializable;
 
 /**
  * Created by COMar-PC on 19.12.2016.
  */
-public class ObjTileProperties implements Serializable {
+public class ObjTileProperties implements Serializable, ITileProperties {
     private boolean isPass = false;
     private boolean isFly = false;
 
@@ -21,9 +23,7 @@ public class ObjTileProperties implements Serializable {
         this.isFly = isFly;
     }
 
-    public boolean isPass() {
-        return isPass;
-    }
+    public boolean isPass() { return isPass; }
 
     public void setPass(boolean pass) {
         isPass = pass;

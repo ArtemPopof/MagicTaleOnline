@@ -31,10 +31,13 @@ public class GameObjects extends UnicastRemoteObject implements IGameObjects {
         return objects.size();
     }
 
-    public void add(GameObject object) throws RemoteException {
+    public int add(GameObject object) throws RemoteException {
+        int newIndex;
         synchronized (objects) {
-            objects.put(objects.size(), object);
+            newIndex = objects.size();
+            objects.put(newIndex, object);
         }
+        return newIndex;
     }
 
 

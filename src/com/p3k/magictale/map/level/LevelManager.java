@@ -67,9 +67,7 @@ public class LevelManager implements Level {
         XmlParser xml = null;
         try {
             xml = new XmlParser(dbf, LEVEL_DIR + "lvl_" + mapName + ".tmx");
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
 
@@ -90,12 +88,12 @@ public class LevelManager implements Level {
         }
 
         ArrayList<String> layerGrContext = null;
-        ArrayList<TileProperties> lvlTilesProperties = null;
+        ArrayList<ITileProperties> lvlTilesProperties = null;
         int sprWidth = 32;
         int sprHeight = 32;
         if (xml != null) {
             layerGrContext = xml.getLayerTextContextByName("gr");
-            lvlTilesProperties = xml.getTilesPropertiesByTilesetName("tiles_lvl_forest");
+            lvlTilesProperties = xml.getTilesPropertiesByTilesetName("tiles_lvl_forest", "tile");
             lvlWidth = xml.getMapSize("width");
             lvlHeight = xml.getMapSize("height");
         }
@@ -120,7 +118,7 @@ public class LevelManager implements Level {
 
                 tileMap[w][lvlHeight - h] = new TileMap();
                 tileMap[w][lvlHeight - h].getTiles().add(new Tile(sprite, w * sprWidth, h * sprHeight,
-                        lvlTilesProperties.get(idInSprSh)));
+                        (TileProperties) lvlTilesProperties.get(idInSprSh)));
                 id++;
             }
         }

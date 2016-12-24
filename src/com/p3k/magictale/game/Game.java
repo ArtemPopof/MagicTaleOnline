@@ -37,7 +37,8 @@ public class Game implements Constants {
     private final String mapName = "forest_v2";
     private IGameObjects objects;
 
-    private Player player;
+    //private Player player;
+    private int playerIndex;
     private Level levelManager;
     private ObjectInterface objectManager;
     private ResourceManager resourceManager;
@@ -77,8 +78,6 @@ public class Game implements Constants {
 
         initSoundManager();
 
-        initGuiManager();
-
         try {
             initObjects();
         } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
@@ -86,6 +85,8 @@ public class Game implements Constants {
         }
 
         initObjectManager();
+
+        initGuiManager();
     }
 
     public static Game getInstance() {
@@ -139,8 +140,9 @@ public class Game implements Constants {
 
     public void render() {
 
-        levelManager.render();
+//        levelManager.render();
 
+        objectManager.render(0);
         objectManager.render(1);
 
         try {
@@ -173,9 +175,9 @@ public class Game implements Constants {
             System.out.println("remote objects in use");
         }
 
-        player = new Player(100, 520);
+        Player player = new Player(100, 520);
 
-        objects.add(player);
+        playerIndex = objects.add(player);
 
         // test bot
         //Bot testBot = new Bot(500, 400, 64, 64);
@@ -252,7 +254,11 @@ public class Game implements Constants {
     }
 
     public void initGuiManager() {
-        guiManager = new GuiManager(player);
+        try {
+            guiManager = new GuiManager((Player) objects.get(playerIndex));
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     public Level getLevelManager() {
@@ -384,11 +390,21 @@ public class Game implements Constants {
     }
 
     public Player getPlayer() {
-        return player;
+        try {
+            return (Player) objects.get(playerIndex);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public void setPlayer(Player player) {
-        this.player = player;
+        try {
+            this.objects.set(player, playerIndex);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

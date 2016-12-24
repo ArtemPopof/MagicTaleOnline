@@ -4,6 +4,8 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.map.level.LevelManager;
+import com.p3k.magictale.map.objects.ObjectManager;
+
 import java.awt.*;
 
 /**
@@ -33,7 +35,8 @@ public class Collision implements Constants{
     public static boolean checkForCollision(GameCharacter character) {
 
         try {
-            LevelManager manager = LevelManager.getInstance();
+//            LevelManager manager = LevelManager.getInstance();
+            ObjectManager manager = ObjectManager.getInstance();
 
             float x = character.getRealX();
             float y = character.getRealY();
@@ -42,9 +45,11 @@ public class Collision implements Constants{
                 return true;
             }
 
-            Point characterNextCell = LevelManager.getTilePointByCoordinates(x, y);
+            Point characterNextCell = ObjectManager.getTilePointByCoordinates(x, y);
 
-             return !manager.getTileMap()[characterNextCell.x][characterNextCell.y].isPass(character.getLayer(), character.isFlyable());
+//             return !manager.getTileMap()[characterNextCell.x][characterNextCell.y].isPass(character.getLayer(), character.isFlyable());
+             return !manager.isPass(characterNextCell.x, characterNextCell.y, character.getLayer(), character.isFlyable());
+
 
             /*
             if (!result) {
@@ -59,7 +64,8 @@ public class Collision implements Constants{
              */
 
         } catch (Exception e) {
-            System.err.println("Collision.checkForCollision(): cannot get instance of LevelManager.");
+//            System.err.println("Collision.checkForCollision(): cannot get instance of LevelManager.");
+            System.err.println("Collision.checkForCollision(): " + e);
         }
 
         return true;

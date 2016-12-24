@@ -12,5 +12,5 @@ public interface IGameObjects extends Remote {
 
     int size() throws RemoteException;
 
-    void add(GameObject object) throws RemoteException;
+    int add(GameObject object) throws RemoteException;
 }
