@@ -1,7 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
+import client.ClientGame;
 import com.p3k.magictale.engine.enums.Direction;
-import com.p3k.magictale.game.Game;
 
 import java.io.Serializable;
 
@@ -62,8 +62,8 @@ public class GameObject implements Serializable {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glPushMatrix();
         {
-            float cameraX = Game.getInstance().getCameraX();
-            float cameraY = Game.getInstance().getCameraY();
+            float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+            float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
 
             glTranslatef(this.x - cameraX, this.y - cameraY, 0);
 
@@ -158,20 +158,21 @@ public class GameObject implements Serializable {
     }
 
     /**
-     * set direction of sprite
-     * @param direction - direction to be set
-     */
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    /**
      * get current object direction
      * @return direction of object
      *
      */
     public Direction getDirection() {
         return this.direction;
+    }
+
+    /**
+     * set direction of sprite
+     *
+     * @param direction - direction to be set
+     */
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
     /**
@@ -186,5 +187,13 @@ public class GameObject implements Serializable {
      */
     public int getId() {
         return this.id;
+    }
+
+    public boolean isChanged() {
+        return this.isChanged;
+    }
+
+    protected void setChanged(boolean changed) {
+        this.isChanged = changed;
     }
 }

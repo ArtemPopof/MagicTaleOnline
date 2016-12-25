@@ -1,9 +1,8 @@
 package com.p3k.magictale.engine.graphics;
 
+import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.game.Game;
 import com.p3k.magictale.game.Characters.CharacterTypes;
-import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -60,29 +59,22 @@ public class GameCharacter extends GameObject implements Serializable {
     protected CharacterTypes type = CharacterTypes.ABSTRACT_CHARACTER;
 
     protected ArrayList<Animation> animations;
-
-    private float speed;
-    private int health;
-    private int maxHealth;
-    private int attack;
-
-    /**
-     * How far can damage other character
-     */
-    private int attackDistance;
-
-    private boolean isFlyable;
-    private int layer;
-
     protected boolean isAttacking = false;
-
     /**
      * HpBar Sprite
      */
     protected Sprite hpBar;
-
     protected boolean isHPBarVisible;
-
+    private float speed;
+    private int health;
+    private int maxHealth;
+    private int attack;
+    /**
+     * How far can damage other character
+     */
+    private int attackDistance;
+    private boolean isFlyable;
+    private int layer;
     /**
      * current state of this character
      *
@@ -103,35 +95,35 @@ public class GameCharacter extends GameObject implements Serializable {
 
         super(x, y, width, height);
 
-        currentState = WAITING_STATE;
+        this.currentState = WAITING_STATE;
 
         try {
-            animations = ResourceManager.getInstance().getAnimations(this);
+            this.animations = ResourceManager.getInstance().getAnimations(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         //TODO remove hardcode
-        speed = Constants.PLAYER_SPEED;
-        health = 10;
-        maxHealth = 10;
-        attack = 2;
-        attackDistance = Constants.MAP_TILE_SIZE + 20;
+        this.speed = Constants.PLAYER_SPEED;
+        this.health = 10;
+        this.maxHealth = 10;
+        this.attack = 2;
+        this.attackDistance = Constants.MAP_TILE_SIZE + 20;
 
-        isFlyable = false;
-        layer = 1;
+        this.isFlyable = false;
+        this.layer = 1;
 
         //init hp bar
-        hpBar = new Sprite(1f, 0f, 0f, FULL_HP_BAR_LENGTH, HP_BAR_HEIGHT);
-        isHPBarVisible = true;
+        this.hpBar = new Sprite(1f, 0f, 0f, FULL_HP_BAR_LENGTH, HP_BAR_HEIGHT);
+        this.isHPBarVisible = true;
     }
 
     public int getState() {
-        return currentState;
+        return this.currentState;
     }
 
     public void setState(int state) {
-        currentState = state;
+        this.currentState = state;
     }
 
     @Override
@@ -140,16 +132,16 @@ public class GameCharacter extends GameObject implements Serializable {
         // Animation must be performed here
 
         // next animation frame
-        this.sprite = animations.get(currentState).update();
+        this.sprite = this.animations.get(this.currentState).update();
 
         // current animation stops, so zero some
         // states
-        if (!animations.get(currentState).isRunning()) {
-            isAttacking = false;
+        if (!this.animations.get(this.currentState).isRunning()) {
+            this.isAttacking = false;
         }
 
-        float cameraX = Game.getInstance().getCameraX();
-        float cameraY = Game.getInstance().getCameraY();
+        float cameraX = ClientGame.getInstance().getCameraX();
+        float cameraY = ClientGame.getInstance().getCameraY();
     }
 
     /**
@@ -165,7 +157,7 @@ public class GameCharacter extends GameObject implements Serializable {
     public void render() {
         super.render();
 
-        if (isHPBarVisible)
+        if (this.isHPBarVisible)
             renderHPBar();
     }
 
@@ -175,14 +167,14 @@ public class GameCharacter extends GameObject implements Serializable {
     private void renderHPBar() {
         glPushMatrix();
         {
-            float cameraX = Game.getInstance().getCameraX();
-            float cameraY = Game.getInstance().getCameraY();
+            float cameraX = ClientGame.getInstance().getCameraX();
+            float cameraY = ClientGame.getInstance().getCameraY();
 
-            hpBar.setWidth((getCurrentHealth() / (1.0f * maxHealth)) * FULL_HP_BAR_LENGTH);
+            this.hpBar.setWidth((getCurrentHealth() / (1.0f * this.maxHealth)) * FULL_HP_BAR_LENGTH);
 
-            glTranslatef((x - cameraX) + getWidth() / 4, y - cameraY + HP_BAR_PADDING, 0);
+            glTranslatef((this.x - cameraX) + getWidth() / 4, this.y - cameraY + HP_BAR_PADDING, 0);
 
-            hpBar.render();
+            this.hpBar.render();
 
         }
         glPopMatrix();
@@ -196,7 +188,7 @@ public class GameCharacter extends GameObject implements Serializable {
      * @return classID
      */
     public CharacterTypes getCharacterId() {
-        return type;
+        return this.type;
     }
 
     /**
@@ -205,19 +197,19 @@ public class GameCharacter extends GameObject implements Serializable {
      * @param state
      */
     public void changeState(int state) {
-        if (currentState != state) {
-            currentState = state;
-            animations.get(currentState).startOver();
+        if (this.currentState != state) {
+            this.currentState = state;
+            this.animations.get(this.currentState).startOver();
         }
-        animations.get(currentState).resume();
+        this.animations.get(this.currentState).resume();
     }
 
     public float getSpeed() {
-        return speed;
+        return this.speed;
     }
 
     public int getCurrentHealth() {
-        return health;
+        return this.health;
     }
 
     // mag = magnitude
@@ -236,14 +228,14 @@ public class GameCharacter extends GameObject implements Serializable {
      * Is this person able to fly
      */
     public boolean isFlyable() {
-        return isFlyable;
+        return this.isFlyable;
     }
 
     /**
      * Return a layer index for this char
      */
     public int getLayer() {
-        return layer;
+        return this.layer;
     }
 
     /**
@@ -254,7 +246,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
         Point currentPosition = new Point((int) getRealX(), (int) getRealY());
 
-        switch (direction) {
+        switch (this.direction) {
             case LEFT:
                 changeState(LEFT_ATTACK_STATE);
 
@@ -275,29 +267,29 @@ public class GameCharacter extends GameObject implements Serializable {
 
         GameCharacter potencialEnemy;
 
-        ArrayList<GameCharacter> enemies= Game.getInstance().getCharactersNearPoint(currentPosition, attackDistance);
+        ArrayList<GameCharacter> enemies = ClientGame.getInstance().getCharactersNearPoint(currentPosition, this.attackDistance);
 
 
-        if (!isAttacking) {
+        if (!this.isAttacking) {
 
             for(GameCharacter character : enemies) {
                 if (character.equals(this)) continue;
 
-                character.takeHarm(attack);
+                character.takeHarm(this.attack);
                 break;
             }
 
         }
 
 
-        isAttacking = true;
+        this.isAttacking = true;
     }
 
     /**
      * Is HP Bar is visible
      */
     public boolean isHPBarVisible() {
-        return isHPBarVisible;
+        return this.isHPBarVisible;
     }
 
     /**
@@ -323,9 +315,9 @@ public class GameCharacter extends GameObject implements Serializable {
         // isn't sofisticated yet
         this.health -= attackStrength;
 
-        if (health <= 0) {
+        if (this.health <= 0) {
             playDeath();
-            health = 0;
+            this.health = 0;
         }
     }
 
@@ -336,21 +328,21 @@ public class GameCharacter extends GameObject implements Serializable {
     public void playDeath() {
 
         setState(DEATH_STATE);
-        isDead = true;
+        this.isDead = true;
     }
 
     /**
      * return attack power of the character
      */
     public int getAttack() {
-        return attack;
+        return this.attack;
     }
 
     /**
      * return is character alive or dead
      */
     public boolean isDead() {
-        return isDead;
+        return this.isDead;
     }
 
 }

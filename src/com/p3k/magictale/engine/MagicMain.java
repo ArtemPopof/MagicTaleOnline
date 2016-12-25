@@ -1,7 +1,7 @@
 package com.p3k.magictale.engine;
 
+import client.ClientGame;
 import com.p3k.magictale.engine.sound.SoundManager;
-import com.p3k.magictale.game.Game;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -14,14 +14,14 @@ import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Main class. Contains all managers
- * and main game cycle.
+ * and main clientGame cycle.
  *
  * @version 0.1
  *          Created by artem96 on 03.12.16.
  */
 public class MagicMain {
 
-    private Game game;
+    private ClientGame clientGame;
 
     private boolean isRunning = true;
 
@@ -48,7 +48,7 @@ public class MagicMain {
     public void initDisplay() {
 
         try {
-            if (isInFullScreenMode) {
+            if (this.isInFullScreenMode) {
                 DisplayMode[] modes = Display.getAvailableDisplayModes();
                 DisplayMode max = modes[0];
 
@@ -91,7 +91,7 @@ public class MagicMain {
 
         long timer = System.currentTimeMillis();
         long step = 20;
-        while (isRunning && !Display.isCloseRequested()) {
+        while (this.isRunning && !Display.isCloseRequested()) {
 
             if (System.currentTimeMillis() - timer > step) {
                 getInput();
@@ -104,15 +104,15 @@ public class MagicMain {
     }
 
     private void getInput() {
-        game.processInput();
+        this.clientGame.processInput();
 
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            isRunning = false;
+            this.isRunning = false;
         }
     }
 
     private void update() {
-        game.update();
+        this.clientGame.update();
     }
 
     private void render() {
@@ -120,7 +120,7 @@ public class MagicMain {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
 
-        game.render();
+        this.clientGame.render();
 
         Display.update();
         Display.sync(60);
@@ -131,11 +131,11 @@ public class MagicMain {
         Display.destroy();
         Keyboard.destroy();
         SoundManager.destroy();
-        game.cleanUp();
+        this.clientGame.cleanUp();
     }
 
     private void initGame() {
-        game = Game.getInstance();
+        this.clientGame = (ClientGame) ClientGame.getInstance();
     }
 
 

@@ -1,4 +1,4 @@
-package com.p3k.magictale.game;
+package client;
 
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
@@ -8,8 +8,11 @@ import com.p3k.magictale.engine.gui.GuiManager;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
+import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
+import com.p3k.magictale.game.GameObjects;
+import com.p3k.magictale.game.IGameObjects;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectInterface;
@@ -28,11 +31,10 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 /**
- * Game routines
+ * ClientGame routines
  * Created by artem96 on 03.12.16.
  */
-public class Game implements Constants {
-    private static Game instance = null;
+public class ClientGame extends AbstractGame implements Constants {
 
     private final String mapName = "forest_v2";
     private IGameObjects objects;
@@ -56,7 +58,7 @@ public class Game implements Constants {
 
     private Cursor cursor;
 
-    private Game() {
+    private ClientGame() {
         if (System.getenv("IP") == null) {
             try {
                 LocateRegistry.createRegistry(1099);
@@ -69,9 +71,9 @@ public class Game implements Constants {
 
         // INITIALIZING CURSOR
         try {
-            cursor = ResourceManager.getInstance().loadCursor("res/cursor.png");
+            this.cursor = ResourceManager.getInstance().loadCursor("res/cursor.png");
 
-            Mouse.setNativeCursor(cursor);
+            Mouse.setNativeCursor(this.cursor);
         } catch (Exception e) {
             System.err.println("Error loading cursor");
         }
@@ -89,9 +91,9 @@ public class Game implements Constants {
         initGuiManager();
     }
 
-    public static Game getInstance() {
+    public static AbstractGame getInstance() {
         if (instance == null) {
-            instance = new Game();
+            instance = new ClientGame();
         }
 
         return instance;
@@ -101,8 +103,8 @@ public class Game implements Constants {
     public void processInput() {
 
         try {
-            for (int i = 0; i < objects.size(); i++) {
-                GameObject object = objects.get(i);
+            for (int i = 0; i < this.objects.size(); i++) {
+                GameObject object = this.objects.get(i);
 
                 if (GameCharacter.class.isInstance(object)) {
                     GameCharacter character = (GameCharacter) object;
@@ -114,11 +116,11 @@ public class Game implements Constants {
         }
 
         // Mouse handle
-        isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
-        isMouseLeftReleased = isMouseLeftPressed && !Mouse.isButtonDown(MOUSE_BTN_LEFT);
-        isMouseRightReleased = isMouseRightPressed && !Mouse.isButtonDown(MOUSE_BTN_RIGHT);
-        isMouseLeftPressed = Mouse.isButtonDown(MOUSE_BTN_LEFT);
-        isMouseRightPressed = Mouse.isButtonDown(MOUSE_BTN_RIGHT);
+        this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
+        this.isMouseLeftReleased = this.isMouseLeftPressed && !Mouse.isButtonDown(MOUSE_BTN_LEFT);
+        this.isMouseRightReleased = this.isMouseRightPressed && !Mouse.isButtonDown(MOUSE_BTN_RIGHT);
+        this.isMouseLeftPressed = Mouse.isButtonDown(MOUSE_BTN_LEFT);
+        this.isMouseRightPressed = Mouse.isButtonDown(MOUSE_BTN_RIGHT);
     }
 
     public void update() {
@@ -126,8 +128,8 @@ public class Game implements Constants {
 //        levelManager.update();
         if (System.getenv("IP") == null) {
             try {
-                for (int i = 0; i < objects.size(); i++) {
-                    GameObject object = objects.get(i);
+                for (int i = 0; i < this.objects.size(); i++) {
+                    GameObject object = this.objects.get(i);
                     object.update();
                 }
             } catch (RemoteException e) {
@@ -135,28 +137,28 @@ public class Game implements Constants {
             }
         }
 
-        guiManager.update();
+        this.guiManager.update();
     }
 
     public void render() {
 
 //        levelManager.render();
 
-        objectManager.render(0);
-        objectManager.render(1);
+        this.objectManager.render(0);
+        this.objectManager.render(1);
 
         try {
-            for (int i = 0; i < objects.size(); i++) {
-                GameObject object = objects.get(i);
+            for (int i = 0; i < this.objects.size(); i++) {
+                GameObject object = this.objects.get(i);
                 object.render();
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
-        objectManager.render(2);
+        this.objectManager.render(2);
 
-        guiManager.render();
+        this.guiManager.render();
     }
 
     public void cleanUp() {
@@ -166,18 +168,18 @@ public class Game implements Constants {
     private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
         String remoteIP = System.getenv("IP");
         if (remoteIP == null) {
-            objects = new GameObjects();
-            Naming.bind("GameObjects", objects);
+            this.objects = new GameObjects();
+            Naming.bind("GameObjects", this.objects);
             System.out.println("RMI backend for objects created");
         } else {
             Registry registry = LocateRegistry.getRegistry(remoteIP);
-            objects = (IGameObjects) registry.lookup("GameObjects");
+            this.objects = (IGameObjects) registry.lookup("GameObjects");
             System.out.println("remote objects in use");
         }
 
         Player player = new Player(100, 520);
 
-        playerIndex = objects.add(player);
+        this.playerIndex = this.objects.add(player);
 
         // test bot
         //Bot testBot = new Bot(500, 400, 64, 64);
@@ -189,26 +191,26 @@ public class Game implements Constants {
 
         // test bot
         Bot testBot3 = new Bot(252, 272, 64, 64);
-        objects.add(testBot3);
+        this.objects.add(testBot3);
 
     }
 
     private void initSoundManager() {
         try {
-            soundManager = SoundManager.getInstance();
+            this.soundManager = SoundManager.getInstance();
 
-            soundManager.registerSound("main_theme.wav");
-            soundManager.registerSound("wind.wav");
-            soundManager.registerSound("user/baphomet_breath.wav");
-            soundManager.registerSound("user/attack_axe.wav");
+            this.soundManager.registerSound("main_theme.wav");
+            this.soundManager.registerSound("wind.wav");
+            this.soundManager.registerSound("user/baphomet_breath.wav");
+            this.soundManager.registerSound("user/attack_axe.wav");
         } catch (Exception e) {
             System.err.println("Error initializing sound manager: " + e);
         }
 
 
         try {
-            bgmSound = new SoundSource(null, true);
-            envSound = new SoundSource(null, true);
+            this.bgmSound = new SoundSource(null, true);
+            this.envSound = new SoundSource(null, true);
 
         } catch (Exception e) {
             System.err.println("Error loading bgm sounds: " + e);
@@ -221,19 +223,19 @@ public class Game implements Constants {
 
     private void initLevelManager() {
         try {
-            resourceManager = ResourceManager.getInstance();
+            this.resourceManager = ResourceManager.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            levelManager = LevelManager.getInstance();
+            this.levelManager = LevelManager.getInstance();
         } catch (Exception e) {
             System.err.println("Error initializing levelManager manager: " + e);
         }
 
         try {
-            levelManager.load(mapName, resourceManager);
+            this.levelManager.load(this.mapName, this.resourceManager);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
@@ -241,13 +243,13 @@ public class Game implements Constants {
 
     private void initObjectManager() {
         try {
-            objectManager = ObjectManager.getInstance();
+            this.objectManager = ObjectManager.getInstance();
         } catch (Exception e) {
             System.err.println("Error initializing levelManager manager: " + e);
         }
 
         try {
-            objectManager.load(mapName, resourceManager);
+            this.objectManager.load(this.mapName, this.resourceManager);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
@@ -255,18 +257,18 @@ public class Game implements Constants {
 
     public void initGuiManager() {
         try {
-            guiManager = new GuiManager((Player) objects.get(playerIndex));
+            this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
     public Level getLevelManager() {
-        return levelManager;
+        return this.levelManager;
     }
 
     public float getCameraX() {
-        return cameraX;
+        return this.cameraX;
     }
 
     public void setCameraX(float cameraX) {
@@ -274,7 +276,7 @@ public class Game implements Constants {
     }
 
     public float getCameraY() {
-        return cameraY;
+        return this.cameraY;
     }
 
     public void setCameraY(float cameraY) {
@@ -287,15 +289,15 @@ public class Game implements Constants {
     }
 
     public boolean isMouseMoved() {
-        return isMouseMoved;
+        return this.isMouseMoved;
     }
 
     public boolean isMousePressed() {
-        return isMouseLeftPressed || isMouseRightPressed;
+        return this.isMouseLeftPressed || this.isMouseRightPressed;
     }
 
     public boolean isMouseReleased() {
-        return isMouseLeftReleased || isMouseRightReleased;
+        return this.isMouseLeftReleased || this.isMouseRightReleased;
     }
 
     public boolean isButtonPressed(int button) {
@@ -308,8 +310,8 @@ public class Game implements Constants {
     public boolean isAnyoneInCell(int cellX, int cellY) {
 
         try {
-            for (int i = 0; i < objects.size(); i++) {
-                GameObject object = objects.get(i);
+            for (int i = 0; i < this.objects.size(); i++) {
+                GameObject object = this.objects.get(i);
                 if (!GameCharacter.class.isInstance(object))
                     continue;
 
@@ -333,8 +335,8 @@ public class Game implements Constants {
     public GameCharacter getAnyoneInCell(int cellX, int cellY) {
 
         try {
-            for (int i = 0; i < objects.size(); i++) {
-                GameObject object = objects.get(i);
+            for (int i = 0; i < this.objects.size(); i++) {
+                GameObject object = this.objects.get(i);
                 if (!GameCharacter.class.isInstance(object))
                     continue;
 
@@ -361,12 +363,12 @@ public class Game implements Constants {
 
         try {
 
-            for (int i = 0; i < objects.size(); i++) {
-                if (!GameCharacter.class.isInstance(objects.get(i))) {
+            for (int i = 0; i < this.objects.size(); i++) {
+                if (!GameCharacter.class.isInstance(this.objects.get(i))) {
                     continue;
                 }
 
-                GameCharacter character = (GameCharacter) objects.get(i);
+                GameCharacter character = (GameCharacter) this.objects.get(i);
 
                 Point charPoint = new Point((int) character.getRealX(), (int) character.getRealY());
 
@@ -383,15 +385,15 @@ public class Game implements Constants {
     }
 
     /**
-     * return array of Game Objects
+     * return array of ClientGame Objects
      */
     public IGameObjects getObjects() {
-        return objects;
+        return this.objects;
     }
 
     public Player getPlayer() {
         try {
-            return (Player) objects.get(playerIndex);
+            return (Player) this.objects.get(this.playerIndex);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -401,7 +403,7 @@ public class Game implements Constants {
 
     public void setPlayer(Player player) {
         try {
-            this.objects.set(player, playerIndex);
+            this.objects.set(player, this.playerIndex);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -414,7 +416,7 @@ public class Game implements Constants {
         GameObject object = new GameObject(x, y, width, height, r, g, b);
 
         try {
-            objects.add(object);
+            this.objects.add(object);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -430,9 +432,9 @@ public class Game implements Constants {
         ArrayList<GameCharacter> characters = new ArrayList<>();
 
         try {
-            for (int i = 0; i < objects.size(); i++) {
+            for (int i = 0; i < this.objects.size(); i++) {
                 Object object;
-                    object = objects.get(i);
+                object = this.objects.get(i);
 
 
                 if (!GameCharacter.class.isInstance(object)) continue;

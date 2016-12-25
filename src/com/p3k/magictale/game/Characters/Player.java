@@ -1,12 +1,11 @@
 package com.p3k.magictale.game.Characters;
 
+import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.physics.Collision;
-import com.p3k.magictale.engine.sound.SoundSource;
-import com.p3k.magictale.game.Game;
 import org.lwjgl.input.Keyboard;
 
 import java.io.Serializable;
@@ -26,10 +25,10 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
         super(x, y, 78, 112);
 
-        type = CharacterTypes.ABSTRACT_PLAYER;
+        this.type = CharacterTypes.ABSTRACT_PLAYER;
 
         try {
-            animations = ResourceManager.getInstance().getAnimations(this);
+            this.animations = ResourceManager.getInstance().getAnimations(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +44,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
         // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
 
-        xp = 0;
+        this.xp = 0;
 
         //initSounds();
 
@@ -74,8 +73,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
         super.update();
 
         //TODO do not left it undone
-        this.x = 800 / 2 + Game.getInstance().getCameraX();
-        this.y = 600 / 2 + Game.getInstance().getCameraY();
+        this.x = 800 / 2 + ClientGame.getInstance().getCameraX();
+        this.y = 600 / 2 + ClientGame.getInstance().getCameraY();
 
     }
 
@@ -117,17 +116,17 @@ public class Player extends GameCharacter implements Constants, Serializable {
         }
 
         // mouse events
-        if (Game.getInstance().isButtonPressed(MOUSE_BTN_LEFT)) {
+        if (ClientGame.getInstance().isButtonPressed(MOUSE_BTN_LEFT)) {
             doAttack();
         }
 
-        if (isAttacking) {
+        if (this.isAttacking) {
             isStateChanged = true;
         }
 
         // if nothing happens with player, then wait
         if (!isStateChanged) {
-            animations.get(getState()).pause();
+            this.animations.get(getState()).pause();
         }
 
     }
@@ -136,8 +135,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
     // move player according to given params
     protected void move(float magX, float magY) {
 
-        if (isAttacking)
-            isAttacking = false;
+        if (this.isAttacking)
+            this.isAttacking = false;
 
         float deltaX = magX * getSpeed();
         float deltaY = magY * getSpeed();
@@ -145,34 +144,34 @@ public class Player extends GameCharacter implements Constants, Serializable {
         //  x += deltaX;
         //  y += deltaY;
 
-        float oldX = Game.getInstance().getCameraX();
-        float oldY = Game.getInstance().getCameraY();
+        float oldX = ClientGame.getInstance().getCameraX();
+        float oldY = ClientGame.getInstance().getCameraY();
 
-        this.setX(x + deltaX);
-        this.setY(y + deltaY);
+        this.setX(this.x + deltaX);
+        this.setY(this.y + deltaY);
 
         if (Collision.checkForCollision(this)) {
             // freeze! collision!
-            this.setX(x - deltaX);
-            this.setY(y - deltaY);
+            this.setX(this.x - deltaX);
+            this.setY(this.y - deltaY);
         } else {
-            Game.getInstance().setCameraX(oldX + deltaX);
-            Game.getInstance().setCameraY(oldY + deltaY);
+            ClientGame.getInstance().setCameraX(oldX + deltaX);
+            ClientGame.getInstance().setCameraY(oldY + deltaY);
         }
 
 
     }
 
     public float getXp() {
-        return xp;
+        return this.xp;
     }
 
     public void addXp(float amount) {
-        xp += amount;
+        this.xp += amount;
     }
 
     public int getLevel() {
-        return (int) (xp / 50) + 1;
+        return (int) (this.xp / 50) + 1;
     }
 
     public int getMaxHealth() {

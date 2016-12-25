@@ -1,18 +1,14 @@
 package com.p3k.magictale.game.Characters;
 
+import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.algorithms.AStarFindAlgorithm;
 import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.GameCharacter;
-import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
-import com.p3k.magictale.engine.physics.Collision;
-import com.p3k.magictale.game.Game;
-import com.p3k.magictale.game.IGameObjects;
 import com.p3k.magictale.map.level.LevelManager;
 
 import java.awt.*;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -119,48 +115,48 @@ public class Bot extends GameCharacter {
         super(x, y, width, height);
 
         // get player animations
-        type = CharacterTypes.ABSTRACT_BOT;
+        this.type = CharacterTypes.ABSTRACT_BOT;
 
         try {
-            animations = ResourceManager.getInstance().getAnimations(this);
+            this.animations = ResourceManager.getInstance().getAnimations(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // 10 keys should be enough, i think
         // all values equal false?
-        keysState = new boolean[EMULATED_KEYS];
+        this.keysState = new boolean[EMULATED_KEYS];
 
         // how many pixels is visible to bot
-        visionCellRadius = 10;
-        visionRadius = visionCellRadius * Constants.TILE_SIZE;
+        this.visionCellRadius = 10;
+        this.visionRadius = this.visionCellRadius * Constants.TILE_SIZE;
 
-        isAggressive = true;
+        this.isAggressive = true;
 
-        currentBotState = BOT_PATRULING_STATE;
+        this.currentBotState = BOT_PATRULING_STATE;
 
-        random = new Random(System.currentTimeMillis());
+        this.random = new Random(System.currentTimeMillis());
 
-        destinationX = -1;
-        destinationY = -1;
+        this.destinationX = -1;
+        this.destinationY = -1;
 
-        pathToTarget = null;
-        nextCellInPath = -1;
+        this.pathToTarget = null;
+        this.nextCellInPath = -1;
 
-        framesToWait = -1;
+        this.framesToWait = -1;
 
-        isAroundEnemy = false;
+        this.isAroundEnemy = false;
 
         // TEMP CODE NEXT
 
-        field = new boolean[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
+        this.field = new boolean[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
 
         // init temp map with all passable values
         // bot can move to every location.
         for (int i = 0; i < Constants.MAP_HEIGHT; i++) {
             for (int j = 0; j < Constants.MAP_WIDTH; j++) {
                 try {
-                    field[j][i] = LevelManager.getInstance().getTileMap()[j][i].isPass(1, false);
+                    this.field[j][i] = LevelManager.getInstance().getTileMap()[j][i].isPass(1, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -212,12 +208,12 @@ public class Bot extends GameCharacter {
                 // nothing's here yet
             }
 
-            if (isAttacking) {
+            if (this.isAttacking) {
                 isSomethingHappens = true;
             }
 
             if (!isSomethingHappens) {
-                animations.get(getState()).pause();
+                this.animations.get(getState()).pause();
             }
 
         } catch (IllegalArgumentException e) {
@@ -236,25 +232,25 @@ public class Bot extends GameCharacter {
             return;
         }
 
-        isAttacking = false;
+        this.isAttacking = false;
 
         // here will be simulation of bot virtual brain
 
-        if (spottedEnemy == null && isAggressive && isAnyoneNotFriendlyAround()) {
+        if (this.spottedEnemy == null && this.isAggressive && isAnyoneNotFriendlyAround()) {
             setBotState(BOT_TARGETSPOTED_STATE);
         }
 
-        if (currentBotState == BOT_PATRULING_STATE) {
+        if (this.currentBotState == BOT_PATRULING_STATE) {
             doPatroling();
         }
-        if (currentBotState == BOT_WAITING_STATE) {
+        if (this.currentBotState == BOT_WAITING_STATE) {
             boolean isEnoughWaiting = doWait();
 
             if (isEnoughWaiting) {
                 setBotState(BOT_PATRULING_STATE);
             }
         }
-        if (currentBotState == BOT_TARGETSPOTED_STATE) {
+        if (this.currentBotState == BOT_TARGETSPOTED_STATE) {
             seekAndDetroy();
         }
 
@@ -266,7 +262,7 @@ public class Bot extends GameCharacter {
     private void seekAndDetroy() {
 
         Point spottedEnemyCell = LevelManager
-                .getTilePointByCoordinates(spottedEnemy.getRealX(), spottedEnemy.getRealY());
+                .getTilePointByCoordinates(this.spottedEnemy.getRealX(), this.spottedEnemy.getRealY());
         Point botCell = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
 
         // estimate distance from target
@@ -276,18 +272,18 @@ public class Bot extends GameCharacter {
 
         int heuristicDistanceFromTarget = deltaX + deltaY;
 
-        if (heuristicDistanceFromTarget > visionCellRadius) {
+        if (heuristicDistanceFromTarget > this.visionCellRadius) {
             // he runned for his life
             // so calm down and patruling again
             setBotState(BOT_WAITING_STATE);
-            spottedEnemy = null;
+            this.spottedEnemy = null;
 
             System.out.println("LOST TARGET");
             return;
         }
 
         // start walking to target
-        if (destinationY == -1) {
+        if (this.destinationY == -1) {
             Point destination = spottedEnemyCell;
 
             if (deltaX > deltaY) {
@@ -313,8 +309,8 @@ public class Bot extends GameCharacter {
                 }
             }
 
-            destinationX = destination.x * Constants.MAP_TILE_SIZE;
-            destinationY = (Constants.MAP_HEIGHT - destination.y) * Constants.MAP_TILE_SIZE;
+            this.destinationX = destination.x * Constants.MAP_TILE_SIZE;
+            this.destinationY = (Constants.MAP_HEIGHT - destination.y) * Constants.MAP_TILE_SIZE;
         }
 
 
@@ -325,10 +321,10 @@ public class Bot extends GameCharacter {
             // we know he's around here now
             doAttack();
 
-            if (spottedEnemy.isDead()) {
+            if (this.spottedEnemy.isDead()) {
                 // we win
-                destinationY = -1;
-                spottedEnemy = null;
+                this.destinationY = -1;
+                this.spottedEnemy = null;
                 setBotState(WAITING_STATE);
             }
 
@@ -346,24 +342,24 @@ public class Bot extends GameCharacter {
      */
     private void doPatroling() {
 
-        if (destinationY == -1) {
+        if (this.destinationY == -1) {
             // state has been changed just now
             // so generate random destination to follow
 
-            int randomX = random.nextInt(visionRadius * 2);
-            int randomY = random.nextInt(visionRadius * 2);
+            int randomX = this.random.nextInt(this.visionRadius * 2);
+            int randomY = this.random.nextInt(this.visionRadius * 2);
 
-            randomX = (-1 * visionRadius) + randomX;
+            randomX = (-1 * this.visionRadius) + randomX;
 
-            randomY = (-1 * visionRadius) + randomY;
+            randomY = (-1 * this.visionRadius) + randomY;
 
             // if bot want to go to current cell
             if (Math.abs(randomX) <= Constants.TILE_SIZE && Math.abs(randomY) <= Constants.TILE_SIZE) {
                 randomX += Constants.TILE_SIZE + 1;
             }
 
-            destinationY = getRealY() + randomY;
-            destinationX = getRealX() + randomX;
+            this.destinationY = getRealY() + randomY;
+            this.destinationX = getRealX() + randomX;
 
             //here will be collision check, so we can be
             //sure that destination is reachable
@@ -388,15 +384,15 @@ public class Bot extends GameCharacter {
 
         // if it's first frame to wait
         // so decide, how long he's going to wait
-        if (framesToWait == -1) {
-            framesToWait = random.nextInt(5 * Constants.MAX_FPS);
-        } else if (framesToWait > 0) {
+        if (this.framesToWait == -1) {
+            this.framesToWait = this.random.nextInt(5 * Constants.MAX_FPS);
+        } else if (this.framesToWait > 0) {
             // waiting another frame
-            framesToWait--;
+            this.framesToWait--;
         } else {
             // enough waiting
             setBotState(BOT_PATRULING_STATE);
-            framesToWait = -1;
+            this.framesToWait = -1;
             return true;
         }
 
@@ -416,7 +412,7 @@ public class Bot extends GameCharacter {
         if (keyCode < 0 || keyCode >= EMULATED_KEYS) {
             throw new IllegalArgumentException("isKeyDown: unknown keyCode");
         }
-        return keysState[keyCode];
+        return this.keysState[keyCode];
     }
 
     /**
@@ -429,7 +425,7 @@ public class Bot extends GameCharacter {
         if (keyCode < 0 || keyCode >= EMULATED_KEYS) {
             System.err.print("Bot.emulateKey(" + keyCode + "): invalid argument");
         } else {
-            keysState[keyCode] = true;
+            this.keysState[keyCode] = true;
         }
     }
 
@@ -438,15 +434,15 @@ public class Bot extends GameCharacter {
      */
 
     private void setBotState(int state) {
-        currentBotState = state;
+        this.currentBotState = state;
     }
 
     /**
      * Clear all key states
      */
     private void clearKeyStates() {
-        for (int i = 0; i < keysState.length; i++) {
-            keysState[i] = false;
+        for (int i = 0; i < this.keysState.length; i++) {
+            this.keysState[i] = false;
         }
     }
 
@@ -462,7 +458,7 @@ public class Bot extends GameCharacter {
         Point firstRectCell = new Point();
         Point secondRectCell = new Point();
 
-        ArrayList<GameCharacter> characters = Game.getInstance().getCharactersNearPoint(currentCell, visionRadius);
+        ArrayList<GameCharacter> characters = ClientGame.getInstance().getCharactersNearPoint(currentCell, this.visionRadius);
 
         for (GameCharacter character : characters) {
             if (Player.class.isInstance(character)) {
@@ -471,7 +467,7 @@ public class Bot extends GameCharacter {
                     // he's alredy dead, so leave him alone
                     continue;
                 }
-                spottedEnemy = character;
+                this.spottedEnemy = character;
                 System.out.println("Spotted enemy: "+character.toString());
                 return true;
             }
@@ -509,7 +505,7 @@ public class Bot extends GameCharacter {
                 break;
         }
 
-        IGameObjects objects = Game.getInstance().getObjects();
+        IGameObjects objects = ClientGame.getInstance().getObjects();
 
         try {
             for (int i = 0; i < objects.size(); i++) {
@@ -555,40 +551,40 @@ public class Bot extends GameCharacter {
      */
     private int walkToTarget() {
 
-        if (Math.abs(getRealX() - destinationX) <= 2 && Math.abs(getRealY() - destinationY) <= 2) {
+        if (Math.abs(getRealX() - this.destinationX) <= 2 && Math.abs(getRealY() - this.destinationY) <= 2) {
             // ok we're on the spot
-            destinationX = -1;
-            destinationY = -1;
-            nextCellInPath = -1;
+            this.destinationX = -1;
+            this.destinationY = -1;
+            this.nextCellInPath = -1;
 
             clearKeyStates();
 
             return 1;
-        } else if (nextCellInPath == -1) {
+        } else if (this.nextCellInPath == -1) {
 
             // use a brain, to generate path to target
             // a* algorithm?
 
             Point start = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
-            Point goal = LevelManager.getTilePointByCoordinates(destinationX, destinationY);
+            Point goal = LevelManager.getTilePointByCoordinates(this.destinationX, this.destinationY);
 
-            pathToTarget = AStarFindAlgorithm.findPath(
-                    field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
+            this.pathToTarget = AStarFindAlgorithm.findPath(
+                    this.field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
 
             // cannot go where bot wants to go =(
-            if (pathToTarget == null) {
-                destinationX = -1;
-                destinationY = -1;
-                nextCellInPath = -1;
+            if (this.pathToTarget == null) {
+                this.destinationX = -1;
+                this.destinationY = -1;
+                this.nextCellInPath = -1;
                 return -1;
             }
 
-            nextCellInPath = 0;
+            this.nextCellInPath = 0;
         } else {
 
             // so we know the path and can go to target
             Point currentTile = LevelManager.getTilePointByCoordinates(getRealX(), getRealY());
-            Point nextTile = pathToTarget.get(nextCellInPath);
+            Point nextTile = this.pathToTarget.get(this.nextCellInPath);
 
             // reset all keys
             clearKeyStates();
@@ -596,14 +592,14 @@ public class Bot extends GameCharacter {
             if (currentTile.equals(nextTile)) {
 
                 // destination arrived
-                if (nextCellInPath == pathToTarget.size() - 1) {
-                    destinationX = -1;
-                    destinationY = -1;
-                    nextCellInPath = -1;
+                if (this.nextCellInPath == this.pathToTarget.size() - 1) {
+                    this.destinationX = -1;
+                    this.destinationY = -1;
+                    this.nextCellInPath = -1;
                     return 1;
                 }
 
-                nextCellInPath++;
+                this.nextCellInPath++;
                 return 0;
             }
 
