@@ -1,7 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
-import com.p3k.magictale.game.Game;
 import com.p3k.magictale.engine.enums.Direction;
+import com.p3k.magictale.game.Game;
 
 import java.io.Serializable;
 
@@ -17,6 +17,8 @@ import static org.lwjgl.opengl.GL11.*;
  * Created by artem96 on 03.12.16.
  */
 public class GameObject implements Serializable {
+    private static int maxId = 0;
+    private final int id;
     protected float x;
     protected float y;
 
@@ -34,18 +36,21 @@ public class GameObject implements Serializable {
     // all values will be
     // specified later
     public GameObject() {
-
+        this.id = maxId++;
     }
 
     public GameObject(float x, float y, float width, float height, int r, int g, int b) {
+        this();
         this.init(x, y, width, height, r, g, b);
     }
 
     public GameObject(float x, float y, float width, float height) {
+        this();
         init(x, y, width, height);
     }
 
     public GameObject(Sprite sprite, float width, float height) {
+        this();
         initBySprite(sprite, width, height);
     }
 
@@ -58,9 +63,9 @@ public class GameObject implements Serializable {
             float cameraX = Game.getInstance().getCameraX();
             float cameraY = Game.getInstance().getCameraY();
 
-            glTranslatef(x - cameraX, y - cameraY, 0);
+            glTranslatef(this.x - cameraX, this.y - cameraY, 0);
 
-            sprite.render();
+            this.sprite.render();
 
         }
         glPopMatrix();
@@ -71,7 +76,7 @@ public class GameObject implements Serializable {
     }
 
     public float getX() {
-        return x;
+        return this.x;
     }
 
     public void setX(float x) {
@@ -84,7 +89,7 @@ public class GameObject implements Serializable {
      * @return
      */
     public float getRealX() {
-        return x + getWidth()/2;
+        return this.x + getWidth() / 2;
     }
 
     /**
@@ -93,11 +98,11 @@ public class GameObject implements Serializable {
      * @return
      */
     public float getRealY() {
-        return y;
+        return this.y;
     }
 
     public float getY() {
-        return y;
+        return this.y;
     }
 
     public void setY(float y) {
@@ -106,22 +111,24 @@ public class GameObject implements Serializable {
 
 
     public float getWidth() {
-        return sprite.getWidth();
+        return this.sprite.getWidth();
     }
 
     public void setWidth(float width) {
-        sprite.setWidth(width);
+        this.sprite.setWidth(width);
     }
 
     public float getHeight() {
-        return sprite.getHeight();
+        return this.sprite.getHeight();
     }
 
     public void setHeight(float height) {
-        sprite.setHeight(height);
+        this.sprite.setHeight(height);
     }
 
-    public Sprite getSprite() { return sprite; }
+    public Sprite getSprite() {
+        return this.sprite;
+    }
 
     protected void setSprite(Sprite sprite) { this.sprite = sprite; }
 
@@ -130,7 +137,7 @@ public class GameObject implements Serializable {
         this.y = y;
         this.sprite = new Sprite(0, 1f, 0, width, height);
 
-        direction = Direction.DOWN;
+        this.direction = Direction.DOWN;
     }
 
     protected void init(float x, float y, float width, float height, int r, int g, int b) {
@@ -145,7 +152,7 @@ public class GameObject implements Serializable {
         this.x = x;
         this.y = y;
 
-        direction = Direction.DOWN;
+        this.direction = Direction.DOWN;
     }
 
     /**
@@ -162,14 +169,20 @@ public class GameObject implements Serializable {
      *
      */
     public Direction getDirection() {
-        return direction;
+        return this.direction;
     }
 
     /**
      * Debug method. Just remove sprite from object
      */
     public void removeSprite() {
-        sprite = new Sprite(1f, 0, 0, getWidth(), getHeight());
+        this.sprite = new Sprite(1f, 0, 0, getWidth(), getHeight());
     }
 
+    /**
+     * @return id of any changeable object on map
+     */
+    public int getId() {
+        return this.id;
+    }
 }
