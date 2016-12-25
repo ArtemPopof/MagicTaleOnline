@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class GameObject implements Serializable {
     private static int maxId = 0;
     private final int id;
+    protected boolean isChanged;
     protected float x;
     protected float y;
 
@@ -37,6 +38,7 @@ public class GameObject implements Serializable {
     // specified later
     public GameObject() {
         this.id = maxId++;
+        this.isChanged = true;
     }
 
     public GameObject(float x, float y, float width, float height, int r, int g, int b) {
