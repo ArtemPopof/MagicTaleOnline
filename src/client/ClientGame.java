@@ -73,15 +73,15 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initSoundManager();
 
+        initObjectManager();
+
+        initGuiManager();
+
         try {
             initObjects();
         } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
             e.printStackTrace();
         }
-
-        initObjectManager();
-
-        initGuiManager();
     }
 
     public static AbstractGame getInstance() {

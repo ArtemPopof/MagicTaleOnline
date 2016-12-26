@@ -4,9 +4,11 @@ import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.algorithms.AStarFindAlgorithm;
 import com.p3k.magictale.engine.enums.Direction;
+import com.p3k.magictale.engine.graphics.Animation;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.map.level.LevelManager;
+import com.p3k.magictale.map.objects.ObjectManager;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -118,7 +120,7 @@ public class Bot extends GameCharacter {
         this.type = CharacterTypes.ABSTRACT_BOT;
 
         try {
-            this.animations = ResourceManager.getInstance().getAnimations(this);
+            this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -156,12 +158,14 @@ public class Bot extends GameCharacter {
         for (int i = 0; i < Constants.MAP_HEIGHT; i++) {
             for (int j = 0; j < Constants.MAP_WIDTH; j++) {
                 try {
-                    this.field[j][i] = LevelManager.getInstance().getTileMap()[j][i].isPass(1, false);
+//                    this.field[j][i] = LevelManager.getInstance().getTileMap()[j][i].isPass(1, false);
+                    field[j][i] = ObjectManager.getInstance().isPass(j, i, 1, true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+        System.out.println();
     }
 
     /**

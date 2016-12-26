@@ -98,7 +98,7 @@ public class GameCharacter extends GameObject implements Serializable {
         this.currentState = WAITING_STATE;
 
         try {
-            this.animations = ResourceManager.getInstance().getAnimations(this);
+            this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
