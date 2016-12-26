@@ -16,16 +16,21 @@ public abstract class AbstractGame {
      * Integer - object id
      * GameObject - reference
      */
-    private final ConcurrentHashMap<Integer, GameObject> objects;
+    protected final ConcurrentHashMap<Integer, GameObject> objects;
+    /**
+     * mainloop tick time between update (maybe render) actions
+     */
+    private final long tickTimeMills;
     /**
      * game global run state
      */
     private boolean isRunning;
-    /**
-     * mainloop tick time between update (maybe render) actions
-     */
-    private long tickTimeMills;
 
+    /**
+     * {@link AbstractGame} constructor
+     * which define tickRate of server
+     * and set server status to running
+     */
     protected AbstractGame() {
         this.isRunning = true;
         this.tickTimeMills = 40;
@@ -49,4 +54,26 @@ public abstract class AbstractGame {
     public static AbstractGame getClientInstance() {
         return ClientGame.getInstance();
     }
+
+    /**
+     * главный цикл игры (что на сервере, что на клиенте)
+     * с постоянной паузой
+     */
+    public final void mainLoop() {
+        // сразу заходим в цикл
+        long lastRunMillis = System.currentTimeMillis() - this.tickTimeMills;
+        while (this.isRunning) {
+            if (System.currentTimeMillis() - lastRunMillis < this.tickTimeMills) {
+                continue;
+            }
+            lastRunMillis += this.tickTimeMills;
+
+            tick();
+        }
+    }
+
+    /**
+     * один tick в игре, на сервере и клиенте должен иметь свои обработчики
+     */
+    public abstract void tick();
 }

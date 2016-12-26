@@ -458,7 +458,7 @@ public class Bot extends GameCharacter {
         Point firstRectCell = new Point();
         Point secondRectCell = new Point();
 
-        ArrayList<GameCharacter> characters = ClientGame.getInstance().getCharactersNearPoint(currentCell, this.visionRadius);
+        ArrayList<GameCharacter> characters = ((ClientGame) ClientGame.getInstance()).getCharactersNearPoint(currentCell, this.visionRadius);
 
         for (GameCharacter character : characters) {
             if (Player.class.isInstance(character)) {

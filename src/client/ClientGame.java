@@ -11,8 +11,6 @@ import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
-import com.p3k.magictale.game.GameObjects;
-import com.p3k.magictale.game.IGameObjects;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectInterface;
@@ -23,12 +21,10 @@ import org.lwjgl.input.Mouse;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ClientGame routines
@@ -37,7 +33,6 @@ import java.util.ArrayList;
 public class ClientGame extends AbstractGame implements Constants {
 
     private final String mapName = "forest_v2";
-    private IGameObjects objects;
 
     //private Player player;
     private int playerIndex;
@@ -59,13 +54,6 @@ public class ClientGame extends AbstractGame implements Constants {
     private Cursor cursor;
 
     private ClientGame() {
-        if (System.getenv("IP") == null) {
-            try {
-                LocateRegistry.createRegistry(1099);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
 
         initLevelManager();
 
@@ -99,21 +87,25 @@ public class ClientGame extends AbstractGame implements Constants {
         return instance;
     }
 
+    /**
+     * один tick в игре, на сервере и клиенте должен иметь свои обработчики
+     */
+    @Override
+    public void tick() {
+
+    }
 
     public void processInput() {
 
-        try {
-            for (int i = 0; i < this.objects.size(); i++) {
-                GameObject object = this.objects.get(i);
+        for (int i = 0; i < this.objects.size(); i++) {
+            GameObject object = this.objects.get(i);
 
-                if (GameCharacter.class.isInstance(object)) {
-                    GameCharacter character = (GameCharacter) object;
-                    character.processInput();
-                }
+            if (GameCharacter.class.isInstance(object)) {
+                GameCharacter character = (GameCharacter) object;
+                character.processInput();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+
 
         // Mouse handle
         this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
@@ -126,16 +118,7 @@ public class ClientGame extends AbstractGame implements Constants {
     public void update() {
 
 //        levelManager.update();
-        if (System.getenv("IP") == null) {
-            try {
-                for (int i = 0; i < this.objects.size(); i++) {
-                    GameObject object = this.objects.get(i);
-                    object.update();
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
+
 
         this.guiManager.update();
     }
@@ -147,14 +130,11 @@ public class ClientGame extends AbstractGame implements Constants {
         this.objectManager.render(0);
         this.objectManager.render(1);
 
-        try {
-            for (int i = 0; i < this.objects.size(); i++) {
-                GameObject object = this.objects.get(i);
-                object.render();
-            }
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        for (int i = 0; i < this.objects.size(); i++) {
+            GameObject object = this.objects.get(i);
+            object.render();
         }
+
 
         this.objectManager.render(2);
 
@@ -166,32 +146,26 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
-        String remoteIP = System.getenv("IP");
-        if (remoteIP == null) {
-            this.objects = new GameObjects();
-            Naming.bind("GameObjects", this.objects);
-            System.out.println("RMI backend for objects created");
-        } else {
-            Registry registry = LocateRegistry.getRegistry(remoteIP);
-            this.objects = (IGameObjects) registry.lookup("GameObjects");
-            System.out.println("remote objects in use");
-        }
+
 
         Player player = new Player(100, 520);
 
-        this.playerIndex = this.objects.add(player);
+        synchronized (this.objects) {
+            this.playerIndex = this.objects.size();
+            this.objects.put(this.playerIndex, player);
+        }
 
         // test bot
         //Bot testBot = new Bot(500, 400, 64, 64);
         //objects.add(testBot);
 
         // test bot
-       // Bot testBot2 = new Bot(200, 354, 64, 64);
+        // Bot testBot2 = new Bot(200, 354, 64, 64);
         //objects.add(testBot2);
 
         // test bot
         Bot testBot3 = new Bot(252, 272, 64, 64);
-        this.objects.add(testBot3);
+        this.objects.put(this.objects.size(), testBot3);
 
     }
 
@@ -256,11 +230,9 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     public void initGuiManager() {
-        try {
-            this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+
+        this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
+
     }
 
     public Level getLevelManager() {
@@ -309,22 +281,19 @@ public class ClientGame extends AbstractGame implements Constants {
      */
     public boolean isAnyoneInCell(int cellX, int cellY) {
 
-        try {
-            for (int i = 0; i < this.objects.size(); i++) {
-                GameObject object = this.objects.get(i);
-                if (!GameCharacter.class.isInstance(object))
-                    continue;
+        for (int i = 0; i < this.objects.size(); i++) {
+            GameObject object = this.objects.get(i);
+            if (!GameCharacter.class.isInstance(object))
+                continue;
 
-                GameCharacter character = (GameCharacter) object;
+            GameCharacter character = (GameCharacter) object;
 
-                Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
-                if (characterPoint.x == cellX && characterPoint.y == cellY) {
-                    return true;
-                }
+            Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
+            if (characterPoint.x == cellX && characterPoint.y == cellY) {
+                return true;
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+
 
         return false;
     }
@@ -334,21 +303,17 @@ public class ClientGame extends AbstractGame implements Constants {
      */
     public GameCharacter getAnyoneInCell(int cellX, int cellY) {
 
-        try {
-            for (int i = 0; i < this.objects.size(); i++) {
-                GameObject object = this.objects.get(i);
-                if (!GameCharacter.class.isInstance(object))
-                    continue;
+        for (int i = 0; i < this.objects.size(); i++) {
+            GameObject object = this.objects.get(i);
+            if (!GameCharacter.class.isInstance(object))
+                continue;
 
-                GameCharacter character = (GameCharacter) object;
+            GameCharacter character = (GameCharacter) object;
 
-                Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
-                if (characterPoint.x == cellX && characterPoint.y == cellY) {
-                    return character;
-                }
+            Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
+            if (characterPoint.x == cellX && characterPoint.y == cellY) {
+                return character;
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
 
         return null;
@@ -356,30 +321,27 @@ public class ClientGame extends AbstractGame implements Constants {
 
     /**
      * Return first GameCharacter founded in given rect
+     *
      * @param startPoint - rectangle in pixels, where
-     *                  should seek for characters
+     *                   should seek for characters
      */
     public GameCharacter getAnyoneInRect(Point startPoint, Point endPoint) {
 
-        try {
 
-            for (int i = 0; i < this.objects.size(); i++) {
-                if (!GameCharacter.class.isInstance(this.objects.get(i))) {
-                    continue;
-                }
-
-                GameCharacter character = (GameCharacter) this.objects.get(i);
-
-                Point charPoint = new Point((int) character.getRealX(), (int) character.getRealY());
-
-                if (Collision.isPointInRect(charPoint, startPoint, endPoint)) {
-                    return character;
-                }
+        for (int i = 0; i < this.objects.size(); i++) {
+            if (!GameCharacter.class.isInstance(this.objects.get(i))) {
+                continue;
             }
 
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            GameCharacter character = (GameCharacter) this.objects.get(i);
+
+            Point charPoint = new Point((int) character.getRealX(), (int) character.getRealY());
+
+            if (Collision.isPointInRect(charPoint, startPoint, endPoint)) {
+                return character;
+            }
         }
+
 
         return null;
     }
@@ -387,26 +349,16 @@ public class ClientGame extends AbstractGame implements Constants {
     /**
      * return array of ClientGame Objects
      */
-    public IGameObjects getObjects() {
+    public ConcurrentHashMap<Integer, GameObject> getObjects() {
         return this.objects;
     }
 
     public Player getPlayer() {
-        try {
-            return (Player) this.objects.get(this.playerIndex);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return (Player) this.objects.get(this.playerIndex);
     }
 
     public void setPlayer(Player player) {
-        try {
-            this.objects.set(player, this.playerIndex);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        this.objects.put(this.playerIndex, player);
     }
 
     /**
@@ -415,11 +367,8 @@ public class ClientGame extends AbstractGame implements Constants {
     public void createGameObject(float x, float y, float width, float height, int r, int g, int b) {
         GameObject object = new GameObject(x, y, width, height, r, g, b);
 
-        try {
-            this.objects.add(object);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        this.objects.put(this.objects.size(), object);
+
     }
 
     /**
@@ -431,26 +380,23 @@ public class ClientGame extends AbstractGame implements Constants {
 
         ArrayList<GameCharacter> characters = new ArrayList<>();
 
-        try {
-            for (int i = 0; i < this.objects.size(); i++) {
-                Object object;
-                object = this.objects.get(i);
+        for (int i = 0; i < this.objects.size(); i++) {
+            Object object;
+            object = this.objects.get(i);
 
 
-                if (!GameCharacter.class.isInstance(object)) continue;
+            if (!GameCharacter.class.isInstance(object)) continue;
 
-                GameCharacter character = (GameCharacter) object;
+            GameCharacter character = (GameCharacter) object;
 
-                if (Math.abs(position.x - character.getRealX()) < radius
-                        && Math.abs(position.y - character.getRealY()) < radius) {
+            if (Math.abs(position.x - character.getRealX()) < radius
+                    && Math.abs(position.y - character.getRealY()) < radius) {
 
-                    characters.add(character);
+                characters.add(character);
 
-                }
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+
 
         return characters;
     }
