@@ -4,35 +4,30 @@ import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.graphics.SpriteSheet;
 
 import java.awt.*;
-import java.io.*;
 import java.rmi.NoSuchObjectException;
 
 /**
  * Created by jorgen on 16.12.16.
  */
 public class Font {
-
-    private static final int CHAR_SPRITE_WIDTH = 32;
-    private static final int CHAR_SPRITE_HEIGHT = 32;
-
-    private static final String FONT_DIR = "res/gui/fonts/";
-
     private SpriteSheet sheet;
 
     private String name;
 
-    private int size;
-    private float space;
-    private Color color;
+    private FontInfo info;
 
-    public Font(String name) throws Exception {
+    public Font(String name, FontInfo info, SpriteSheet sheet) {
         this.name = name;
+        this.info = info;
+        this.sheet = sheet;
 
-        this.loadFont();
+        this.setSize(info.size);
+    }
 
-        // Default font values
-        setSize(32);
-        space = -20.0f;
+    public Font(Font another) {
+        this.sheet = another.sheet;
+        this.name = another.name;
+        this.info = another.info;
     }
 
     public Sprite getSpriteFor(char ch) throws NoSuchObjectException {
@@ -44,47 +39,44 @@ public class Font {
         }
     }
 
-    private void loadFont() throws Exception {
-        sheet = new SpriteSheet(FONT_DIR + name + ".bmp",
-                CHAR_SPRITE_WIDTH, CHAR_SPRITE_HEIGHT, false, true);
-
-        if ( sheet == null ) {
-            throw new FileNotFoundException("Can't find file with name: "
-                    + name + ".png");
-        }
-
-    }
-
     private void resize() {
         sheet.getSprites().forEach(sprite -> {
-            sprite.setHeight(size);
-            sprite.setWidth(size);
+            sprite.setHeight(info.size);
+            sprite.setWidth(info.size);
         });
     }
 
     public float getSpace() {
-        return space;
+        return info.space;
     }
 
-    public void setSpace(float space) {
-        this.space = space;
+    public void setSpace(int space) {
+        info.space = space;
     }
 
     public Color getColor() {
-        return color;
+        return null;
     }
 
     public void setColor(Color color) {
-        this.color = color;
+        return;
     }
 
     public int getSize() {
-        return size;
+        return info.size;
     }
 
     public void setSize(int size) {
 
-        this.size = size;
+        if ( info.size == size ) {
+            return;
+        }
+
+        float dsize = size / (float) info.size;
+
+        info.size = size;
+        info.space = (int) (info.space * dsize);
+
         this.resize();
     }
 }
