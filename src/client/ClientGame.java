@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by artem96 on 03.12.16.
  */
 public class ClientGame extends AbstractGame implements Constants {
+    private static final boolean isDebug = true;
 
     private final String mapName = "forest_v2";
 
@@ -119,6 +120,12 @@ public class ClientGame extends AbstractGame implements Constants {
 
 //        levelManager.update();
 
+        synchronized (this.objects) {
+            for (Integer key : this.objects.keySet()) {
+                GameObject object = this.objects.get(key);
+                object.update();
+            }
+        }
 
         this.guiManager.update();
     }
@@ -401,4 +408,7 @@ public class ClientGame extends AbstractGame implements Constants {
         return characters;
     }
 
+    public static boolean isDebug() {
+        return ClientGame.isDebug;
+    }
 }

@@ -10,11 +10,6 @@ public class ServerGame extends AbstractGame {
     private ServerSocket serverSocket;
 
     private ServerGame() {
-        try {
-            this.serverSocket = new ServerSocket(1100);
-        } catch (IOException e) {
-            System.out.println("Server socket for objects can't be created");
-        }
         // TODO: init all
     }
 
@@ -31,11 +26,6 @@ public class ServerGame extends AbstractGame {
      */
     @Override
     public void tick() {
-        synchronized (this.objects) {
-            for (Integer key : this.objects.keySet()) {
-                GameObject object = this.objects.get(key);
-                object.update();
-            }
-        }
+
     }
 }

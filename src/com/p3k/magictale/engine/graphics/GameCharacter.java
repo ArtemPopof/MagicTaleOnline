@@ -140,8 +140,8 @@ public class GameCharacter extends GameObject implements Serializable {
             this.isAttacking = false;
         }
 
-        float cameraX = ClientGame.getInstance().getCameraX();
-        float cameraY = ClientGame.getInstance().getCameraY();
+        float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+        float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
     }
 
     /**
@@ -167,8 +167,8 @@ public class GameCharacter extends GameObject implements Serializable {
     private void renderHPBar() {
         glPushMatrix();
         {
-            float cameraX = ClientGame.getInstance().getCameraX();
-            float cameraY = ClientGame.getInstance().getCameraY();
+            float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+            float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
 
             this.hpBar.setWidth((getCurrentHealth() / (1.0f * this.maxHealth)) * FULL_HP_BAR_LENGTH);
 
@@ -267,7 +267,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
         GameCharacter potencialEnemy;
 
-        ArrayList<GameCharacter> enemies = ClientGame.getInstance().getCharactersNearPoint(currentPosition, this.attackDistance);
+        ArrayList<GameCharacter> enemies = ((ClientGame) ClientGame.getInstance()).getCharactersNearPoint(currentPosition, this.attackDistance);
 
 
         if (!this.isAttacking) {

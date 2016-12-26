@@ -20,7 +20,6 @@ public class Player extends GameCharacter implements Constants, Serializable {
     //private SoundSource mainSound;
     //private SoundSource attackSound;
 
-
     public Player(float x, float y) {
 
         super(x, y, 78, 112);
@@ -73,8 +72,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
         super.update();
 
         //TODO do not left it undone
-        this.x = 800 / 2 + ClientGame.getInstance().getCameraX();
-        this.y = 600 / 2 + ClientGame.getInstance().getCameraY();
+        this.x = 800 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraX();
+        this.y = 600 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraY();
 
     }
 
@@ -116,7 +115,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
         }
 
         // mouse events
-        if (ClientGame.getInstance().isButtonPressed(MOUSE_BTN_LEFT)) {
+        if (((ClientGame) ClientGame.getInstance()).isButtonPressed(MOUSE_BTN_LEFT)) {
             doAttack();
         }
 
@@ -144,8 +143,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
         //  x += deltaX;
         //  y += deltaY;
 
-        float oldX = ClientGame.getInstance().getCameraX();
-        float oldY = ClientGame.getInstance().getCameraY();
+        float oldX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+        float oldY = ((ClientGame) ClientGame.getInstance()).getCameraY();
 
         this.setX(this.x + deltaX);
         this.setY(this.y + deltaY);
@@ -155,8 +154,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
             this.setX(this.x - deltaX);
             this.setY(this.y - deltaY);
         } else {
-            ClientGame.getInstance().setCameraX(oldX + deltaX);
-            ClientGame.getInstance().setCameraY(oldY + deltaY);
+            ((ClientGame) ClientGame.getInstance()).setCameraX(oldX + deltaX);
+            ((ClientGame) ClientGame.getInstance()).setCameraY(oldY + deltaY);
         }
 
 
