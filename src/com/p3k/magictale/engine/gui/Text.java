@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.gui;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.gui.fonts.Font;
 
@@ -85,6 +86,7 @@ public class Text extends MComponent {
         glBindTexture(GL_TEXTURE_2D, texture);
 
         // Fill texture with 0
+
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                 getTextWidth(), getTextHeight(), 0,
                 GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
@@ -106,7 +108,8 @@ public class Text extends MComponent {
         if ( glCheckFramebufferStatus(GL_FRAMEBUFFER)
                 != GL_FRAMEBUFFER_COMPLETE ) {
             try {
-                throw new Exception("Failed to create text texture!");
+                throw new Exception("Failed to create text texture! Status: "
+                        + glCheckFramebufferStatus(GL_FRAMEBUFFER));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -146,7 +149,7 @@ public class Text extends MComponent {
             }
 
             // The minus here because of strange coord center
-            glTranslatef(-font.getSize() - font.getSpace(),
+            glTranslatef(- font.getSize() - font.getSpace(),
                          0, 0);
         }
         glPopMatrix();
@@ -160,7 +163,7 @@ public class Text extends MComponent {
 
     private int getTextWidth() {
         return (int) ( text.length() * font.getSize() +
-                (text.length()) * font.getSpace()) - 5; // TODO: move magic number
+                (text.length()) * font.getSpace());
     }
 
     private int getTextHeight() {
@@ -179,7 +182,7 @@ public class Text extends MComponent {
 
     @Override
     public void update() {
-
+        createTexture();
     }
 
     @Override
@@ -233,6 +236,9 @@ public class Text extends MComponent {
     }
 
     public void setText(String text) {
+        if ( this.text.equals(text) ) {
+            return;
+        }
         this.text = text;
         createTexture();
     }
@@ -251,5 +257,10 @@ public class Text extends MComponent {
 
     public int getHeight() {
         return (int) sprite.getHeight();
+    }
+
+    public void setSize(int size) {
+        font.setSize(size);
+        update();
     }
 }

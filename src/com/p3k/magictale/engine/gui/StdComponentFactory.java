@@ -8,6 +8,7 @@ import com.p3k.magictale.engine.Utils;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.graphics.SpriteSheet;
 import com.p3k.magictale.engine.gui.fonts.Font;
+import com.p3k.magictale.engine.gui.fonts.FontManager;
 import com.p3k.magictale.game.Characters.Player;
 
 import java.awt.image.BufferedImage;
@@ -27,9 +28,6 @@ public class StdComponentFactory extends ComponentFactory {
     int btnSmallWidth = 32;
     int btnSmallHeight = 16;
 
-    // Std font
-    Font defaultFont;
-
     // Std ui sprites
     Sprite statusBar, actionBar;
 
@@ -39,6 +37,9 @@ public class StdComponentFactory extends ComponentFactory {
     // PlayerMenu
     Sprite container;
     Sprite characterButton, inventoryButton, mapButton, mainMenuButton;
+
+    // FontManager
+    FontManager fontManager = FontManager.getInstance();
 
     public StdComponentFactory() {
         RES_PATH = "res/gui/std";
@@ -58,7 +59,9 @@ public class StdComponentFactory extends ComponentFactory {
                     btnSmallWidth, btnSmallHeight);
 
             // FONT
-            defaultFont = new Font("pixel_regular");
+            fontManager.registerFont("pixel_regular.bmp", "regular");
+            fontManager.registerFont("pixel_small.bmp", "small");
+            fontManager.registerFont("pixel_big.bmp", "big");
 
             // STATUS BAR
             buffer = Utils.loadImage(RES_PATH + "/status_bar.png");
@@ -95,7 +98,11 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     public Text createText(String text) {
-        return new Text(text, defaultFont);
+        return new Text(text, fontManager.getFont("regular"));
+    }
+
+    public Text createText(String text, String font) {
+        return new Text(text, fontManager.getFont(font));
     }
 
     @Override
@@ -127,10 +134,13 @@ public class StdComponentFactory extends ComponentFactory {
 
         Button character = this.createButtonSmall(characterButton, 0, 0);
         character.resize(24, 18);
+
         Button inventory = this.createButtonSmall(inventoryButton, 0, 0);
         inventory.resize(24, 18);
+
         Button map       = this.createButtonSmall(mapButton, 0, 0);
         map.resize(24, 18);
+
         Button mainMenu  = this.createButtonSmall(mainMenuButton, 0, 0);
         mainMenu.resize(24, 18);
         mainMenu.setAction(() -> {
@@ -147,14 +157,19 @@ public class StdComponentFactory extends ComponentFactory {
         return menu;
     }
 
-    //@Override
-    //public  ActionBar createActionBar(Player player) {
+    @Override
+    public Window createWindow(Sprite background, String title) {
+        return new Window(background, createText(title, "big"), null);
+    }
 
-    //}
+    @Override
+    public Inventory createInventory(Player player) {
+        return new Inventory(inventory, createText("Inventory", "big"), player);
+    }
 
     @Override
     public Button createButton(String text, float x, float y) {
-        Button button = new Button(createText(text), x, y);
+        Button button = new Button(createText(text, "regular"), x, y);
 
         button.setNormalSprite(new Sprite(btnNormal.getTextureId(),
                 btnNormal.getWidth(), btnNormal.getHeight()));

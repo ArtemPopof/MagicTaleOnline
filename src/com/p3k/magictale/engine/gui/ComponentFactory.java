@@ -15,10 +15,15 @@ public abstract class ComponentFactory {
     public abstract Button createButtonSmall(Sprite image, float x, float y);
 
     public abstract Text createText(String text);
+    public abstract Text createText(String text, String font);
 
     public abstract StatusBar createStatusBar(Player player);
 
     public abstract ActionBar createActionBar(Player player);
 
     public abstract PlayerMenu createPlayerMenu();
+
+    public abstract Window createWindow(Sprite background, String title);
+
+    public abstract Inventory createInventory(Player player);
 }

@@ -2,7 +2,9 @@ package com.p3k.magictale.engine.gui;
 
 import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.game.Characters.Player;
+import com.sun.security.ntlm.Client;
 import org.lwjgl.input.Mouse;
 
 import java.util.HashMap;
@@ -20,13 +22,21 @@ public class GuiManager extends MComponent implements Constants {
 
     private Player player; // An user of all this stuff
 
+    private Text mousePosition;
+
     public GuiManager(Player player) {
         super(null);
+
+        Logger.log("GuiManager here!", Logger.DEBUG);
 
         this.player = player;
 
         this.objects = new HashMap<>();
         this.factory = new StdComponentFactory();
+
+        this.mousePosition = factory.createText("Mouser position: ", "regular");
+        this.add("mousePosition", mousePosition);
+        this.mousePosition.setSize(16);
 
         createHud();
     }
@@ -47,16 +57,30 @@ public class GuiManager extends MComponent implements Constants {
         actionBar.resize((int) (actionBar.getWidth() * 1.5f), (int) (actionBar.getHeight() * 1.5f));
         actionBar.move(((WINDOW_WIDTH - actionBar.getWidth()) / 2), actionBar.getHeight() + 5);
 
+        // Inventory
+        Inventory inventory = factory.createInventory(player);
+        inventory.move(WINDOW_WIDTH - inventory.getWidth() - 60, WINDOW_HEIGHT / 2 + inventory.getHeight());
+        inventory.resize((int) (inventory.getWidth() * 1.5f),
+                         (int) (inventory.getHeight() * 1.5f));
+        inventory.hide();
+
         // Player menu
         PlayerMenu playerMenu = this.factory.createPlayerMenu();
         playerMenu.setHeight((int) (playerMenu.height * 1.5));
         playerMenu.move(WINDOW_WIDTH - playerMenu.getWidth(), playerMenu.getHeight());
+        playerMenu.setButtonAction(1, () -> {
+            if ( inventory.isShown() ) {
+                inventory.hide();
+            } else {
+                inventory.show();
+            }
+        });
 
-        // Inventory
 
         this.put("statusBar", statusBar);
         this.put("actionBar", actionBar);
         this.put("playerMenu", playerMenu);
+        this.put("inventory", inventory);
     }
 
     @Override
@@ -66,9 +90,17 @@ public class GuiManager extends MComponent implements Constants {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        this.objects.keySet().forEach(name -> {
-            this.objects.get(name).render();
+        objects.keySet().forEach( name -> {
+            if ( objects.get(name).isShown() ) {
+                objects.get(name).render();
+            }
         });
+
+        if ( ClientGame.isDebug() ) {
+            mousePosition.setText(
+                    String.format("Mouse x = %d, y = %d", Mouse.getX(), Mouse.getY()));
+            mousePosition.move(10, mousePosition.getHeight() + 10);
+        }
     }
 
     @Override

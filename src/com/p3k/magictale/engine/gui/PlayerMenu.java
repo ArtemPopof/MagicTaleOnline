@@ -59,6 +59,15 @@ public class PlayerMenu extends Widget {
         super.onResized();
     }
 
+    public void setButtonAction(int button, Runnable action) {
+        if ( button >= children.size() ) {
+            return;
+        }
+
+        Button btn = (Button) children.get(button);
+        btn.setAction(action);
+    }
+
     public int getPadding() {
         return padding;
     }

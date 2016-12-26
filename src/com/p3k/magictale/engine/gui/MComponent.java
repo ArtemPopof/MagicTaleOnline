@@ -20,6 +20,8 @@ public abstract class MComponent {
 
     protected boolean isResized;
 
+    protected boolean isShown;
+
     public MComponent(MComponent parent) {
         this.parent = parent;
         children = new ArrayList<>();
@@ -31,9 +33,7 @@ public abstract class MComponent {
 
         this.isHovered = this.isPressed = false;
         this.isResized = false;
-
-        // Default font for all components
-        // TODO font
+        this.isShown = true;
     }
 
     public abstract void render();
@@ -133,6 +133,18 @@ public abstract class MComponent {
     public abstract void onMouseReleased();
 
     // GET/SET
+
+    public boolean isShown() {
+        return isShown;
+    }
+
+    public void hide() {
+        isShown = false;
+    }
+
+    public void show() {
+        isShown = true;
+    }
 
     public float getX() {
         return x;
