@@ -16,9 +16,10 @@ public class Window extends Widget {
         super(parent, sprite);
 
         this.title = title;
+        this.title.setSize(18);
 
-        int padLeft = (this.width - title.width) / 2;
-        int padTop =  (this.height / 10);
+        int padLeft = (int) (  this.width * 0.15f);
+        int padTop =  (int) (- this.height * 0.03f);
 
         this.title.move(padLeft, padTop);
 
