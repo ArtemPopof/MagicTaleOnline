@@ -326,9 +326,14 @@ public class GameCharacter extends GameObject implements Serializable {
      * remove ourself from this game
      */
     public void playDeath() {
+        if ( this.isDead ) {
+            return;
+        }
 
         setState(DEATH_STATE);
         this.isDead = true;
+
+        ((ClientGame) ClientGame.getInstance()).addScore();
     }
 
     /**

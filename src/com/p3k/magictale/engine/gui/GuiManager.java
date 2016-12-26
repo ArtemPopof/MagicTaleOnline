@@ -23,7 +23,7 @@ public class GuiManager extends MComponent implements Constants {
     private Player player; // An user of all this stuff
 
     private Text mousePosition;
-
+    private Text score;
     public GuiManager(Player player) {
         super(null);
 
@@ -75,12 +75,18 @@ public class GuiManager extends MComponent implements Constants {
                 inventory.show();
             }
         });
+        playerMenu.setButtonAction(0, () -> {
+            ((ClientGame) ClientGame.getInstance()).spawnBot();
+        });
 
+        this.score = factory.createText("Score: ", "big");
+        score.move(WINDOW_WIDTH / 2 - score.getWidth() / 2, WINDOW_HEIGHT);
 
         this.put("statusBar", statusBar);
         this.put("actionBar", actionBar);
         this.put("playerMenu", playerMenu);
         this.put("inventory", inventory);
+        this.put("score", score);
     }
 
     @Override
@@ -101,6 +107,9 @@ public class GuiManager extends MComponent implements Constants {
                     String.format("Mouse x = %d, y = %d", Mouse.getX(), Mouse.getY()));
             mousePosition.move(10, mousePosition.getHeight() + 10);
         }
+
+        String scoreText = "Score: " + ((ClientGame) ClientGame.getInstance()).getScore();
+        this.score.setText(scoreText);
     }
 
     @Override

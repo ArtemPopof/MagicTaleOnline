@@ -24,7 +24,9 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * ClientGame routines
@@ -51,6 +53,8 @@ public class ClientGame extends AbstractGame implements Constants {
     private boolean isMouseRightPressed = false;
     private boolean isMouseLeftReleased = false;
     private boolean isMouseRightReleased = false;
+
+    private int score = 0;
 
     private Cursor cursor;
 
@@ -410,5 +414,21 @@ public class ClientGame extends AbstractGame implements Constants {
 
     public static boolean isDebug() {
         return ClientGame.isDebug;
+    }
+
+    public void spawnBot() {
+        int x = ThreadLocalRandom.current().nextInt(0, WINDOW_WIDTH);
+        int y = ThreadLocalRandom.current().nextInt(0, WINDOW_HEIGHT);
+
+        Bot bot = new Bot(x, y, 64, 64);
+        this.objects.put(this.objects.size(), bot);
+    }
+
+    public void addScore() {
+        this.score++;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
