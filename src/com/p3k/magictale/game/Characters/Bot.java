@@ -9,6 +9,7 @@ import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectManager;
+import org.lwjgl.examples.Game;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -325,6 +326,21 @@ public class Bot extends GameCharacter {
             // we know he's around here now
             doAttack();
 
+            Point enemyCell = LevelManager.getTilePointByCoordinates(spottedEnemy.getRealX(), spottedEnemy.getRealY());
+            Point ourCell = LevelManager.getTilePointByCoordinates(this.getRealX(), this.getRealY());
+
+            if (enemyCell.y > ourCell.y) {
+
+                setDirection(Direction.DOWN);
+
+            } else if (enemyCell.y < ourCell.y) {
+                setDirection(Direction.UP);
+            } else if (enemyCell.x > ourCell.x) {
+                setDirection(Direction.RIGHT);
+            } else {
+                setDirection(Direction.LEFT);
+            }
+
             if (this.spottedEnemy.isDead()) {
                 // we win
                 this.destinationY = -1;
@@ -465,18 +481,22 @@ public class Bot extends GameCharacter {
         ArrayList<GameCharacter> characters = ((ClientGame) ClientGame.getInstance()).getCharactersNearPoint(currentCell, this.visionRadius);
 
         for (GameCharacter character : characters) {
-            if (Player.class.isInstance(character)) {
-                // found the player
-                if (character.isDead()) {
-                    // he's alredy dead, so leave him alone
-                    continue;
-                }
-                this.spottedEnemy = character;
-                System.out.println("Spotted enemy: "+character.toString());
-                return true;
-            }
-        }
+            // found the player
 
+            if (character.equals(this)) {
+                continue;
+            }
+
+            if (character.isDead()) {
+                // he's alredy dead, so leave him alone
+                spottedEnemy = null;
+                continue;
+
+            }
+            this.spottedEnemy = character;
+            System.out.println("Spotted enemy: " + character.toString());
+            return true;
+        }
 
         /*
         switch (direction) {

@@ -417,8 +417,8 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     public void spawnBot() {
-        int x = ThreadLocalRandom.current().nextInt(0, WINDOW_WIDTH);
-        int y = ThreadLocalRandom.current().nextInt(0, WINDOW_HEIGHT);
+        int x = ThreadLocalRandom.current().nextInt(0, (MAP_WIDTH - 1) * TILE_SIZE);
+        int y = ThreadLocalRandom.current().nextInt(0, (MAP_HEIGHT - 1) * TILE_SIZE);
 
         Bot bot = new Bot(x, y, 64, 64);
         this.objects.put(this.objects.size(), bot);

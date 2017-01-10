@@ -76,6 +76,7 @@ public class GuiManager extends MComponent implements Constants {
             }
         });
         playerMenu.setButtonAction(0, () -> {
+            for (int i = 0; i < 5; ++i)
             ((ClientGame) ClientGame.getInstance()).spawnBot();
         });
 

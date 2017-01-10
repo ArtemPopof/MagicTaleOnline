@@ -3,7 +3,6 @@ package com.p3k.magictale.map.objects;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.ITileProperties;
 import com.p3k.magictale.engine.graphics.Map.Tile;
-import com.p3k.magictale.engine.graphics.Map.TileMap;
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.graphics.Objects.ObjTile;
@@ -11,7 +10,6 @@ import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
-import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import org.xml.sax.SAXException;
 
@@ -34,7 +32,6 @@ public class ObjectManager implements ObjectInterface {
     private static ObjectManager instance = null;
     private static DocumentBuilderFactory dbf = null;
     private int lvlLayer = 3;
-    //    private ObjTile[][][] objTile = null;
     private ISharedObjTile objTile = null;
     private Tile[][] tileSheet = null;
     private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
@@ -42,8 +39,6 @@ public class ObjectManager implements ObjectInterface {
     private ObjectManager() throws Exception {
         groupObjects = new TreeMap<>();
         try {
-//            objTile = new ObjTile[LevelManager.getInstance().getLvlWidth()]
-//                    [LevelManager.getInstance().getLvlHeight()][lvlLayer];
             String remoteIP = System.getenv("IP");
             if (remoteIP == null) {
                 objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
