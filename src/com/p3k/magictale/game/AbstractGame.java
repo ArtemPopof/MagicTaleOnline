@@ -11,6 +11,7 @@ public abstract class AbstractGame {
      * global {@link AbstractGame} instance
      */
     protected static AbstractGame instance;
+    protected static AbstractGame instanceServer;
     /**
      * container for all single-sprite objects in game
      * Integer - object id

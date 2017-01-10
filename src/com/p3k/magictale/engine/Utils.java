@@ -84,7 +84,7 @@ public class Utils {
             throw e;
         }
 
-        // TODO try to load from the server
+        // TODO try to loadClient from the server
 
         return image;
     }

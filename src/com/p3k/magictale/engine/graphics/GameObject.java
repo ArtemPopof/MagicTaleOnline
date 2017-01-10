@@ -33,6 +33,7 @@ public class GameObject implements Serializable {
      * Visual information of this object
      */
     protected Sprite sprite;
+    protected int spriteId;
 
     // all values will be
     // specified later
@@ -134,6 +135,14 @@ public class GameObject implements Serializable {
 
     protected void setSprite(Sprite sprite) { this.sprite = sprite; }
 
+    public int getSpriteId() {
+        return spriteId;
+    }
+
+    public void setSpriteId(int spriteId) {
+        this.spriteId = spriteId;
+    }
+
     protected void init(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
@@ -151,6 +160,14 @@ public class GameObject implements Serializable {
     protected void initBySprite(Sprite sprite, float x, float y) {
         this.sprite = sprite;
 //        this.sprite = new Sprite(sprite.getTextureId(), 32, 32);
+        this.x = x;
+        this.y = y;
+
+        this.direction = Direction.DOWN;
+    }
+
+    protected void initBySpriteId(int spriteId, float x, float y) {
+        this.spriteId = spriteId;
         this.x = x;
         this.y = y;
 

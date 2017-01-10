@@ -4,6 +4,7 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.gui.GuiManager;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundManager;
@@ -17,6 +18,7 @@ import com.p3k.magictale.map.objects.ObjectInterface;
 import com.p3k.magictale.map.objects.ObjectManager;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
+import server.ServerGame;
 
 import java.awt.*;
 import java.net.MalformedURLException;
@@ -24,7 +26,8 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -36,7 +39,9 @@ public class ClientGame extends AbstractGame implements Constants {
     private static final boolean isDebug = true;
 
     private final String mapName = "forest_v2";
+    private Map<Integer, ClientObject> clientObjects;
 
+    //TODO Client objects
     //private Player player;
     private int playerIndex;
     private Level levelManager;
@@ -59,6 +64,7 @@ public class ClientGame extends AbstractGame implements Constants {
     private Cursor cursor;
 
     private ClientGame() {
+        clientObjects = new TreeMap<>();
 
         initLevelManager();
 
@@ -82,6 +88,8 @@ public class ClientGame extends AbstractGame implements Constants {
         } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
             e.printStackTrace();
         }
+
+        System.out.println("HERE ClientGame loaded");
     }
 
     public static AbstractGame getInstance() {
@@ -131,21 +139,52 @@ public class ClientGame extends AbstractGame implements Constants {
             }
         }
 
+        for (ClientMessage message : ((ServerGame) ServerGame.getInstance()).getMessagesToClient()) {
+            ClientObject insObj = clientObjects.get(message.getId());
+            if (insObj != null) {
+                if (insObj.getIdResMan() != message.getIdResMan()) {
+                    insObj.setIdResMan(insObj.getIdResMan());
+                    insObj.setX(insObj.getX());
+                    insObj.setY(insObj.getY());
+                    insObj.setSprite(resourceManager.getSprite(message.getIdResMan()));
+                    clientObjects.put(message.getId(), insObj);
+                }
+            } else {
+                try {
+                    insObj = new ClientObject(message.getIdResMan(),
+                            message.getX(), message.getY());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                clientObjects.put(message.getId(), insObj);
+            }
+            insObj.update();
+        }
+
+//        for (Integer key : this.clientObjects.keySet()) {
+//            ClientObject object = this.clientObjects.get(key);
+//            object.update();
+//        }
+
         this.guiManager.update();
     }
 
     public void render() {
 
-//        levelManager.render();
+        if (clientObjects != null) {
+            for (Integer key : clientObjects.keySet()) {
+                ClientObject clientObject = clientObjects.get(key);
+                clientObject.render();
+            }
+        }
 
-        this.objectManager.render(0);
+//        this.objectManager.render(0);
         this.objectManager.render(1);
 
         for (int i = 0; i < this.objects.size(); i++) {
             GameObject object = this.objects.get(i);
             object.render();
         }
-
 
         this.objectManager.render(2);
 
@@ -220,7 +259,7 @@ public class ClientGame extends AbstractGame implements Constants {
         }
 
         try {
-            this.levelManager.load(this.mapName, this.resourceManager);
+            this.levelManager.loadClient(this.mapName, this.resourceManager);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
@@ -234,7 +273,7 @@ public class ClientGame extends AbstractGame implements Constants {
         }
 
         try {
-            this.objectManager.load(this.mapName, this.resourceManager);
+            this.objectManager.loadClient(this.mapName, this.resourceManager);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }

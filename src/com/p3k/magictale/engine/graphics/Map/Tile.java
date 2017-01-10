@@ -19,6 +19,16 @@ public class Tile extends GameObject {
         super.initBySprite(sprite, x, y);
     }
 
+    public Tile(int spriteId, float x, float y) {
+        this.tileProperties = new TileProperties();
+        super.initBySpriteId(spriteId, x, y);
+    }
+
+    public Tile(int spriteId, float x, float y, TileProperties tileProperties) {
+        this.tileProperties = tileProperties;
+        super.initBySpriteId(spriteId, x, y);
+    }
+
     public TileProperties getTileProperties() {
         return tileProperties;
     }

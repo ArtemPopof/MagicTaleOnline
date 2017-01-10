@@ -6,6 +6,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import server.ServerGame;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class MagicMain {
 
     private ClientGame clientGame;
+    private ServerGame serverGame;
 
     private boolean isRunning = true;
 
@@ -135,7 +137,8 @@ public class MagicMain {
     }
 
     private void initGame() {
-        this.clientGame = (ClientGame) ClientGame.getInstance();
+        this.serverGame = (ServerGame) ServerGame.getServerInstance();
+        this.clientGame = (ClientGame) ClientGame.getClientInstance();
     }
 
 

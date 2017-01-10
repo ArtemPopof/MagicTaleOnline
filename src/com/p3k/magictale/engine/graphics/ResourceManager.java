@@ -26,7 +26,8 @@ public class ResourceManager {
      * STONE_WITH_BLOOD, and second parameter is textureId
      * of texture, containing this resource;
      */
-    private HashMap<Integer, Integer> textures;
+//    private HashMap<Integer, Integer> textures;
+    private HashMap<Integer, Sprite> textures;
 
     // all animations for all players.
     // each player's animations should
@@ -66,7 +67,7 @@ public class ResourceManager {
      *
      * example: loadMapTextures(String myMapTextures = "/res/map1.mtf
      *                          , int firstId = 5000);
-     *  will load all texutres from map1.mtf to memory,
+     *  will loadClient all texutres from map1.mtf to memory,
      *  and it will be accessable with ID's from 5000 to
      *  5000 + numOfSpritesInTexture.
      *
@@ -86,9 +87,10 @@ public class ResourceManager {
         System.out.println("Textures:");
 
         for (int i = 0; i < mapSS.size(); i++) {
-            int textureId = mapSS.getSpriteTextureId(i);
+//            int textureId = mapSS.getSpriteTextureId(i);
+            Sprite sprite = mapSS.getSprites().get(i);
 
-            if (textures.put(firstId++, textureId) != null) {
+            if (textures.put(firstId++, sprite) != null) {
                 throw new IllegalArgumentException();
             }
 //            System.out.println("id = " + (firstId-1) + "  sprId = " + textures.get(firstId-1));
@@ -103,10 +105,17 @@ public class ResourceManager {
 
     }
 
+    /**
+     * Function load texture at specific Id
+     * Using in parse Objects
+     * @param
+     */
+    public void loadTexture(String spriteSheetPath, int id, int width, int height){}
+
     /** @TODO
      * This function will be read file
      * that contains information about each
-     * character animations and load this info
+     * character animations and loadClient this info
      * into Animations arrays.
      *
      * By now, this class is under development,
@@ -209,9 +218,10 @@ public class ResourceManager {
      * @return textureId
      */
     public Integer getTexture(int textureName) {
-        return textures.get(new Integer(textureName));
+        return textures.get(new Integer(textureName)).getTextureId();
     }
 
+    public Sprite getSprite(int textureName) { return textures.get(new Integer(textureName)); }
     /**
      * Return character animation by id.
      *

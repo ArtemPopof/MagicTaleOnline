@@ -1,11 +1,13 @@
 package com.p3k.magictale.map.level;
 
+import client.ClientGame;
+import client.ClientMessage;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.*;
 import com.p3k.magictale.engine.graphics.Map.TileMap;
 import com.p3k.magictale.engine.graphics.Map.Tile;
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
-import com.p3k.magictale.engine.graphics.Objects.GroupObject;
+import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.map.XmlParser;
 import org.xml.sax.SAXException;
 
@@ -13,7 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.LinkedList;
 
 // TODO Static constant
 
@@ -25,17 +27,13 @@ public class LevelManager implements Level {
     public static String getLevelDir() {
         return LEVEL_DIR;
     }
+//    private Tile[][] levelTiles = null;
 
     String mapName = "forest";
     String pathName = "res/map/levels/lvl_forest.tmx";
-    //    private ArrayList<Sprite> sprites = null;
-//    private ArrayList<Tile> tileObjects = null;
     private int lvlHeight = 0;
     private int lvlWidth = 0;
     private TileMap[][] tileMap = null;
-    private TreeMap<String, TreeMap<String, ArrayList<GroupObject>>> groupObjects = null;
-//    private LinkedList<Tile> tileMap[][] = null;
-
 
     private LevelManager() throws Exception {
 //        sprites = new ArrayList<>();
@@ -57,12 +55,8 @@ public class LevelManager implements Level {
         return instance;
     }
 
-    public void load(String mapName, ResourceManager resourceManager) {
-        groupObjects = new TreeMap<>();
-        TreeMap<String, ArrayList<GroupObject>> insertedGroupObject = new TreeMap<>();
-        ArrayList<GroupObject> listOfGrObj = new ArrayList<>();
-
-        System.out.println("HERE Lvl load");
+    public void loadClient(String mapName, ResourceManager resourceManager) {
+        System.out.println("HERE Lvl loadClient");
 
         XmlParser xml = null;
         try {
@@ -75,8 +69,8 @@ public class LevelManager implements Level {
 //        if (xml != null) {
 //            spriteSheetPaths = xml.getSpriteSheetPaths();
 //        }
+        int firstId = 5000;
         try {
-            int firstId = 5000;
 //            for (String spriteSheetPath:
 //                 spriteSheetPaths) {
 //                System.out.println("TRY ");
@@ -84,13 +78,53 @@ public class LevelManager implements Level {
 //            }
             resourceManager.loadMapTextures(LEVEL_DIR + "tiles_lvl_forest.png", firstId);
         } catch (Exception e) {
-            System.out.println("Error level load: " + e);
+            System.out.println("Error level loadClient: " + e);
+        }
+//
+//        //TODO Add tileMapClient
+//        ArrayList<String> layerGrContext = null;
+//        if (xml != null) {
+//            layerGrContext = xml.getLayerTextContextByName("gr");
+//            lvlWidth = xml.getMapSize("width");
+//            lvlHeight = xml.getMapSize("height");
+//        }
+//
+//        --lvlHeight;
+//        for (int h = lvlHeight, id = 0; 0 <= h; h--) {
+////        for (int h = 0, id = 0; 0 <= lvlHeight - 1; h++) {
+//            for (int w = 0; w < lvlWidth; w++) {
+//                int idInSprSh = Integer.parseInt(layerGrContext.get(id)) - 1;
+//                if (idInSprSh == -1) {
+//                    ++id;
+//                    continue;
+//                }
+//                int idInGl = resourceManager.getTexture(idInSprSh + firstId);
+//                Sprite sprite = new Sprite(idInGl, Constants.MAP_TILE_SIZE, Constants.MAP_TILE_SIZE);
+//                //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
+//
+////                levelTiles[w][lvlHeight - h] = new Tile(sprite,
+////                        w * Constants.MAP_TILE_SIZE, h * Constants.MAP_TILE_SIZE);
+//                id++;
+//            }
+//        }
+//        ++lvlHeight;
+//
+//        System.out.println("HERE loadClient loaded");
+    }
+
+    public void loadServer(String mapName, LinkedList<ClientMessage> messagesToClient) {
+        System.out.println("HERE Lvl loadServer");
+
+        XmlParser xml = null;
+        try {
+            xml = new XmlParser(dbf, LEVEL_DIR + "lvl_" + mapName + ".tmx");
+        } catch (SAXException | IOException e) {
+            e.printStackTrace();
         }
 
+        int firstId = 5000;
         ArrayList<String> layerGrContext = null;
         ArrayList<ITileProperties> lvlTilesProperties = null;
-        int sprWidth = 32;
-        int sprHeight = 32;
         if (xml != null) {
             layerGrContext = xml.getLayerTextContextByName("gr");
             lvlTilesProperties = xml.getTilesPropertiesByTilesetName("tiles_lvl_forest", "tile");
@@ -112,19 +146,22 @@ public class LevelManager implements Level {
                     ++id;
                     continue;
                 }
-                int idInGl = resourceManager.getTexture(idInSprSh + 5000);
-                Sprite sprite = new Sprite(idInGl, sprWidth, sprHeight);
-                //System.out.println("spr=" + idInSprSh + "   id=" + idInGl + "   h=" + h + " w=" + w);
 
                 tileMap[w][lvlHeight - h] = new TileMap();
-                tileMap[w][lvlHeight - h].getTiles().add(new Tile(sprite, w * sprWidth, h * sprHeight,
-                        (TileProperties) lvlTilesProperties.get(idInSprSh)));
+                Tile insTile = new Tile(idInSprSh + firstId,
+                        w * Constants.MAP_TILE_SIZE, h * Constants.MAP_TILE_SIZE,
+                        (TileProperties) lvlTilesProperties.get(idInSprSh));
+                tileMap[w][lvlHeight - h].getTiles().add(insTile);
                 id++;
+
+                //TODO Add to SERVER Message TEST
+                messagesToClient.push(new ClientMessage(insTile.getId(), insTile.getSpriteId(),
+                        (int)insTile.getX(), (int)insTile.getY()));
             }
         }
         ++lvlHeight;
 
-        System.out.println("HERE Lvl loaded");
+        System.out.println("HERE loadServer loaded");
     }
 
     /**
@@ -167,11 +204,6 @@ public class LevelManager implements Level {
     }
 
     public void render() {
-//        for (Tile object : tileObjects) {
-//
-//            object.render();
-//
-//        }
         for (int y = 0; y < lvlHeight; ++y) {
             for (int x = 0; x < lvlWidth; ++x) {
                 for (Tile object : tileMap[x][y].getTiles()) {

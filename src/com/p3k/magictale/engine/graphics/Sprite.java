@@ -24,6 +24,9 @@ public class Sprite implements Serializable {
 
     private int textureId;
 
+    private int offsetX = 0;
+    private int offsetY = 0;
+
     /**
      * Is sprite has texture or
      * it will be filled by color
@@ -93,7 +96,7 @@ public class Sprite implements Serializable {
      * not unique. If your sprite will be unique, use another
      * constructor.
      *
-     * Before use this, load texture with loadTexture
+     * Before use this, loadClient texture with loadTexture
      * method, to obtain textureId.
      *
      * Please, be sure that you use valid textureId,
@@ -105,6 +108,14 @@ public class Sprite implements Serializable {
         this.textureId = textureId;
         this.width = width;
         this.height = height;
+
+    }
+
+    public Sprite(Sprite sprite) {
+
+        this.textureId = sprite.getTextureId();
+        this.width = sprite.getWidth();
+        this.height = sprite.getHeight();
 
     }
 

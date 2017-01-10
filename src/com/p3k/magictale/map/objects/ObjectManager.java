@@ -38,22 +38,25 @@ public class ObjectManager implements ObjectInterface {
 
     private ObjectManager() throws Exception {
         groupObjects = new TreeMap<>();
-        try {
-            String remoteIP = System.getenv("IP");
-            if (remoteIP == null) {
-                objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
-                        LevelManager.getInstance().getLvlHeight(),
-                        lvlLayer);
-                Naming.bind("objTile", objTile);
-                System.out.println("objTile RMI ready");
-            } else {
-                Registry registry = LocateRegistry.getRegistry(remoteIP);
-                objTile = (ISharedObjTile) registry.lookup("objTile");
-                System.out.println("remote objTile in use");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String remoteIP = System.getenv("IP");
+//            if (remoteIP == null) {
+//                objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
+//                        LevelManager.getInstance().getLvlHeight(),
+//                        lvlLayer);
+//                Naming.bind("objTile", objTile);
+//                System.out.println("objTile RMI ready");
+//            } else {
+//                Registry registry = LocateRegistry.getRegistry(remoteIP);
+//                objTile = (ISharedObjTile) registry.lookup("objTile");
+//                System.out.println("remote objTile in use");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        objTile = new SharedObjTile(LevelManager.getInstance().getLvlWidth(),
+                LevelManager.getInstance().getLvlHeight(),
+                lvlLayer);
 
         try {
             dbf = DocumentBuilderFactory.newInstance();
@@ -70,8 +73,8 @@ public class ObjectManager implements ObjectInterface {
         return instance;
     }
 
-    public void load(String mapName, ResourceManager resourceManager) {
-        System.out.println("HERE Lvl load");
+    public void loadClient(String mapName, ResourceManager resourceManager) {
+        System.out.println("HERE Lvl loadClient");
 
         // Parse and add to map GroupObject"sheet"
         XmlParser xmlObj = null, xmlLvl = null, xmlTileProps = null;
