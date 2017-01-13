@@ -6,7 +6,13 @@ import java.rmi.RemoteException;
 /**
  * @author Aleksandr Ploskov
  */
-public interface Player extends Remote {
+public interface GameController extends Remote {
+    /**
+     * @param nickname - player nickname
+     * @throws RemoteException java rmi exception
+     */
+    void signUp(String nickname) throws RemoteException;
+
     /**
      * @param x x coordinate on map
      * @param y y coordinate on map

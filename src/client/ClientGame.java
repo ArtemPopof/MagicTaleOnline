@@ -4,7 +4,6 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
-import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.gui.GuiManager;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundManager;
@@ -42,7 +41,6 @@ public class ClientGame extends AbstractGame implements Constants {
     private Map<Integer, ClientObject> clientObjects;
 
     //TODO Client objects
-    //private Player player;
     private int playerIndex;
     private Level levelManager;
     private ObjectInterface objectManager;
@@ -98,6 +96,10 @@ public class ClientGame extends AbstractGame implements Constants {
         }
 
         return instance;
+    }
+
+    public static boolean isDebug() {
+        return ClientGame.isDebug;
     }
 
     /**
@@ -279,7 +281,7 @@ public class ClientGame extends AbstractGame implements Constants {
         }
     }
 
-    public void initGuiManager() {
+    private void initGuiManager() {
 
         this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
 
@@ -449,10 +451,6 @@ public class ClientGame extends AbstractGame implements Constants {
 
 
         return characters;
-    }
-
-    public static boolean isDebug() {
-        return ClientGame.isDebug;
     }
 
     public void spawnBot() {

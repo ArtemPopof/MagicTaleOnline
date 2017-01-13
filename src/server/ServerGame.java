@@ -1,13 +1,11 @@
 package server;
 
 import client.ClientMessage;
-import com.p3k.magictale.engine.graphics.GameObject;
-import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.game.AbstractGame;
+import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.LinkedList;
 
@@ -16,10 +14,6 @@ public class ServerGame extends AbstractGame {
     private Level levelManager;
 
     private LinkedList<ClientMessage> messagesToClient;
-
-    public LinkedList<ClientMessage> getMessagesToClient() {
-        return messagesToClient;
-    }
 
     private ServerGame() {
         // TODO: init all
@@ -32,6 +26,10 @@ public class ServerGame extends AbstractGame {
         }
 
         return instanceServer;
+    }
+
+    public LinkedList<ClientMessage> getMessagesToClient() {
+        return messagesToClient;
     }
 
     /**
@@ -57,5 +55,9 @@ public class ServerGame extends AbstractGame {
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
+    }
+
+    public Player getNewPlayer() {
+        return null;
     }
 }
