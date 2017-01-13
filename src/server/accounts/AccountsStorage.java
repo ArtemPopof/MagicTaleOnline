@@ -11,7 +11,7 @@ public class AccountsStorage {
     /**
      * String key - nickname of registered account
      */
-    private ConcurrentHashMap<String, Account> registeredAccounts;
+    private final ConcurrentHashMap<String, Account> registeredAccounts;
 
     private AccountsStorage() {
         registeredAccounts = new ConcurrentHashMap<>();
