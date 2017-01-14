@@ -11,9 +11,15 @@ public class Frame implements Serializable {
     private int numberDisplayed;
     private Sprite object;
 
-    public Frame(Sprite sprite, int length) {
+    /**
+     * Sprite id in ResourceManager
+     */
+    private int spriteId;
+
+    public Frame(Sprite sprite, int spriteId, int length) {
         this.object = sprite;
         this.length = length;
+        this.spriteId = spriteId;
 
         numberDisplayed = 0;
     }
@@ -28,10 +34,15 @@ public class Frame implements Serializable {
         }
 
         return true;
+
     }
 
     public Sprite getSprite() {
         return object;
+    }
+
+    public int getSpriteId() {
+        return spriteId;
     }
 
 

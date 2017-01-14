@@ -194,4 +194,5 @@ public class Sprite implements Serializable {
     public int getTextureId() {
         return textureId;
     }
+
 }
