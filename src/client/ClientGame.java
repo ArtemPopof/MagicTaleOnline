@@ -1,6 +1,7 @@
 package client;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.MagicMain;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
@@ -16,12 +17,16 @@ import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectInterface;
 import com.p3k.magictale.map.objects.ObjectManager;
 import com.sun.corba.se.spi.activation.Server;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.*;
 import server.ServerGame;
 import server.ServerObject;
 
 import java.awt.*;
+import java.awt.DisplayMode;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -32,6 +37,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 /**
  * ClientGame routines
@@ -60,11 +69,16 @@ public class ClientGame extends AbstractGame implements Constants {
     private boolean isMouseLeftReleased = false;
     private boolean isMouseRightReleased = false;
 
+    private boolean isInFullScreenMode = false;
+
     private int score = 0;
 
     private Cursor cursor;
 
     private ClientGame() {
+        initDisplay();
+        initGl();
+
         clientObjects = new TreeMap<>();
 
         initLevelManager();
@@ -175,6 +189,8 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     public void render() {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glLoadIdentity();
 
         if (clientObjects != null) {
             for (Integer key : clientObjects.keySet()) {
@@ -194,10 +210,17 @@ public class ClientGame extends AbstractGame implements Constants {
         this.objectManager.render(2);
 
         this.guiManager.render();
+
+        Display.update();
+        Display.sync(60);
     }
 
-    public void cleanUp() {
-
+    @Override
+    protected void finalize() throws Throwable {
+        Display.destroy();
+        Keyboard.destroy();
+        SoundManager.destroy();
+        super.finalize();
     }
 
     private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
@@ -470,5 +493,47 @@ public class ClientGame extends AbstractGame implements Constants {
 
     public int getScore() {
         return score;
+    }
+
+    public void initDisplay() {
+
+        try {
+            if (this.isInFullScreenMode) {
+                org.lwjgl.opengl.DisplayMode[] modes = Display.getAvailableDisplayModes();
+                org.lwjgl.opengl.DisplayMode max = modes[0];
+
+                for (org.lwjgl.opengl.DisplayMode mode : modes) {
+                    System.out.println("test mode: " + mode);
+                    if (mode.getWidth() * mode.getHeight() * mode.getFrequency() >
+                            max.getWidth() * max.getHeight() * max.getFrequency()) {
+                        max = mode;
+                    }
+                }
+
+                System.out.println("choose mode: " + max);
+                Display.setDisplayModeAndFullscreen(max);
+            } else {
+                Display.setDisplayMode(new org.lwjgl.opengl.DisplayMode(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+            }
+
+            Display.create();
+            Keyboard.create();
+            Display.setVSyncEnabled(true);
+        } catch (LWJGLException ex) {
+            Logger.getLogger(MagicMain.class.getName()).log(java.util.logging.Level.SEVERE, "Something went wrong in initDisplay()");
+        }
+    }
+
+    public void initGl() {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, Display.getWidth(), 0, Display.getHeight(), -1, 1);
+        glMatrixMode(GL_MODELVIEW);
+
+        glDisable(GL_DEPTH_TEST);
+        glClearColor(0, 0, 0, 0);
+
+        glEnable(GL_TEXTURE_2D);
+
     }
 }
