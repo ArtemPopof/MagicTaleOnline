@@ -7,6 +7,7 @@ import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import server.accounts.ActiveAccounts;
+import server.network.Broadcaster;
 
 import java.net.ServerSocket;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class ServerGame extends AbstractGame {
     private ServerSocket serverSocket;
     private Level levelManager;
     private final ActiveAccounts activeAccounts;
+    private final Broadcaster broadcaster;
 
     private HashMap<Integer, ServerObject> serverObjects;
 
@@ -25,6 +27,7 @@ public class ServerGame extends AbstractGame {
         serverObjects = new HashMap<>();
 
         activeAccounts = ActiveAccounts.getInstance();
+        broadcaster = Broadcaster.getInstance();
 
         initLevelManager();
     }
@@ -70,6 +73,9 @@ public class ServerGame extends AbstractGame {
 
         // отключение "отвалившихся" клиентов
         activeAccounts.tick();
+        // отправка данных подключенным клиентам
+        broadcaster.sendObjects(serverObjects.values());
+
     }
 
     private void initLevelManager() {
