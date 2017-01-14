@@ -24,9 +24,16 @@ public class ActiveAccounts {
         return activeAccounts;
     }
 
-    public void update() {
+    public void tick() {
         accountsInUse.entrySet().removeIf(stringAccountEntry ->
                 System.currentTimeMillis() - stringAccountEntry.getValue().getLastAccessTime() > timeoutMillis ||
                         !stringAccountEntry.getKey().equals(stringAccountEntry.getValue().getIP()));
+    }
+
+    public String[] getIPs() {
+        return accountsInUse.values()
+                .stream()
+                .map(Account::getIP)
+                .toArray(String[]::new);
     }
 }
