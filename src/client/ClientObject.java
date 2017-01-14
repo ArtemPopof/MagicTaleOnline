@@ -15,6 +15,7 @@ public class ClientObject {
     private int y;
     private int idResMan;
     private Sprite sprite;
+    private long timeStamp;
 
     public ClientObject(int idResMan, int x, int y) throws Exception {
         this.x = x;
@@ -37,10 +38,6 @@ public class ClientObject {
 
         }
         glPopMatrix();
-    }
-
-    public void update() {
-
     }
 
     public int getX() {
@@ -73,5 +70,13 @@ public class ClientObject {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

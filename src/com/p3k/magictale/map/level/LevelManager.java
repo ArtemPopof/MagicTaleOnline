@@ -1,21 +1,19 @@
 package com.p3k.magictale.map.level;
 
-import client.ClientGame;
-import client.ClientMessage;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.*;
 import com.p3k.magictale.engine.graphics.Map.TileMap;
 import com.p3k.magictale.engine.graphics.Map.Tile;
 import com.p3k.magictale.engine.graphics.Map.TileProperties;
-import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.map.XmlParser;
 import org.xml.sax.SAXException;
+import server.ServerObject;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Map;
 
 // TODO Static constant
 
@@ -112,7 +110,7 @@ public class LevelManager implements Level {
 //        System.out.println("HERE loadClient loaded");
     }
 
-    public void loadServer(String mapName, LinkedList<ClientMessage> messagesToClient) {
+    public void loadServer(String mapName, Map<Integer, ServerObject> serverObjects) {
         System.out.println("HERE Lvl loadServer");
 
         XmlParser xml = null;
@@ -153,10 +151,6 @@ public class LevelManager implements Level {
                         (TileProperties) lvlTilesProperties.get(idInSprSh));
                 tileMap[w][lvlHeight - h].getTiles().add(insTile);
                 id++;
-
-                //TODO Add to SERVER Message TEST
-                messagesToClient.push(new ClientMessage(insTile.getId(), insTile.getSpriteId(),
-                        (int)insTile.getX(), (int)insTile.getY()));
             }
         }
         ++lvlHeight;

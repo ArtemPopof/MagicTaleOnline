@@ -15,9 +15,11 @@ import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectInterface;
 import com.p3k.magictale.map.objects.ObjectManager;
+import com.sun.corba.se.spi.activation.Server;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 import server.ServerGame;
+import server.ServerObject;
 
 import java.awt.*;
 import java.net.MalformedURLException;
@@ -25,6 +27,7 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -141,26 +144,26 @@ public class ClientGame extends AbstractGame implements Constants {
             }
         }
 
-        for (ClientMessage message : ((ServerGame) ServerGame.getInstance()).getMessagesToClient()) {
-            ClientObject insObj = clientObjects.get(message.getId());
-            if (insObj != null) {
-                if (insObj.getIdResMan() != message.getIdResMan()) {
-                    insObj.setIdResMan(insObj.getIdResMan());
-                    insObj.setX(insObj.getX());
-                    insObj.setY(insObj.getY());
-                    insObj.setSprite(resourceManager.getSprite(message.getIdResMan()));
-                    clientObjects.put(message.getId(), insObj);
+        HashMap<Integer, ServerObject> serverObjects = ((ServerGame) ServerGame.getInstance()).getServerObjects();
+        if (serverObjects != null) {
+            for (Integer key : serverObjects.keySet()) {
+                ClientObject insObj = clientObjects.get(key);
+                if (insObj != null) {
+                    insObj.setIdResMan(serverObjects.get(key).getIdResMan());
+                    insObj.setX(serverObjects.get(key).getX());
+                    insObj.setY(serverObjects.get(key).getY());
+                    insObj.setSprite(resourceManager.getSprite(insObj.getIdResMan()));
+                    clientObjects.put(key, insObj);
+                } else {
+                    try {
+                        insObj = new ClientObject(serverObjects.get(key).getIdResMan(),
+                                serverObjects.get(key).getX(), serverObjects.get(key).getY());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    clientObjects.put(key, insObj);
                 }
-            } else {
-                try {
-                    insObj = new ClientObject(message.getIdResMan(),
-                            message.getX(), message.getY());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                clientObjects.put(message.getId(), insObj);
             }
-            insObj.update();
         }
 
 //        for (Integer key : this.clientObjects.keySet()) {

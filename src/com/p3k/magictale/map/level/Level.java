@@ -1,12 +1,12 @@
 package com.p3k.magictale.map.level;
 
-import client.ClientMessage;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import server.ServerObject;
 
-import java.util.LinkedList;
+import java.util.Map;
 
 public interface Level {
     void loadClient(String mapName, ResourceManager resourceManager);
-    void loadServer(String mapName, LinkedList<ClientMessage> messagesToClient);
+    void loadServer(String mapName, Map<Integer, ServerObject> serverObjects);
     void render();
 }
