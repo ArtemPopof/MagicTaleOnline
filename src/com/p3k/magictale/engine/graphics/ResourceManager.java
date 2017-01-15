@@ -45,11 +45,7 @@ public class ResourceManager {
 
     private int animationPoolFreeIndex;
 
-    private ResourceManager() throws IllegalStateException {
-
-        if (instance != null) {
-            throw new IllegalStateException("Cannot init ResourceManager for the second time, bandit!");
-        }
+    private ResourceManager() {
 
         textures = new HashMap<>();
         animations = new HashMap<>();
@@ -62,7 +58,7 @@ public class ResourceManager {
 
     }
 
-    public static ResourceManager getInstance() throws Exception {
+    public static ResourceManager getInstance() {
         if ( instance == null ) {
             instance = new ResourceManager();
         }

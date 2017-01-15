@@ -1,5 +1,6 @@
 package common.launcher;
 
+import client.ClientGame;
 import com.p3k.magictale.game.AbstractGame;
 
 import javax.swing.*;
@@ -49,7 +50,7 @@ public class Launcher extends JFrame {
         launchButton.addActionListener(e -> {
             switch (tabbedPane.getSelectedIndex()) {
                 case 0:
-                    abstractGame = AbstractGame.getClientInstance();
+                    abstractGame = ClientGame.createInstance(clientPanel.getIP(), clientPanel.getNickname());
                     break;
                 case 1:
                     abstractGame = AbstractGame.getServerInstance();

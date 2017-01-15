@@ -1,7 +1,7 @@
 package client;
 
+import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.engine.MagicMain;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
@@ -16,31 +16,30 @@ import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectInterface;
 import com.p3k.magictale.map.objects.ObjectManager;
-import com.sun.corba.se.spi.activation.Server;
+import common.remoteInterfaces.GameController;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.Display;
 import server.ServerGame;
 import server.ServerObject;
 
 import java.awt.*;
-import java.awt.DisplayMode;
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 /**
  * ClientGame routines
@@ -50,8 +49,8 @@ public class ClientGame extends AbstractGame implements Constants {
     private static final boolean isDebug = true;
 
     private final String mapName = "forest_v2";
+    private final Receiver receiver;
     private Map<Integer, ClientObject> clientObjects;
-
     //TODO Client objects
     private int playerIndex;
     private Level levelManager;
@@ -68,16 +67,23 @@ public class ClientGame extends AbstractGame implements Constants {
     private boolean isMouseRightPressed = false;
     private boolean isMouseLeftReleased = false;
     private boolean isMouseRightReleased = false;
-
     private boolean isInFullScreenMode = false;
+    private final GameController controller;
 
     private int score = 0;
 
     private Cursor cursor;
 
-    private ClientGame() {
+    private ClientGame(String ip, String nickname) throws RemoteException, NotBoundException {
         initDisplay();
         initGl();
+
+        Display.sync(60);
+
+        receiver = Receiver.getInstance();
+        Registry registry = LocateRegistry.getRegistry(ip);
+        controller = (GameController) registry.lookup("game");
+        controller.signUp(nickname);
 
         clientObjects = new TreeMap<>();
 
@@ -109,10 +115,24 @@ public class ClientGame extends AbstractGame implements Constants {
 
     public static AbstractGame getInstance() {
         if (instance == null) {
-            instance = new ClientGame();
+            System.err.println("There are no ClientGame created");
+            System.exit(1);
         }
 
         return instance;
+    }
+
+    public static ClientGame createInstance(String ip, String nickname) {
+        if (instance == null) {
+            try {
+                instance = new ClientGame(ip, nickname);
+            } catch (RemoteException | NotBoundException e) {
+                System.err.println(e.getMessage());
+                System.exit(1);
+            }
+        }
+
+        return (ClientGame) instance;
     }
 
     public static boolean isDebug() {
@@ -124,7 +144,18 @@ public class ClientGame extends AbstractGame implements Constants {
      */
     @Override
     public void tick() {
+        // получение объектов с из очереди полученных с сервера
+        receiver.tick();
 
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            isRunning = false;
+        }
+        processInput();
+
+        // а это что-то
+        this.guiManager.update();
+
+        render();
     }
 
     public void processInput() {
@@ -150,13 +181,6 @@ public class ClientGame extends AbstractGame implements Constants {
     public void update() {
 
 //        levelManager.update();
-
-        synchronized (this.objects) {
-            for (Integer key : this.objects.keySet()) {
-                GameObject object = this.objects.get(key);
-                object.update();
-            }
-        }
 
         HashMap<Integer, ServerObject> serverObjects = ((ServerGame) ServerGame.getInstance()).getServerObjects();
         if (serverObjects != null) {
@@ -199,20 +223,19 @@ public class ClientGame extends AbstractGame implements Constants {
             }
         }
 
-//        this.objectManager.render(0);
-        this.objectManager.render(1);
-
-        for (int i = 0; i < this.objects.size(); i++) {
-            GameObject object = this.objects.get(i);
-            object.render();
-        }
-
-        this.objectManager.render(2);
+////        this.objectManager.render(0);
+//        this.objectManager.render(1);
+//
+//        for (int i = 0; i < this.objects.size(); i++) {
+//            GameObject object = this.objects.get(i);
+//            object.render();
+//        }
+//
+//        this.objectManager.render(2);
 
         this.guiManager.render();
 
         Display.update();
-        Display.sync(60);
     }
 
     @Override
@@ -520,7 +543,7 @@ public class ClientGame extends AbstractGame implements Constants {
             Keyboard.create();
             Display.setVSyncEnabled(true);
         } catch (LWJGLException ex) {
-            Logger.getLogger(MagicMain.class.getName()).log(java.util.logging.Level.SEVERE, "Something went wrong in initDisplay()");
+            System.err.println("Something went wrong in initDisplay()");
         }
     }
 
@@ -535,5 +558,12 @@ public class ClientGame extends AbstractGame implements Constants {
 
         glEnable(GL_TEXTURE_2D);
 
+    }
+
+    // обновляем (или добавляем) полученный объект в список клиентских объектов
+    public void updateObject(int id, ClientObject object) {
+        if (!clientObjects.containsKey(id) || clientObjects.get(id).getTimestamp() < object.getTimestamp()) {
+            clientObjects.put(id, object);
+        }
     }
 }

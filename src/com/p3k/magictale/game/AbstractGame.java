@@ -25,7 +25,7 @@ public abstract class AbstractGame {
     /**
      * game global run state
      */
-    private boolean isRunning;
+    protected boolean isRunning;
 
     /**
      * {@link AbstractGame} constructor
