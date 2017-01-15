@@ -2,7 +2,6 @@ package client;
 
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
-import com.sun.org.apache.regexp.internal.RE;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
@@ -11,13 +10,13 @@ import static org.lwjgl.opengl.GL11.glPopMatrix;
  * Created by COMar-PC on 10.01.2017.
  */
 public class ClientObject {
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private int idResMan;
     private Sprite sprite;
-    private long timeStamp;
+    private long timestamp;
 
-    public ClientObject(int idResMan, int x, int y) throws Exception {
+    public ClientObject(int idResMan, float x, float y) throws Exception {
         this.x = x;
         this.y = y;
         this.idResMan = idResMan;
@@ -40,19 +39,19 @@ public class ClientObject {
         glPopMatrix();
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 
@@ -72,11 +71,11 @@ public class ClientObject {
         this.sprite = sprite;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

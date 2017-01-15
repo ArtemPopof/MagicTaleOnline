@@ -4,29 +4,29 @@ package server;
  * Created by COMar-PC on 14.01.2017.
  */
 public class ServerObject {
-    private int x;
-    private int y;
+    private float x;
+    private float y;
     private int idResMan;
 
-    public ServerObject(int idResMan, int x, int y) throws Exception {
+    public ServerObject(int idResMan, float x, float y) throws Exception {
         this.x = x;
         this.y = y;
         this.idResMan = idResMan;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 

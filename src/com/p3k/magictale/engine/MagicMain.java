@@ -43,7 +43,7 @@ public class MagicMain {
     private void gameLoop() {
 
         long timer = System.currentTimeMillis();
-        long step = 20;
+        long step = 1000 / 40;
         while (this.isRunning && !Display.isCloseRequested()) {
 
             if (System.currentTimeMillis() - timer > step) {

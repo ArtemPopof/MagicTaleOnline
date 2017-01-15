@@ -62,8 +62,8 @@ public class ServerGame extends AbstractGame {
                     try {
                         serverObjects.put(tilesOfLevel[w][h].getTiles().get(0).getId(),
                                 new ServerObject(tilesOfLevel[w][h].getTiles().get(0).getSpriteId(),
-                                        (int)tilesOfLevel[w][h].getTiles().get(0).getX(),
-                                        (int)tilesOfLevel[w][h].getTiles().get(0).getY())) ;
+                                        tilesOfLevel[w][h].getTiles().get(0).getX(),
+                                        tilesOfLevel[w][h].getTiles().get(0).getY())) ;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -71,10 +71,8 @@ public class ServerGame extends AbstractGame {
             }
         }
 
-        // отключение "отвалившихся" клиентов
-        activeAccounts.tick();
         // отправка данных подключенным клиентам
-        broadcaster.sendObjects(serverObjects.values());
+        broadcaster.sendObjects(serverObjects.entrySet());
 
     }
 
