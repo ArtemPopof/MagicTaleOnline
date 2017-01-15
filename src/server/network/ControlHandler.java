@@ -1,8 +1,10 @@
 package server.network;
 
 import common.remoteInterfaces.GameController;
+import server.accounts.ActiveAccounts;
 
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -20,7 +22,7 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
      * @throws RemoteException if failed to export object
      * @since JDK1.1
      */
-    protected ControlHandler() throws RemoteException {
+    public ControlHandler() throws RemoteException {
     }
 
 
@@ -30,7 +32,12 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
      */
     @Override
     public void signUp(String nickname) throws RemoteException {
-
+        try {
+            ActiveAccounts.getInstance().setEnable(getClientHost(), nickname);
+            System.out.println("New client connected " + nickname + " " + getClientHost());
+        } catch (ServerNotActiveException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**

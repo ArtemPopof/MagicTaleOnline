@@ -1,6 +1,7 @@
 package server;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Map.TileMap;
 import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.Player;
@@ -8,8 +9,14 @@ import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import server.accounts.ActiveAccounts;
 import server.network.Broadcaster;
+import server.network.ControlHandler;
 
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -19,22 +26,35 @@ public class ServerGame extends AbstractGame {
     private Level levelManager;
     private final ActiveAccounts activeAccounts;
     private final Broadcaster broadcaster;
+    private final ControlHandler handler;
 
     private HashMap<Integer, ServerObject> serverObjects;
 
-    private ServerGame() {
+    private ServerGame() throws RemoteException, AlreadyBoundException, MalformedURLException {
+
         // TODO: init all
         serverObjects = new HashMap<>();
 
         activeAccounts = ActiveAccounts.getInstance();
         broadcaster = Broadcaster.getInstance();
 
+        // init controller
+        LocateRegistry.createRegistry(1099);
+        String name = "game";
+        handler = new ControlHandler();
+        Naming.bind(name, handler);
+
         initLevelManager();
     }
 
     public static AbstractGame getInstance() {
         if (instanceServer == null) {
-            instanceServer = new ServerGame();
+            try {
+                instanceServer = new ServerGame();
+            } catch (RemoteException | AlreadyBoundException | MalformedURLException e) {
+                System.err.println(e.getMessage());
+                System.exit(1);
+            }
         }
 
         return instanceServer;
@@ -49,6 +69,14 @@ public class ServerGame extends AbstractGame {
      */
     @Override
     public void tick() {
+
+        synchronized (this.objects) {
+            for (Integer key : this.objects.keySet()) {
+                GameObject object = this.objects.get(key);
+                object.update();
+            }
+        }
+
         //TODO DON'T DELETE IT. Need for render
         TileMap[][] tilesOfLevel = null;
         try {

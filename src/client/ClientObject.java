@@ -16,7 +16,7 @@ public class ClientObject {
     private Sprite sprite;
     private long timestamp;
 
-    public ClientObject(int idResMan, float x, float y) throws Exception {
+    public ClientObject(int idResMan, float x, float y) {
         this.x = x;
         this.y = y;
         this.idResMan = idResMan;

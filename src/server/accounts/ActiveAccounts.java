@@ -30,14 +30,22 @@ public class ActiveAccounts {
      * очистка от неактивных последних 5 минут клиентов
      */
     public void filter() {
+        int clientsCount = accountsInUse.size();
         accountsInUse.entrySet()
                 .removeIf(stringAccountEntry ->
                         System.currentTimeMillis() - stringAccountEntry.getValue().getLastAccessTime() > timeoutMillis
                                 || !stringAccountEntry.getKey().equals(stringAccountEntry.getValue().getIP()));
+        clientsCount -= accountsInUse.size();
+        if (clientsCount > 0) {
+            System.out.println("-" + clientsCount + " clients");
+        }
     }
 
     public void setEnable(String ip, String nickname) {
+        System.out.println("+1 client");
         accountsInUse.put(ip, accounts.getAccount(nickname));
+        accountsInUse.get(ip).setIP(ip);
+        System.out.println("Now " + accountsInUse.size() + " clients");
     }
 
     public String[] getIPs() {
