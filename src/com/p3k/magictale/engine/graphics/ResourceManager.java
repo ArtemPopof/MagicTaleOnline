@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Utils;
+import com.p3k.magictale.engine.graphics.Objects.AnimationSheetResource;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -37,6 +38,13 @@ public class ResourceManager {
 
     private static ResourceManager instance = null;
 
+    /**
+     * where animation textures will be mapped
+     */
+    private static final int ANIMATION_TEXTURES_POOL_ID = 3000;
+
+    private int animationPoolFreeIndex;
+
     private ResourceManager() throws IllegalStateException {
 
         if (instance != null) {
@@ -45,6 +53,8 @@ public class ResourceManager {
 
         textures = new HashMap<>();
         animations = new HashMap<>();
+
+        animationPoolFreeIndex = ANIMATION_TEXTURES_POOL_ID;
 
         loadAllAnimationsInformation();
 
@@ -84,25 +94,44 @@ public class ResourceManager {
         //TODO implement
 
         SpriteSheet mapSS = new SpriteSheet(spriteSheetPath);
-        System.out.println("Textures:");
 
         for (int i = 0; i < mapSS.size(); i++) {
-//            int textureId = mapSS.getSpriteTextureId(i);
             Sprite sprite = mapSS.getSprites().get(i);
 
             if (textures.put(firstId++, sprite) != null) {
                 throw new IllegalArgumentException();
             }
-//            System.out.println("id = " + (firstId-1) + "  sprId = " + textures.get(firstId-1));
         }
-        System.out.println("firstId - mapSS.size - 1= " + (firstId - mapSS.size() - 1) + "  sprId = "
-                + textures.get(firstId - mapSS.size() - 1));
-        System.out.println("firstId - mapSS.size    = " + (firstId - mapSS.size()) + "  sprId = "
-                + textures.get(firstId - mapSS.size()));
-        System.out.println("firstId - 1             = " + (firstId-1) + "  sprId = " + textures.get(firstId-1));
-        System.out.println("firstId                 = " + (firstId) + "  sprId = " + textures.get(firstId));
-        System.out.println("MapSS.size              = " + (mapSS.size()));
 
+    }
+
+    /**
+     * Load all map textures from spritesheet
+     * and map them according to the given
+     * id.
+     *
+     *  @throws IllegalArgumentException
+     *
+     */
+    public AnimationSheetResource loadAnimationTextures(SpriteSheet mapSS)
+            throws IllegalArgumentException {
+
+        int firstId = animationPoolFreeIndex;
+
+        // create sheetResource struct to use in Animation Constructor
+        AnimationSheetResource struct = new AnimationSheetResource(mapSS, firstId);
+
+        for (int i = 0; i < mapSS.size(); i++) {
+            Sprite sprite = mapSS.getSprites().get(i);
+
+            if (textures.put(firstId++, sprite) != null) {
+                throw new IllegalArgumentException();
+            }
+
+            animationPoolFreeIndex++;
+        }
+
+        return struct;
     }
 
     /**
@@ -125,8 +154,10 @@ public class ResourceManager {
 
         ArrayList<Animation> characterTestAnims = new ArrayList<>();
 
-        SpriteSheet charSprites = new SpriteSheet
+        SpriteSheet goblinSheet = new SpriteSheet
                 ("res/animation/goblin/goblin.png", 64, 64);
+
+        AnimationSheetResource charSprites = loadAnimationTextures(goblinSheet);
 
         Animation waitAnimation = new Animation(charSprites, 0, 11);
 
