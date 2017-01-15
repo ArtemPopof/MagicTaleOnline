@@ -65,7 +65,7 @@ public class GameCharacter extends GameObject implements Serializable {
      */
     protected Sprite hpBar;
     protected boolean isHPBarVisible;
-    private float speed;
+    protected float speed;
     private int health;
     private int maxHealth;
     private int attack;
