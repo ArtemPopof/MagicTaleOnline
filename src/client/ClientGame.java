@@ -96,13 +96,13 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initObjectManager();
 
-        initGuiManager();
-
         try {
             initObjects();
         } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
             e.printStackTrace();
         }
+
+        initGuiManager();
 
         System.out.println("HERE ClientGame loaded");
     }
