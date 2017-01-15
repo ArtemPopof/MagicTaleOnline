@@ -3,8 +3,7 @@ package com.p3k.magictale.engine.gui;
 import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
-import com.p3k.magictale.game.Characters.Player;
-import com.sun.security.ntlm.Client;
+import common.remoteInterfaces.GameController;
 import org.lwjgl.input.Mouse;
 import server.ServerGame;
 
@@ -21,23 +20,30 @@ public class GuiManager extends MComponent implements Constants {
     private ComponentFactory factory;
     private Map<String, MComponent> objects;
 
-    private Player player; // An user of all this stuff
+    private GameController playerController; // An user of all this stuff
 
     private Text mousePosition;
 
     private Text score;
     private Text fps;
 
-    public GuiManager(Player player) {
+    public GuiManager(GameController player) {
         super(null);
 
         Logger.log("GuiManager here!", Logger.DEBUG);
 
-        this.player = player;
+        this.playerController = player;
 
         this.objects = new HashMap<>();
         this.factory = new StdComponentFactory();
 
+        this.mousePosition = factory.createText("Mouser position: ", "regular");
+        this.fps = factory.createText("FPS: ");
+
+        this.add("mousePosition", mousePosition);
+        this.add("fpsCounter", fps);
+
+        this.mousePosition.setSize(16);
 
         this.mousePosition = factory.createText("Mouser position: ", "regular");
         this.fps = factory.createText("FPS: ");
@@ -57,17 +63,17 @@ public class GuiManager extends MComponent implements Constants {
     private void createHud() {
 
         // Status bar
-        StatusBar statusBar = this.factory.createStatusBar(this.player);
+        StatusBar statusBar = this.factory.createStatusBar(this.playerController);
         statusBar.resize((int) (statusBar.getWidth() * 1.5f), (int) (statusBar.getHeight() * 1.5f));
         statusBar.move(8, WINDOW_HEIGHT - 8);
 
         // Action bar
-        ActionBar actionBar = this.factory.createActionBar(this.player);
+        ActionBar actionBar = this.factory.createActionBar(this.playerController);
         actionBar.resize((int) (actionBar.getWidth() * 1.5f), (int) (actionBar.getHeight() * 1.5f));
         actionBar.move(((WINDOW_WIDTH - actionBar.getWidth()) / 2), actionBar.getHeight() + 5);
 
         // Inventory
-        Inventory inventory = factory.createInventory(player);
+        Inventory inventory = factory.createInventory(playerController);
         inventory.move(WINDOW_WIDTH - inventory.getWidth() - 60, WINDOW_HEIGHT / 2 + inventory.getHeight());
         inventory.resize((int) (inventory.getWidth() * 1.5f),
                          (int) (inventory.getHeight() * 1.5f));
@@ -84,6 +90,7 @@ public class GuiManager extends MComponent implements Constants {
                 inventory.show();
             }
         });
+
         playerMenu.setButtonAction(0, () -> {
             for (int i = 0; i < 5; ++i)
             ((ServerGame) ServerGame.getInstance()).spawnBot();
@@ -109,6 +116,7 @@ public class GuiManager extends MComponent implements Constants {
         });
 
         if ( ClientGame.isDebug() ) {
+
             mousePosition.setText(
                     String.format("Mouse x = %d, y = %d", Mouse.getX(), Mouse.getY()));
             mousePosition.move(10, mousePosition.getHeight() + 10);

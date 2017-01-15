@@ -5,7 +5,6 @@ package com.p3k.magictale.engine;
  */
 
 import client.ClientGame;
-import com.sun.security.ntlm.Client;
 
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;

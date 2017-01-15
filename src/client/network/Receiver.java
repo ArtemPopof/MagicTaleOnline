@@ -3,6 +3,7 @@ package client.network;
 import client.ClientGame;
 import client.ClientObject;
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.Logger;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -51,9 +52,9 @@ public class Receiver implements Runnable {
     public void run() {
         while (true) {
             try {
-                System.out.println("Wait for packet");
+                //Logger.log("Wait for packet", Logger.DEBUG);
                 socket.receive(packet);
-                System.out.println("Got packet " + packet.getLength());
+                //Logger.log("Got packet " + packet.getLength(), Logger.DEBUG);
 
                 // проверка checksum
                 byte[] bytes = packet.getData();

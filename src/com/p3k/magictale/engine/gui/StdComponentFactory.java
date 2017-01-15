@@ -10,6 +10,7 @@ import com.p3k.magictale.engine.graphics.SpriteSheet;
 import com.p3k.magictale.engine.gui.fonts.Font;
 import com.p3k.magictale.engine.gui.fonts.FontManager;
 import com.p3k.magictale.game.Characters.Player;
+import common.remoteInterfaces.GameController;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     @Override
-    public StatusBar createStatusBar(Player player) {
+    public StatusBar createStatusBar(GameController player) {
         return new StatusBar(
                 new Sprite(statusBar.getTextureId(),
                         statusBar.getWidth(),
@@ -118,7 +119,7 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     @Override
-    public ActionBar createActionBar(Player player) {
+    public ActionBar createActionBar(GameController player) {
         return new ActionBar(
                 new Sprite(actionBar.getTextureId(),
                         actionBar.getWidth(),
@@ -166,7 +167,7 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     @Override
-    public Inventory createInventory(Player player) {
+    public Inventory createInventory(GameController player) {
         return new Inventory(inventory, createText("Inventory", "big"), player);
     }
 

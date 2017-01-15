@@ -2,6 +2,7 @@ package client;
 
 import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
@@ -147,8 +148,7 @@ public class ClientGame extends AbstractGame implements Constants {
         }
         processInput();
 
-        // а это что-то
-//        this.guiManager.update();
+        this.guiManager.update();
 
         render();
     }
@@ -203,7 +203,6 @@ public class ClientGame extends AbstractGame implements Constants {
 //                }
 //            }
 //        }
-//        this.guiManager.update();
 //    }
 
     public void render() {
@@ -230,13 +229,15 @@ public class ClientGame extends AbstractGame implements Constants {
 
 //        this.objectManager.render(2);
 
-//        this.guiManager.render();
+        this.guiManager.render();
 
         Display.update();
     }
 
     @Override
     protected void finalize() throws Throwable {
+        Logger.log("Destroying resources", Logger.DEBUG);
+
         Display.destroy();
         Keyboard.destroy();
         SoundManager.destroy();
@@ -335,7 +336,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
     private void initGuiManager() {
 
-//        this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
+       this.guiManager = new GuiManager(this.controller);
 
     }
 
