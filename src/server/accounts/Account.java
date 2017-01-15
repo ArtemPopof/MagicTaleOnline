@@ -35,4 +35,8 @@ public class Account {
     public void setIP(String ip) {
         this.ip = ip;
     }
+
+    public void updateLastAccess() {
+        lastAccessTime = System.currentTimeMillis();
+    }
 }

@@ -43,8 +43,10 @@ public class ActiveAccounts {
 
     public void setEnable(String ip, String nickname) {
         System.out.println("+1 client");
-        accountsInUse.put(ip, accounts.getAccount(nickname));
-        accountsInUse.get(ip).setIP(ip);
+        Account account = accounts.getAccount(nickname);
+        account.setIP(ip);
+        account.updateLastAccess();
+        accountsInUse.put(ip, account);
         System.out.println("Now " + accountsInUse.size() + " clients");
     }
 
