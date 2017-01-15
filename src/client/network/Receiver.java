@@ -28,7 +28,7 @@ public class Receiver implements Runnable {
     private Receiver() throws SocketException {
         socket = new DatagramSocket(Constants.CLIENT_UDP_PORT);
         // если в течение 2 секунд не придут данные - сервер отключил нас
-//        socket.setSoTimeout(2000);
+        socket.setSoTimeout(2000);
         objectsQueue = new ConcurrentLinkedQueue<>();
     }
 
