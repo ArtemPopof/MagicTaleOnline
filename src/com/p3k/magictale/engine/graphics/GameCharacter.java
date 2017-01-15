@@ -12,7 +12,6 @@ import com.sun.security.ntlm.Client;
 import server.ServerGame;
 import server.ServerObject;
 
-
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -178,6 +177,11 @@ public class GameCharacter extends GameObject implements Serializable {
 
         ((ServerGame) ServerGame.getInstance()).putServerObject
                 (getId(), animations.get(currentState).getCurrentFrame().getSpriteId(), this.x, this.y);
+
+        // Sync with server
+        this.animations.get(this.currentState).getCurrentFrame();
+
+        ((ServerGame) ServerGame.getInstance()).(this.getId(), new ServerObject())
 
         // current animation stops, so zero some
         // states
