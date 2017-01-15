@@ -8,7 +8,7 @@ import com.p3k.magictale.game.Characters.Player;
  */
 public abstract class ComponentFactory {
 
-    protected String RES_PATH = "";
+    protected static String RES_PATH = "";
 
     public abstract Button createButton(String text, float x, float y);
 
