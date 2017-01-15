@@ -2,6 +2,7 @@ package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Utils;
 import com.p3k.magictale.engine.graphics.Objects.AnimationSheetResource;
+import com.p3k.magictale.game.Characters.Bat;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -218,13 +219,9 @@ public class ResourceManager {
         botDeathAnim.setShouldStartOver(false);
 
         Animation botLeftAttackAnim = new Animation(charSprites, 40, 3);
-        leftAttackAnim.setLooped(false);
         Animation botUpAttackAnim = new Animation(charSprites, 29, 3);
-        upAttackAnim.setLooped(false);
         Animation botRightAttackAnim = new Animation(charSprites, 18, 3);
-        rightAttackAnim.setLooped(false);
         Animation botDownAttackAnim = new Animation(charSprites, 7, 3);
-        downAttackAnim.setLooped(false);
 
         botTestAnims.add(botWaitAnim);
         botTestAnims.add(botRightMoveAnim);
@@ -239,6 +236,36 @@ public class ResourceManager {
         botTestAnims.add(botDownAttackAnim);
 
         animations.put(CharacterTypes.ABSTRACT_BOT, botTestAnims);
+
+        ArrayList<Animation> batAnims = new ArrayList<>();
+
+        SpriteSheet batSheet = new SpriteSheet
+                (Bat.BAT_SPRITE_PATH, 32, 32);
+
+        AnimationSheetResource batSprites = loadAnimationTextures(batSheet);
+
+        Animation batWaitAnim = new Animation(batSprites, 1, 3);
+        Animation batDownMoveAnim = new Animation(batSprites, 1, 3);
+        Animation batRightMoveAnim = new Animation(batSprites, 5, 3);
+        Animation batLeftMoveAnim = new Animation(batSprites, 13, 3);
+        Animation batUpMoveAnim = new Animation(batSprites, 9, 3);
+        Animation batDeathAnim = new Animation(batSprites, 12, 1);
+        batDeathAnim.setLooped(false);
+        batDeathAnim.setShouldStartOver(false);
+
+        batAnims.add(batWaitAnim);
+        batAnims.add(batRightMoveAnim);
+        batAnims.add(batLeftMoveAnim);
+        batAnims.add(batUpMoveAnim);
+        batAnims.add(batDownMoveAnim);
+        batAnims.add(batDeathAnim);
+
+        batAnims.add(batLeftMoveAnim);
+        batAnims.add(batUpMoveAnim);
+        batAnims.add(batRightMoveAnim);
+        batAnims.add(batDownMoveAnim);
+
+        animations.put(CharacterTypes.BAT_BOT, batAnims);
     }
 
     /**

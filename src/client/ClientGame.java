@@ -10,6 +10,7 @@ import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.AbstractGame;
+import com.p3k.magictale.game.Characters.Bat;
 import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
@@ -243,7 +244,12 @@ public class ClientGame extends AbstractGame implements Constants {
 
         // test bot
         Bot testBot3 = new Bot(252, 272, 64, 64);
+
+        //test bat
+        Bot batBot = new Bat(270, 280);
+
         this.objects.put(this.objects.size(), testBot3);
+        this.objects.put(this.objects.size(), batBot);
 
     }
 
@@ -536,4 +542,6 @@ public class ClientGame extends AbstractGame implements Constants {
         glEnable(GL_TEXTURE_2D);
 
     }
+
+
 }

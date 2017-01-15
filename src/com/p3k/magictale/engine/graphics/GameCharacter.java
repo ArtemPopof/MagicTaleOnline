@@ -2,7 +2,12 @@ package com.p3k.magictale.engine.graphics;
 
 import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.gui.ComponentFactory;
+import com.p3k.magictale.engine.gui.StdComponentFactory;
+import com.p3k.magictale.engine.gui.Text;
+import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.CharacterTypes;
+import com.sun.security.ntlm.Client;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -66,9 +71,10 @@ public class GameCharacter extends GameObject implements Serializable {
     protected Sprite hpBar;
     protected boolean isHPBarVisible;
     protected float speed;
-    private int health;
-    private int maxHealth;
-    private int attack;
+    protected int health;
+    protected int maxHealth;
+    protected int attack;
+
     /**
      * How far can damage other character
      */
@@ -82,6 +88,26 @@ public class GameCharacter extends GameObject implements Serializable {
     private int currentState;
 
     private boolean isDead = false;
+
+    /**
+     * Experience gained by killind this mob
+     *
+     */
+    private int gainedExperience;
+
+    private int xp;
+
+    private int currentLevel;
+
+    private ComponentFactory guiFactory;
+
+    /**
+     * Harm was taken in previous update
+     */
+    private int takenHarm;
+
+
+
 
     /**
      * Basic constructor for GameCharacter
@@ -105,10 +131,13 @@ public class GameCharacter extends GameObject implements Serializable {
 
         //TODO remove hardcode
         this.speed = Constants.PLAYER_SPEED;
-        this.health = 10;
         this.maxHealth = 10;
+        this.health = maxHealth;
         this.attack = 2;
         this.attackDistance = Constants.MAP_TILE_SIZE + 20;
+
+        this.gainedExperience = 2;
+        this.xp = 0;
 
         this.isFlyable = false;
         this.layer = 1;
@@ -116,6 +145,12 @@ public class GameCharacter extends GameObject implements Serializable {
         //init hp bar
         this.hpBar = new Sprite(1f, 0f, 0f, FULL_HP_BAR_LENGTH, HP_BAR_HEIGHT);
         this.isHPBarVisible = true;
+
+        this.currentLevel = 1;
+
+        this.takenHarm = -1;
+
+        guiFactory = new StdComponentFactory();
     }
 
     public int getState() {
@@ -171,6 +206,18 @@ public class GameCharacter extends GameObject implements Serializable {
             float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
 
             this.hpBar.setWidth((getCurrentHealth() / (1.0f * this.maxHealth)) * FULL_HP_BAR_LENGTH);
+
+            //if (takenHarm > -1) {
+
+                Text hitText = guiFactory.createText("Hit: " + takenHarm, "regular");
+                hitText.setSize(16);
+
+                hitText.move((this.x - cameraX) + getWidth() /4, this.y - cameraY + HP_BAR_PADDING * 2);
+
+                hitText.render();
+
+          //      takenHarm = -1;
+           // }
 
             glTranslatef((this.x - cameraX) + getWidth() / 4, this.y - cameraY + HP_BAR_PADDING, 0);
 
@@ -270,12 +317,12 @@ public class GameCharacter extends GameObject implements Serializable {
         ArrayList<GameCharacter> enemies = ((ClientGame) ClientGame.getInstance()).getCharactersNearPoint(currentPosition, this.attackDistance);
 
 
-        if (!this.isAttacking) {
+        if (this.isAttacking) {
 
             for(GameCharacter character : enemies) {
                 if (character.equals(this)) continue;
 
-                character.takeHarm(this.attack);
+                character.takeHarm(this.attack, this);
                 break;
             }
 
@@ -311,13 +358,21 @@ public class GameCharacter extends GameObject implements Serializable {
      *
      * @param attackStrength
      */
-    public void takeHarm(int attackStrength) {
+    public void takeHarm(int attackStrength, GameCharacter attacker) {
         // isn't sofisticated yet
         this.health -= attackStrength;
 
         if (this.health <= 0) {
+
+            if (!isDead) {
+                attacker.addXp(this.getGainedExperience());
+            }
+
             playDeath();
             this.health = 0;
+
+        } else {
+            takenHarm = attackStrength;
         }
     }
 
@@ -343,11 +398,102 @@ public class GameCharacter extends GameObject implements Serializable {
         return this.attack;
     }
 
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
     /**
      * return is character alive or dead
      */
     public boolean isDead() {
         return this.isDead;
+    }
+
+
+    /**
+     * How much expirience will take Player, if
+     * kill this bot
+     *
+     * @return
+     */
+    public int getGainedExperience() {
+        return gainedExperience;
+    }
+
+    public void setGainedExperience(int newXp) {
+        this.gainedExperience = newXp;
+    }
+
+    public int getXp() {
+        return this.xp;
+    }
+
+    public void addXp(int amount) {
+
+        this.xp += amount;
+
+        if (xp >= getExperienceForNextLevel()) {
+            levelUp();
+        }
+    }
+
+    public int getLevel() {
+        return currentLevel;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getStrength() {
+        return (int) (getLevel() * 4f);
+    }
+
+    public int getMagic() {
+        return (int) (getLevel() * 1.5f);
+    }
+
+    /**
+     * Get expirience amount for specific level
+     * @return
+     */
+    public int getExperienceForLevel(int level) {
+        return level * 10;
+    }
+
+    public int getExperienceForNextLevel() {
+        return (getLevel()) * 10;
+    }
+
+    /**
+     * Hooray, next level! You have grown stronger!
+     */
+    public void levelUp() {
+        this.currentLevel++;
+
+        maxHealth += currentLevel * 5;
+        attack += 1 * currentLevel;
+
+        this.health = maxHealth;
+
+
+    }
+
+    /**
+     * Set size for all sprites for this char
+     *
+     * Can be cpu-consuming, so use only when init
+     *
+     * @param width
+     * @param height
+     */
+    public void setCharacterSize(float width, float height) {
+        this.setWidth(width);
+        this.setHeight(height);
+
+        for (Animation anim : animations) {
+            anim.setFramesSize(width, height);
+        }
     }
 
 }

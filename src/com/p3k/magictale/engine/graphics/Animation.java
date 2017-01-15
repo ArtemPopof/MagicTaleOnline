@@ -148,5 +148,15 @@ public class Animation implements Constants, Serializable {
         this.shouldStartOver = should;
     }
 
-
+    /**
+     * Set size for all frames in this animation
+     *
+     * @param width
+     * @param height
+     */
+    public void setFramesSize(float width, float height) {
+        for (Frame frame : frames) {
+            frame.setFrameSize(width, height);
+        }
+    }
 }

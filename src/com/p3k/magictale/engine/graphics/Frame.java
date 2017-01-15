@@ -45,5 +45,9 @@ public class Frame implements Serializable {
         return spriteId;
     }
 
+    public void setFrameSize(float width, float height) {
+        this.object.setWidth(width);
+        this.object.setHeight(height);
+    }
 
 }

@@ -24,6 +24,8 @@ public class GuiManager extends MComponent implements Constants {
 
     private Text mousePosition;
     private Text score;
+    private Text fps;
+
     public GuiManager(Player player) {
         super(null);
 
@@ -34,8 +36,13 @@ public class GuiManager extends MComponent implements Constants {
         this.objects = new HashMap<>();
         this.factory = new StdComponentFactory();
 
+
         this.mousePosition = factory.createText("Mouser position: ", "regular");
+        this.fps = factory.createText("FPS: ");
+
         this.add("mousePosition", mousePosition);
+        this.add("fpsCounter", fps);
+
         this.mousePosition.setSize(16);
 
         createHud();
@@ -111,6 +118,7 @@ public class GuiManager extends MComponent implements Constants {
 
         String scoreText = "Score: " + ((ClientGame) ClientGame.getInstance()).getScore();
         this.score.setText(scoreText);
+        //this.fps.setText("FPS: " + Display)
     }
 
     @Override

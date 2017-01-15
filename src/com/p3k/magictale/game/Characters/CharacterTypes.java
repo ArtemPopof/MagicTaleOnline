@@ -15,4 +15,5 @@ public enum CharacterTypes implements Serializable {
     ABSTRACT_CHARACTER,
     ABSTRACT_PLAYER,
     ABSTRACT_BOT,
+    BAT_BOT,
 }

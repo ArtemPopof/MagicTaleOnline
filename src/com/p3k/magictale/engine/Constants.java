@@ -41,6 +41,11 @@ public interface Constants extends Serializable {
     // standart player speed
     public static final float PLAYER_SPEED = 4f;
 
+    // standart player start hp
+    public static final int PLAYER_START_HP = 20;
+
+    public static final int PLAYER_START_ATTACK = 4;
+
     //Map width in tiles
     public static final int MAP_WIDTH = 48;
     public static final int MAP_HEIGHT = 33;

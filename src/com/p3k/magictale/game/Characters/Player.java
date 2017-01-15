@@ -15,7 +15,6 @@ import java.io.Serializable;
  */
 public class Player extends GameCharacter implements Constants, Serializable {
 
-    private float xp;
 
     //private SoundSource mainSound;
     //private SoundSource attackSound;
@@ -43,7 +42,10 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
         // this.sprite = new Sprite(0.5f, 0.5f, 0.5f, 60, 60);
 
-        this.xp = 0;
+        this.health = PLAYER_START_HP;
+        this.maxHealth = PLAYER_START_HP;
+
+        this.attack = PLAYER_START_ATTACK;
 
         //initSounds();
 
@@ -71,6 +73,10 @@ public class Player extends GameCharacter implements Constants, Serializable {
     public void update() {
         super.update();
 
+        System.out.println("EXP: " + getXp());
+        System.out.println("LVL: " + getLevel());
+        System.out.println("MAXHP: " + getMaxHealth());
+
         //TODO do not left it undone
         this.x = 800 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraX();
         this.y = 600 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraY();
@@ -91,31 +97,33 @@ public class Player extends GameCharacter implements Constants, Serializable {
             move(0, 1);
             setDirection(Direction.UP);
             isStateChanged = true;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
             changeState(DOWN_MOVE_STATE);
             move(0, -1);
             setDirection(Direction.DOWN);
             isStateChanged = true;
+        } else {
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                changeState(LEFT_MOVE_STATE);
+                move(-1, 0);
+                setDirection(Direction.LEFT);
+                isStateChanged = true;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                changeState(RIGHT_MOVE_STATE);
+                move(1, 0);
+                setDirection(Direction.RIGHT);
+                isStateChanged = true;
+            }
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            changeState(LEFT_MOVE_STATE);
-            move(-1, 0);
-            setDirection(Direction.LEFT);
-            isStateChanged = true;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            changeState(RIGHT_MOVE_STATE);
-            move(1, 0);
-            setDirection(Direction.RIGHT);
-            isStateChanged = true;
-        }
+
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             //attackSound.play("user/attack_axe.wav");
         }
 
         // mouse events
-        if (((ClientGame) ClientGame.getInstance()).isButtonPressed(MOUSE_BTN_LEFT)) {
+        if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
             doAttack();
         }
 
@@ -160,30 +168,5 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
 
     }
-
-    public float getXp() {
-        return this.xp;
-    }
-
-    public void addXp(float amount) {
-        this.xp += amount;
-    }
-
-    public int getLevel() {
-        return (int) (this.xp / 50) + 1;
-    }
-
-    public int getMaxHealth() {
-        return getLevel() * 10;
-    }
-
-    public int getStrength() {
-        return (int) (getLevel() * 4f);
-    }
-
-    public int getMagic() {
-        return (int) (getLevel() * 1.5f);
-    }
-
 
 }

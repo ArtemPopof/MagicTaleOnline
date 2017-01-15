@@ -9,7 +9,6 @@ import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectManager;
-import org.lwjgl.examples.Game;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ public class Bot extends GameCharacter {
      * How many keyboard keys will be emulated
      */
     private static final int EMULATED_KEYS = 10;
+
     /**
      * Keys for emulation of pressing
      */
@@ -54,6 +54,16 @@ public class Bot extends GameCharacter {
     private static final int KEY_A = 2;
     private static final int KEY_D = 3;
     private static final int KEY_SPACE = 4;
+
+    /**
+     * Standart attack delay for abstract bot type
+     *
+     */
+    private int BOT_ATTACK_DELAY = 10;
+
+
+
+
     //Spotted enemy
     GameCharacter spottedEnemy;
     private int currentBotState;
@@ -97,6 +107,17 @@ public class Bot extends GameCharacter {
     //TODO remove nah
     //TEMPORARY OBJECT
     private boolean[][] field;
+
+    /**
+     * Delay for attack events in frames
+     */
+    private int attackDelay;
+
+    /**
+     * Current frames to wait until next attack
+     * attempt
+     */
+    private int attackDelayCounter;
 
     /**
      * true if we can attack enemy now
@@ -151,6 +172,10 @@ public class Bot extends GameCharacter {
         this.isAroundEnemy = false;
 
         this.speed = 2f;
+
+        this.attackDelay = BOT_ATTACK_DELAY;
+        this.attackDelayCounter = 0;
+
 
         // TEMP CODE NEXT
 
@@ -234,14 +259,11 @@ public class Bot extends GameCharacter {
 
         super.update();
 
-
         if (isDead()) {
             return;
         }
 
-        this.isAttacking = false;
-
-        // here will be simulation of bot virtual brain]
+        // here will be simulation of bot virtual brain
 
         boolean isAny = isAnyoneNotFriendlyAround();
 
@@ -260,7 +282,7 @@ public class Bot extends GameCharacter {
             }
         }
         if (this.currentBotState == BOT_TARGETSPOTED_STATE) {
-            seekAndDetroy();
+            seekAndDestroy();
         }
 
     }
@@ -268,7 +290,9 @@ public class Bot extends GameCharacter {
     /**
      * Go to target and attack it!
      */
-    private void seekAndDetroy() {
+    private void seekAndDestroy() {
+
+        if (spottedEnemy == null) return;
 
         Point spottedEnemyCell = LevelManager
                 .getTilePointByCoordinates(this.spottedEnemy.getRealX(), this.spottedEnemy.getRealY());
@@ -292,7 +316,7 @@ public class Bot extends GameCharacter {
         }
 
         // start walking to target
-        if (this.destinationY == -1) {
+       // if (this.destinationY == -1) {
             Point destination = spottedEnemyCell;
 
             if (deltaX > deltaY) {
@@ -320,15 +344,23 @@ public class Bot extends GameCharacter {
 
             this.destinationX = destination.x * Constants.MAP_TILE_SIZE;
             this.destinationY = (Constants.MAP_HEIGHT - destination.y) * Constants.MAP_TILE_SIZE;
-        }
+      //  }
 
 
 
         int resultOfWalking = walkToTarget();
 
+
         if (resultOfWalking == 1) {
             // we know he's around here now
-            doAttack();
+            if (attackDelayCounter == 0) {
+                doAttack();
+                attackDelayCounter = attackDelay;
+            } else {
+                attackDelayCounter--;
+            }
+
+
 
             Point enemyCell = LevelManager.getTilePointByCoordinates(spottedEnemy.getRealX(), spottedEnemy.getRealY());
             Point ourCell = LevelManager.getTilePointByCoordinates(this.getRealX(), this.getRealY());
@@ -599,6 +631,9 @@ public class Bot extends GameCharacter {
             this.pathToTarget = AStarFindAlgorithm.findPath(
                     this.field, Constants.MAP_WIDTH, Constants.MAP_HEIGHT, start, goal);
 
+            if (start.x == goal.x && start.y == goal.y) {
+                return 1;
+            }
             // cannot go where bot wants to go =(
             if (this.pathToTarget == null) {
                 this.destinationX = -1;
@@ -646,4 +681,6 @@ public class Bot extends GameCharacter {
 
         return 0;
     }
+
+
 }
