@@ -12,6 +12,7 @@ import com.p3k.magictale.engine.graphics.Map.TileProperties;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.graphics.Objects.GroupObjectProperties;
 import com.p3k.magictale.engine.graphics.Objects.ObjTileProperties;
+import com.p3k.magictale.engine.graphics.Objects.ObjectSheetResource;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -182,7 +183,7 @@ public class XmlParser {
         return prop;
     }
 
-    public ArrayDeque<GroupObject> getGroupObjectsByGroupName(String gameObjects, boolean byTemplate) {
+    public ArrayDeque<GroupObject> getGroupObjectsByGroupName(String gameObjects, boolean byTemplate, int firstId) {
         ArrayDeque<GroupObject> waitedGroupObjects = new ArrayDeque<>();
         try {
             System.out.println(doc.getElementsByTagName("objectgroup"));
@@ -191,17 +192,18 @@ public class XmlParser {
                 NamedNodeMap objGrAttrs = checkingObjectGroups.item(i).getAttributes();
                 if (getValueOfNamedItem(objGrAttrs, "name").equals(gameObjects)) {
                     waitedGroupObjects = getGroupObjects(checkingObjectGroups.item(i).getChildNodes(),
-                            "object", byTemplate).clone();
+                            "object", byTemplate, firstId).clone();
                 }
             }
             return waitedGroupObjects;
         } catch (Exception e) {
-            System.out.println("Parsing: getLayerTextContextByName() " + e);
+            System.out.println("Parsing: getGroupObjectsByGroupName() " + e);
         }
         return waitedGroupObjects;
     }
 
-    private ArrayDeque<GroupObject> getGroupObjects(NodeList nodeListOfObjects, String name, boolean byTemplate) {
+    private ArrayDeque<GroupObject> getGroupObjects(NodeList nodeListOfObjects, String name, boolean byTemplate,
+                                                    int firstId) {
         ArrayDeque<GroupObject> itemGroupObjects = new ArrayDeque<>();
         for (int i = 0; i < nodeListOfObjects.getLength(); ++i) {
             if (nodeListOfObjects.item(i).getNodeName().equals(name)) {
@@ -222,7 +224,8 @@ public class XmlParser {
                             Integer.parseInt(getValueOfNamedItem(objGrAttrs, "width")) / 32,
                             Integer.parseInt(getValueOfNamedItem(objGrAttrs, "height")) / 32,
                             getValueOfNamedItem(objGrAttrs, "type"),
-                            getValueOfNamedItem(objGrAttrs, "name"));
+                            getValueOfNamedItem(objGrAttrs, "name"),
+                            firstId + Integer.parseInt(getValueOfNamedItem(objGrAttrs, "id")));
                 }
                 itemGroupObjects.addLast(insGrObj);
             }
@@ -246,5 +249,35 @@ public class XmlParser {
             System.out.println("Parsing: getMapSize() " + e);
         }
         return retValue;
+    }
+
+    public ArrayList<ObjectSheetResource> getObjectsSheet(String gameObjects) {
+        ArrayList<ObjectSheetResource> objectsSheet = new ArrayList<>();
+        try {
+            System.out.println(doc.getElementsByTagName("objectgroup"));
+            NodeList checkingObjectGroups = doc.getElementsByTagName("objectgroup");
+            for (int i = 0; i < checkingObjectGroups.getLength(); ++i) {
+                NamedNodeMap objGrAttrs = checkingObjectGroups.item(i).getAttributes();
+                if (getValueOfNamedItem(objGrAttrs, "name").equals(gameObjects)) {
+                    NodeList nodeListOfObjects = checkingObjectGroups.item(i).getChildNodes();
+                    for (int j = 0; j < nodeListOfObjects.getLength(); ++j) {
+                        if (nodeListOfObjects.item(j).getNodeName().equals("object")) {
+                            NamedNodeMap objAttrs = nodeListOfObjects.item(j).getAttributes();
+                            // TODO Add constant sprWidth, sprHeight
+                            ObjectSheetResource objSheetRes = new ObjectSheetResource(
+                                    Integer.parseInt(getValueOfNamedItem(objAttrs, "id")),
+                                    Integer.parseInt(getValueOfNamedItem(objAttrs, "x")),
+                                    Integer.parseInt(getValueOfNamedItem(objAttrs, "y")),
+                                    Integer.parseInt(getValueOfNamedItem(objAttrs, "width")),
+                                    Integer.parseInt(getValueOfNamedItem(objAttrs, "height")));
+                            objectsSheet.add(objSheetRes);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Parsing: getGroupObjectsByGroupName() " + e);
+        }
+        return objectsSheet;
     }
 }

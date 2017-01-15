@@ -21,6 +21,11 @@ public class ObjTile extends GameObject implements Serializable {
         super.initBySprite(sprite, x, y);
     }
 
+    public ObjTile(int spriteId, float x, float y) {
+        this.objTileProperties = new ObjTileProperties();
+        super.initBySprite(sprite, x, y);
+    }
+
     public ObjTile(Sprite sprite, float x, float y, ObjTileProperties objTileProperties) {
         this.objTileProperties = objTileProperties;
         super.initBySprite(sprite, x, y);

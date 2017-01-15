@@ -9,11 +9,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 /**
  * GameObject
- *
+ * <p>
  * Some object in game
  * NPC, Player, or Bullet class should
  * be derived from this one.
- *
+ * <p>
  * Created by artem96 on 03.12.16.
  */
 public class GameObject implements Serializable {
@@ -26,7 +26,6 @@ public class GameObject implements Serializable {
     /**
      * Object current orientation
      * in space
-     *
      */
     protected Direction direction;
     /**
@@ -34,6 +33,15 @@ public class GameObject implements Serializable {
      */
     protected Sprite sprite;
     protected int spriteId;
+
+    //TODO DELETE IT When woupd be server
+    public void setSpriteTest(Sprite sprite, float x, float y) {
+        this.sprite = sprite;
+        this.x = x;
+        this.y = y;
+
+        this.direction = Direction.DOWN;
+    }
 
     // all values will be
     // specified later
@@ -52,27 +60,24 @@ public class GameObject implements Serializable {
         init(x, y, width, height);
     }
 
-    public GameObject(Sprite sprite, float width, float height) {
-        this();
-        initBySprite(sprite, width, height);
-    }
-
-    public void render() {
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glPushMatrix();
-        {
-            float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
-            float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
-
-            glTranslatef(this.x - cameraX, this.y - cameraY, 0);
-
-            this.sprite.render();
-
-        }
-        glPopMatrix();
-    }
+//    public void render() {
+//
+//        glEnable(GL_BLEND);
+//        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//        glPushMatrix();
+//        {
+//            float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+//            float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
+//
+//            glTranslatef(this.x - cameraX, this.y - cameraY, 0);
+//
+//            if (sprite != null) {
+//                this.sprite.render();
+//            }
+//
+//        }
+//        glPopMatrix();
+//    }
 
     public void update() {
 
@@ -133,7 +138,9 @@ public class GameObject implements Serializable {
         return this.sprite;
     }
 
-    protected void setSprite(Sprite sprite) { this.sprite = sprite; }
+    protected void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
 
     public int getSpriteId() {
         return spriteId;
@@ -176,8 +183,8 @@ public class GameObject implements Serializable {
 
     /**
      * get current object direction
-     * @return direction of object
      *
+     * @return direction of object
      */
     public Direction getDirection() {
         return this.direction;

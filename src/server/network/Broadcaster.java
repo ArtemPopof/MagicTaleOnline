@@ -1,5 +1,6 @@
 package server.network;
 
+import com.p3k.magictale.engine.Constants;
 import server.ServerObject;
 import server.accounts.ActiveAccounts;
 
@@ -19,7 +20,7 @@ public class Broadcaster {
     private final ActiveAccounts activeAccounts;
 
     private Broadcaster() throws SocketException {
-        socket = new DatagramSocket(12345);
+        socket = new DatagramSocket(Constants.SERVER_UDP_PORT);
         activeAccounts = ActiveAccounts.getInstance();
     }
 
@@ -48,6 +49,33 @@ public class Broadcaster {
             buffer.putFloat(offset + 12, object.getValue().getY());
             offset += 16;
         }
+
+        byte[] bytes = buffer.array();
+        // упаковываем до 16 объектов в датаграмму
+        int dataSize = 16 * 16;
+        for (int i = 0; i < bytes.length; i += dataSize) {
+            int length = Math.min(dataSize, bytes.length - i);
+
+            // timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
+            int datagramSize = 8 + dataSize + 2;
+            byte[] datagram = new byte[datagramSize];
+
+            ByteBuffer datagramBuffer = ByteBuffer.wrap(datagram);
+            datagramBuffer.putLong(timestamp);
+            datagramBuffer.put(bytes, i, length);
+            datagramBuffer.put((byte) (length / 16));
+
+            // подписываем датаграмму
+            byte sign = datagram[0];
+            for (int j = 1; j < datagramSize - 1; j++) {
+                sign ^= datagram[j];
+            }
+            datagram[datagramSize - 1] = sign;
+
+            // создаём DatagramPacket
+            DatagramPacket packet = new DatagramPacket(datagram, datagramSize);
+            broadcastDatagram(packet);
+        }
     }
 
     private void broadcastDatagram(DatagramPacket packet) {
@@ -56,15 +84,15 @@ public class Broadcaster {
 
         // рассылаю оставшимся
         String[] ips = activeAccounts.getIPs();
-        packet.setPort(54321);
+//        System.out.println("broadcast diagram to " + ips.length + " clients");
 
         for (String ip : ips) {
             try {
                 packet.setAddress(InetAddress.getByName(ip));
+                packet.setPort(Constants.CLIENT_UDP_PORT);
 
                 socket.send(packet);
-            } catch (UnknownHostException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Send packet " + packet.getAddress().getHostAddress() + " " + packet.getPort());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }

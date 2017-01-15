@@ -1,16 +1,15 @@
 package com.p3k.magictale.engine.graphics.Objects;
 
+import com.p3k.magictale.engine.graphics.GameObject;
+
 /**
  * Created by COMar-PC on 19.12.2016.
  */
-public class GroupObject{
+public class GroupObject extends GameObject {
     private int xTileSheet = 0;
     private int yTileSheet = 0;
     private int widthNum = 1;
     private int heightNum = 1;
-
-    private int x = 0;
-    private int y = 0;
 
     private String type = null;
     private String name = null;
@@ -22,7 +21,7 @@ public class GroupObject{
         this.yTileSheet = yTileSheet;
     }
 
-    public GroupObject(int xTileSheet, int yTileSheet, int widthNum, int heightNum, String type, String name) {
+    public GroupObject(int xTileSheet, int yTileSheet, int widthNum, int heightNum, String type, String name, int id) {
         this.xTileSheet = xTileSheet;
         this.yTileSheet = yTileSheet;
         this.widthNum = widthNum;
@@ -30,11 +29,12 @@ public class GroupObject{
         this.type = type;
         this.name = name;
         this.groupObjectProperties = new GroupObjectProperties();
+        this.spriteId = id;
     }
 
     public GroupObject(int x, int y, String type, String name, GroupObjectProperties groupObjectProperties) {
-        this.x = x;
-        this.y = y;
+        this.x = (float)x;
+        this.y = (float)y;
         this.type = type;
         this.name = name;
         this.groupObjectProperties = groupObjectProperties;
@@ -70,22 +70,6 @@ public class GroupObject{
 
     public void setHeightNum(int heightNum) {
         this.heightNum = heightNum;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
     }
 
     public String getType() {

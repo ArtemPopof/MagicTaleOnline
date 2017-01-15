@@ -54,4 +54,7 @@ public interface Constants extends Serializable {
 
     public static final int MOUSE_BTN_LEFT = 0;
     public static final int MOUSE_BTN_RIGHT = 1;
+
+    public static final int CLIENT_UDP_PORT = 54321;
+    public static final int SERVER_UDP_PORT = 12345;
 }

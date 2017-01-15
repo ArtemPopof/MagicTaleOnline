@@ -7,7 +7,7 @@ import com.p3k.magictale.engine.gui.StdComponentFactory;
 import com.p3k.magictale.engine.gui.Text;
 import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.CharacterTypes;
-import com.sun.security.ntlm.Client;
+import server.ServerGame;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -124,7 +124,7 @@ public class GameCharacter extends GameObject implements Serializable {
         this.currentState = WAITING_STATE;
 
         try {
-            this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
+           this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,7 +150,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
         this.takenHarm = -1;
 
-        guiFactory = new StdComponentFactory();
+        //guiFactory = new StdComponentFactory();
     }
 
     public int getState() {
@@ -167,13 +167,15 @@ public class GameCharacter extends GameObject implements Serializable {
         // Animation must be performed here
 
         // next animation frame
-        this.sprite = this.animations.get(this.currentState).update();
+       this.sprite = this.animations.get(this.currentState).update();
 
         // current animation stops, so zero some
         // states
         if (!this.animations.get(this.currentState).isRunning()) {
             this.isAttacking = false;
         }
+
+        // Sync with server
 
         float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
         float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
@@ -189,12 +191,12 @@ public class GameCharacter extends GameObject implements Serializable {
     /**
      * render character
      */
-    public void render() {
-        super.render();
-
-        if (this.isHPBarVisible)
-            renderHPBar();
-    }
+//    public void render() {
+//        super.render();
+//
+//        if (this.isHPBarVisible)
+//            renderHPBar();
+//    }
 
     /**
      * Render HP Bar on top of char
@@ -209,12 +211,12 @@ public class GameCharacter extends GameObject implements Serializable {
 
             //if (takenHarm > -1) {
 
-                Text hitText = guiFactory.createText("Hit: " + takenHarm, "regular");
-                hitText.setSize(16);
+             //   Text hitText = guiFactory.createText("Hit: " + takenHarm, "regular");
+            //    hitText.setSize(16);
 
-                hitText.move((this.x - cameraX) + getWidth() /4, this.y - cameraY + HP_BAR_PADDING * 2);
+            //    hitText.move((this.x - cameraX) + getWidth() /4, this.y - cameraY + HP_BAR_PADDING * 2);
 
-                hitText.render();
+            //    hitText.render();
 
           //      takenHarm = -1;
            // }
@@ -314,7 +316,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
         GameCharacter potencialEnemy;
 
-        ArrayList<GameCharacter> enemies = ((ClientGame) ClientGame.getInstance()).getCharactersNearPoint(currentPosition, this.attackDistance);
+        ArrayList<GameCharacter> enemies = ((ServerGame) ServerGame.getInstance()).getCharactersNearPoint(currentPosition, this.attackDistance);
 
 
         if (this.isAttacking) {
@@ -387,8 +389,6 @@ public class GameCharacter extends GameObject implements Serializable {
 
         setState(DEATH_STATE);
         this.isDead = true;
-
-        ((ClientGame) ClientGame.getInstance()).addScore();
     }
 
     /**

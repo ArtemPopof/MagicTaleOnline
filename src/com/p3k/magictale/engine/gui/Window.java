@@ -7,7 +7,6 @@ import org.lwjgl.input.Mouse;
 /**
  * Created by jorgen on 06.12.16.
  */
-
 public class Window extends Widget {
 
     private Text title;
@@ -18,8 +17,8 @@ public class Window extends Widget {
         this.title = title;
         this.title.setSize(18);
 
-        int padLeft = (int) (  this.width * 0.15f);
-        int padTop =  (int) (- this.height * 0.03f);
+        int padLeft =  (int) (  this.width * 0.15f);
+        int padTop  =  (int) (- this.height * 0.03f);
 
         this.title.move(padLeft, padTop);
 

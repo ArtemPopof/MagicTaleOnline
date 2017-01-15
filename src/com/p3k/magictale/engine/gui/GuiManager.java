@@ -6,6 +6,7 @@ import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.game.Characters.Player;
 import com.sun.security.ntlm.Client;
 import org.lwjgl.input.Mouse;
+import server.ServerGame;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class GuiManager extends MComponent implements Constants {
     private Player player; // An user of all this stuff
 
     private Text mousePosition;
+
     private Text score;
     private Text fps;
 
@@ -84,17 +86,13 @@ public class GuiManager extends MComponent implements Constants {
         });
         playerMenu.setButtonAction(0, () -> {
             for (int i = 0; i < 5; ++i)
-            ((ClientGame) ClientGame.getInstance()).spawnBot();
+            ((ServerGame) ServerGame.getInstance()).spawnBot();
         });
-
-        this.score = factory.createText("Score: ", "big");
-        score.move(WINDOW_WIDTH / 2 - score.getWidth() / 2, WINDOW_HEIGHT);
 
         this.put("statusBar", statusBar);
         this.put("actionBar", actionBar);
         this.put("playerMenu", playerMenu);
         this.put("inventory", inventory);
-        this.put("score", score);
     }
 
     @Override
@@ -116,9 +114,10 @@ public class GuiManager extends MComponent implements Constants {
             mousePosition.move(10, mousePosition.getHeight() + 10);
         }
 
-        String scoreText = "Score: " + ((ClientGame) ClientGame.getInstance()).getScore();
-        this.score.setText(scoreText);
+ //       String scoreText = "Score: " + ((ClientGame) ClientGame.getInstance()).getScore();
+//        this.score.setText(scoreText);
         //this.fps.setText("FPS: " + Display)
+
     }
 
     @Override

@@ -23,7 +23,7 @@ public class SharedObjTile extends UnicastRemoteObject implements ISharedObjTile
     }
 
     @Override
-    public ObjTile[][][] getObjTile(int x, int y, int z) throws RemoteException {
+    public ObjTile[][][] getObjTiles(int x, int y, int z) throws RemoteException {
         ObjTile[][][] copy = new ObjTile[x][y][1];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {

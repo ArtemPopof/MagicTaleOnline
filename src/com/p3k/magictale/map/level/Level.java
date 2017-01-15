@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface Level {
     void loadClient(String mapName, ResourceManager resourceManager);
-    void loadServer(String mapName, Map<Integer, ServerObject> serverObjects);
+    void loadServer(String mapName);
     void render();
 }

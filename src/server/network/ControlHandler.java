@@ -1,8 +1,12 @@
 package server.network;
 
+import com.p3k.magictale.game.Characters.Player;
 import common.remoteInterfaces.GameController;
+import server.accounts.Account;
+import server.accounts.ActiveAccounts;
 
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -20,7 +24,7 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
      * @throws RemoteException if failed to export object
      * @since JDK1.1
      */
-    protected ControlHandler() throws RemoteException {
+    public ControlHandler() throws RemoteException {
     }
 
 
@@ -30,7 +34,12 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
      */
     @Override
     public void signUp(String nickname) throws RemoteException {
-
+        try {
+            ActiveAccounts.getInstance().setEnable(getClientHost(), nickname);
+            System.out.println("New client connected " + nickname + " " + getClientHost());
+        } catch (ServerNotActiveException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -67,6 +76,12 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
      */
     @Override
     public int getHealth() throws RemoteException {
+        try {
+            Player player = ActiveAccounts.getInstance().getAccount(getClientHost()).getPlayerObject();
+            return player.getCurrentHealth();
+        } catch (ServerNotActiveException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 

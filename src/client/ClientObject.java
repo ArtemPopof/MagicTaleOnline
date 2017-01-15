@@ -16,9 +16,10 @@ public class ClientObject {
     private Sprite sprite;
     private long timestamp;
 
-    public ClientObject(int idResMan, float x, float y) throws Exception {
+    public ClientObject(int idResMan, float x, float y) {
         this.x = x;
         this.y = y;
+        System.out.println("IdResMan = " + idResMan);
         this.idResMan = idResMan;
         this.sprite = new Sprite(ResourceManager.getInstance().getSprite(idResMan));
     }

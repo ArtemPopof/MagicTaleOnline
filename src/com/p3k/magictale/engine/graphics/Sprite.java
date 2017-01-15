@@ -111,6 +111,10 @@ public class Sprite implements Serializable {
 
     }
 
+    public Sprite(int textureId) {
+        this.textureId = textureId;
+    }
+
     public Sprite(Sprite sprite) {
 
         this.textureId = sprite.getTextureId();

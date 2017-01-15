@@ -21,27 +21,27 @@ import java.util.ArrayList;
 public class StdComponentFactory extends ComponentFactory {
 
     // Button images texture names
-    Sprite btnNormal, btnHovered, btnPressed;
+    static Sprite btnNormal, btnHovered, btnPressed;
 
     // Small buttons spritesheet
-    SpriteSheet btnSmall;
-    int btnSmallWidth = 32;
-    int btnSmallHeight = 16;
+    static SpriteSheet btnSmall;
+    static int btnSmallWidth = 32;
+    static int btnSmallHeight = 16;
 
     // Std ui sprites
-    Sprite statusBar, actionBar;
+    static Sprite statusBar, actionBar;
 
     // Inventory
-    Sprite inventory;
+    static Sprite inventory;
 
     // PlayerMenu
-    Sprite container;
-    Sprite characterButton, inventoryButton, mapButton, mainMenuButton;
+    static Sprite container;
+    static Sprite characterButton, inventoryButton, mapButton, mainMenuButton;
 
     // FontManager
-    FontManager fontManager = FontManager.getInstance();
+    static FontManager fontManager = FontManager.getInstance();
 
-    public StdComponentFactory() {
+    static {
         RES_PATH = "res/gui/std";
 
         try {
@@ -95,6 +95,9 @@ public class StdComponentFactory extends ComponentFactory {
             System.err.println("Creating StdComponentFactory error: " + e);
             e.printStackTrace();
         }
+    }
+    public StdComponentFactory() {
+
     }
 
     public Text createText(String text) {

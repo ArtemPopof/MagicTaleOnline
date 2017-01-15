@@ -8,7 +8,7 @@ public class ServerObject {
     private float y;
     private int idResMan;
 
-    public ServerObject(int idResMan, float x, float y) throws Exception {
+    public ServerObject(int idResMan, float x, float y) {
         this.x = x;
         this.y = y;
         this.idResMan = idResMan;

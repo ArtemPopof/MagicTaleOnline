@@ -3,6 +3,7 @@ package com.p3k.magictale.engine.graphics;
 import com.p3k.magictale.engine.Utils;
 import com.p3k.magictale.engine.graphics.Objects.AnimationSheetResource;
 import com.p3k.magictale.game.Characters.Bat;
+import com.p3k.magictale.engine.graphics.Objects.ObjectSheetResource;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -46,11 +47,7 @@ public class ResourceManager {
 
     private int animationPoolFreeIndex;
 
-    private ResourceManager() throws IllegalStateException {
-
-        if (instance != null) {
-            throw new IllegalStateException("Cannot init ResourceManager for the second time, bandit!");
-        }
+    private ResourceManager() {
 
         textures = new HashMap<>();
         animations = new HashMap<>();
@@ -63,7 +60,7 @@ public class ResourceManager {
 
     }
 
-    public static ResourceManager getInstance() throws Exception {
+    public static ResourceManager getInstance() {
         if ( instance == null ) {
             instance = new ResourceManager();
         }
@@ -107,6 +104,23 @@ public class ResourceManager {
     }
 
     /**
+     * Load all obj textures
+     */
+    public void loadObjTextures(String spriteSheetPath, int firstId, ArrayList<ObjectSheetResource> objectsSheet) {
+        SpriteSheet sprSheet = new SpriteSheet();
+        try {
+            sprSheet.setImage(spriteSheetPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (ObjectSheetResource obj : objectsSheet) {
+            loadTexture(sprSheet, firstId + obj.getId(),
+                    obj.getxInObjectSheet(), obj.getyInObjectSheet(),
+                    obj.getWidth(), obj.getHeight());
+        }
+    }
+
+    /**
      * Load all map textures from spritesheet
      * and map them according to the given
      * id.
@@ -138,9 +152,17 @@ public class ResourceManager {
     /**
      * Function load texture at specific Id
      * Using in parse Objects
-     * @param
+     * @param spriteSheet Use constructor SpriteSheet. Use function setImage(SpriteSheetPath)
+     * @param id Specific id
+     * @param xInSheet x in spriteSheet
+     * @param yInSheet y in spriteSheet
+     * @param width width of subImage
+     * @param height height of subImage
      */
-    public void loadTexture(String spriteSheetPath, int id, int width, int height){}
+    private void loadTexture(SpriteSheet spriteSheet, int id, int xInSheet, int yInSheet, int width, int height){
+        Sprite sprite = spriteSheet.loadSprite(xInSheet, yInSheet, width, height);
+        textures.put(id, sprite);
+    }
 
     /** @TODO
      * This function will be read file
