@@ -8,6 +8,10 @@ import com.p3k.magictale.engine.gui.Text;
 import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import server.ServerGame;
+import com.sun.security.ntlm.Client;
+import server.ServerGame;
+import server.ServerObject;
+
 
 import java.awt.*;
 import java.io.Serializable;
@@ -168,6 +172,11 @@ public class GameCharacter extends GameObject implements Serializable {
 
         // next animation frame
        this.sprite = this.animations.get(this.currentState).update();
+
+        // Sync with server
+        this.animations.get(this.currentState).getCurrentFrame();
+
+        ((ServerGame) ServerGame.getInstance()).(this.getId(), new ServerObject())
 
         // current animation stops, so zero some
         // states

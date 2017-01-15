@@ -159,4 +159,8 @@ public class Animation implements Constants, Serializable {
             frame.setFrameSize(width, height);
         }
     }
+
+    public Frame getCurrentFrame() {
+        return frames.get(currentFrame);
+    }
 }
