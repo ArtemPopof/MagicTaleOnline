@@ -13,12 +13,6 @@ public abstract class AbstractGame {
     protected static AbstractGame instance;
     protected static AbstractGame instanceServer;
     /**
-     * container for all single-sprite objects in game
-     * Integer - object id
-     * GameObject - reference
-     */
-    protected final ConcurrentHashMap<Integer, GameObject> objects;
-    /**
      * mainloop tick time between update (maybe render) actions
      */
     private final long tickTimeMills;
@@ -36,8 +30,6 @@ public abstract class AbstractGame {
         this.isRunning = true;
         this.tickTimeMills = 40;
         System.out.println("Server tickrate: " + 1000 / this.tickTimeMills + " t/s");
-
-        this.objects = new ConcurrentHashMap<>();
     }
 
     public static AbstractGame getInstance() {

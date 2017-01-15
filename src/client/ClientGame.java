@@ -100,13 +100,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initSoundManager();
 
-        initObjectManager();
-
-        try {
-            initObjects();
-        } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
-            e.printStackTrace();
-        }
+//        initObjectManager();
 
         initGuiManager();
 
@@ -153,21 +147,21 @@ public class ClientGame extends AbstractGame implements Constants {
         processInput();
 
         // а это что-то
-        this.guiManager.update();
+//        this.guiManager.update();
 
         render();
     }
 
     public void processInput() {
 
-        for (int i = 0; i < this.objects.size(); i++) {
-            GameObject object = this.objects.get(i);
-
-            if (GameCharacter.class.isInstance(object)) {
-                GameCharacter character = (GameCharacter) object;
-                character.processInput();
-            }
-        }
+//        for (int i = 0; i < this.objects.size(); i++) {
+//            GameObject object = this.objects.get(i);
+//
+//            if (GameCharacter.class.isInstance(object)) {
+//                GameCharacter character = (GameCharacter) object;
+//                character.processInput();
+//            }
+//        }
 
 
         // Mouse handle
@@ -178,43 +172,44 @@ public class ClientGame extends AbstractGame implements Constants {
         this.isMouseRightPressed = Mouse.isButtonDown(MOUSE_BTN_RIGHT);
     }
 
-    public void update() {
-
-//        levelManager.update();
-
-        HashMap<Integer, ServerObject> serverObjects = ((ServerGame) ServerGame.getInstance()).getServerObjects();
-        if (serverObjects != null) {
-            for (Integer key : serverObjects.keySet()) {
-                ClientObject insObj = clientObjects.get(key);
-                if (insObj != null) {
-                    insObj.setIdResMan(serverObjects.get(key).getIdResMan());
-                    insObj.setX(serverObjects.get(key).getX());
-                    insObj.setY(serverObjects.get(key).getY());
-                    insObj.setSprite(resourceManager.getSprite(insObj.getIdResMan()));
-                    clientObjects.put(key, insObj);
-                } else {
-                    try {
-                        insObj = new ClientObject(serverObjects.get(key).getIdResMan(),
-                                serverObjects.get(key).getX(), serverObjects.get(key).getY());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    clientObjects.put(key, insObj);
-                }
-            }
-        }
-
-//        for (Integer key : this.clientObjects.keySet()) {
-//            ClientObject object = this.clientObjects.get(key);
-//            object.update();
+//    public void update() {
+//
+//        synchronized (this.objects) {
+//            for (Integer key : this.objects.keySet()) {
+//                GameObject object = this.objects.get(key);
+//                object.update();
+//            }
 //        }
-
-        this.guiManager.update();
-    }
+//
+//        HashMap<Integer, ServerObject> serverObjects = ((ServerGame) ServerGame.getInstance()).getServerObjects();
+//        if (serverObjects != null) {
+//            for (Integer key : serverObjects.keySet()) {
+//                ClientObject insObj = clientObjects.get(key);
+//                if (insObj != null) {
+//                    insObj.setIdResMan(serverObjects.get(key).getIdResMan());
+//                    insObj.setX(serverObjects.get(key).getX());
+//                    insObj.setY(serverObjects.get(key).getY());
+//                    insObj.setSprite(resourceManager.getSprite(insObj.getIdResMan()));
+//                    clientObjects.put(key, insObj);
+//                } else {
+//                    try {
+//                        insObj = new ClientObject(serverObjects.get(key).getIdResMan(),
+//                                serverObjects.get(key).getX(), serverObjects.get(key).getY());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    clientObjects.put(key, insObj);
+//                }
+//            }
+//        }
+//        this.guiManager.update();
+//    }
 
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT);
         glLoadIdentity();
+
+        levelManager.render();
 
         if (clientObjects != null) {
             for (Integer key : clientObjects.keySet()) {
@@ -223,17 +218,18 @@ public class ClientGame extends AbstractGame implements Constants {
             }
         }
 
-////        this.objectManager.render(0);
+//        this.objectManager.render();
+//        this.objectManager.render(0);
 //        this.objectManager.render(1);
-//
+
 //        for (int i = 0; i < this.objects.size(); i++) {
 //            GameObject object = this.objects.get(i);
 //            object.render();
 //        }
-//
+
 //        this.objectManager.render(2);
 
-        this.guiManager.render();
+//        this.guiManager.render();
 
         Display.update();
     }
@@ -244,30 +240,6 @@ public class ClientGame extends AbstractGame implements Constants {
         Keyboard.destroy();
         SoundManager.destroy();
         super.finalize();
-    }
-
-    private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
-
-
-        Player player = new Player(100, 520);
-
-        synchronized (this.objects) {
-            this.playerIndex = this.objects.size();
-            this.objects.put(this.playerIndex, player);
-        }
-
-        // test bot
-        //Bot testBot = new Bot(500, 400, 64, 64);
-        //objects.add(testBot);
-
-        // test bot
-        // Bot testBot2 = new Bot(200, 354, 64, 64);
-        //objects.add(testBot2);
-
-        // test bot
-        Bot testBot3 = new Bot(252, 272, 64, 64);
-        this.objects.put(this.objects.size(), testBot3);
-
     }
 
     private void initSoundManager() {
@@ -332,7 +304,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
     private void initGuiManager() {
 
-        this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
+//        this.guiManager = new GuiManager((Player) this.objects.get(this.playerIndex));
 
     }
 
@@ -377,147 +349,6 @@ public class ClientGame extends AbstractGame implements Constants {
         return Mouse.isButtonDown(button);
     }
 
-    /**
-     * Is anyone is now in given cell
-     */
-    public boolean isAnyoneInCell(int cellX, int cellY) {
-
-        for (int i = 0; i < this.objects.size(); i++) {
-            GameObject object = this.objects.get(i);
-            if (!GameCharacter.class.isInstance(object))
-                continue;
-
-            GameCharacter character = (GameCharacter) object;
-
-            Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
-            if (characterPoint.x == cellX && characterPoint.y == cellY) {
-                return true;
-            }
-        }
-
-
-        return false;
-    }
-
-    /**
-     * Return who is now in given cell
-     */
-    public GameCharacter getAnyoneInCell(int cellX, int cellY) {
-
-        for (int i = 0; i < this.objects.size(); i++) {
-            GameObject object = this.objects.get(i);
-            if (!GameCharacter.class.isInstance(object))
-                continue;
-
-            GameCharacter character = (GameCharacter) object;
-
-            Point characterPoint = LevelManager.getTilePointByCoordinates(character.getRealX(), character.getRealY());
-            if (characterPoint.x == cellX && characterPoint.y == cellY) {
-                return character;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Return first GameCharacter founded in given rect
-     *
-     * @param startPoint - rectangle in pixels, where
-     *                   should seek for characters
-     */
-    public GameCharacter getAnyoneInRect(Point startPoint, Point endPoint) {
-
-
-        for (int i = 0; i < this.objects.size(); i++) {
-            if (!GameCharacter.class.isInstance(this.objects.get(i))) {
-                continue;
-            }
-
-            GameCharacter character = (GameCharacter) this.objects.get(i);
-
-            Point charPoint = new Point((int) character.getRealX(), (int) character.getRealY());
-
-            if (Collision.isPointInRect(charPoint, startPoint, endPoint)) {
-                return character;
-            }
-        }
-
-
-        return null;
-    }
-
-    /**
-     * return array of ClientGame Objects
-     */
-    public ConcurrentHashMap<Integer, GameObject> getObjects() {
-        return this.objects;
-    }
-
-    public Player getPlayer() {
-        return (Player) this.objects.get(this.playerIndex);
-    }
-
-    public void setPlayer(Player player) {
-        this.objects.put(this.playerIndex, player);
-    }
-
-    /**
-     * Creates specified gameObject
-     */
-    public void createGameObject(float x, float y, float width, float height, int r, int g, int b) {
-        GameObject object = new GameObject(x, y, width, height, r, g, b);
-
-        this.objects.put(this.objects.size(), object);
-
-    }
-
-    /**
-     * Returns characters around specified point
-     * radius - how far can be character from point
-     * to be returned
-     */
-    public ArrayList<GameCharacter> getCharactersNearPoint(Point position, int radius) {
-
-        ArrayList<GameCharacter> characters = new ArrayList<>();
-
-        for (int i = 0; i < this.objects.size(); i++) {
-            Object object;
-            object = this.objects.get(i);
-
-
-            if (!GameCharacter.class.isInstance(object)) continue;
-
-            GameCharacter character = (GameCharacter) object;
-
-            if (Math.abs(position.x - character.getRealX()) < radius
-                    && Math.abs(position.y - character.getRealY()) < radius) {
-
-                characters.add(character);
-
-            }
-        }
-
-
-        return characters;
-    }
-
-    public void spawnBot() {
-        int x = ThreadLocalRandom.current().nextInt(0, (MAP_WIDTH - 1) * TILE_SIZE);
-        int y = ThreadLocalRandom.current().nextInt(0, (MAP_HEIGHT - 1) * TILE_SIZE);
-
-        Bot bot = new Bot(x, y, 64, 64);
-        this.objects.put(this.objects.size(), bot);
-    }
-
-    public void addScore() {
-        this.score++;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
     public void initDisplay() {
 
         try {
@@ -543,7 +374,8 @@ public class ClientGame extends AbstractGame implements Constants {
             Keyboard.create();
             Display.setVSyncEnabled(true);
         } catch (LWJGLException ex) {
-            System.err.println("Something went wrong in initDisplay()");
+//            Logger.getLogger(MagicMain.class.getName()).log(java.util.logging.Level.SEVERE, "Something went wrong in initDisplay()");
+            System.out.println("CHANGE To Logger");
         }
     }
 

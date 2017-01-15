@@ -27,7 +27,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
         this.type = CharacterTypes.ABSTRACT_PLAYER;
 
         try {
-            this.animations = ResourceManager.getInstance().getAnimations(this);
+       //     this.animations = ResourceManager.getInstance().getAnimations(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,8 +72,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
         super.update();
 
         //TODO do not left it undone
-        this.x = 800 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraX();
-        this.y = 600 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraY();
+//        this.x = 800 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraX();
+//        this.y = 600 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraY();
 
     }
 
@@ -115,9 +115,9 @@ public class Player extends GameCharacter implements Constants, Serializable {
         }
 
         // mouse events
-        if (((ClientGame) ClientGame.getInstance()).isButtonPressed(MOUSE_BTN_LEFT)) {
-            doAttack();
-        }
+//        if (((ClientGame) ClientGame.getInstance()).isButtonPressed(MOUSE_BTN_LEFT)) {
+//            doAttack();
+//        }
 
         if (this.isAttacking) {
             isStateChanged = true;
@@ -143,8 +143,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
         //  x += deltaX;
         //  y += deltaY;
 
-        float oldX = ((ClientGame) ClientGame.getInstance()).getCameraX();
-        float oldY = ((ClientGame) ClientGame.getInstance()).getCameraY();
+//        float oldX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+//        float oldY = ((ClientGame) ClientGame.getInstance()).getCameraY();
 
         this.setX(this.x + deltaX);
         this.setY(this.y + deltaY);
@@ -154,8 +154,8 @@ public class Player extends GameCharacter implements Constants, Serializable {
             this.setX(this.x - deltaX);
             this.setY(this.y - deltaY);
         } else {
-            ((ClientGame) ClientGame.getInstance()).setCameraX(oldX + deltaX);
-            ((ClientGame) ClientGame.getInstance()).setCameraY(oldY + deltaY);
+//            ((ClientGame) ClientGame.getInstance()).setCameraX(oldX + deltaX);
+//            ((ClientGame) ClientGame.getInstance()).setCameraY(oldY + deltaY);
         }
 
 

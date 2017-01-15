@@ -10,6 +10,7 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectManager;
 import org.lwjgl.examples.Game;
+import server.ServerGame;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -121,7 +122,7 @@ public class Bot extends GameCharacter {
         this.type = CharacterTypes.ABSTRACT_BOT;
 
         try {
-            this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
+        //    this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -482,7 +483,7 @@ public class Bot extends GameCharacter {
         Point firstRectCell = new Point();
         Point secondRectCell = new Point();
 
-        ArrayList<GameCharacter> characters = ((ClientGame) ClientGame.getInstance()).getCharactersNearPoint(currentCell, this.visionRadius);
+        ArrayList<GameCharacter> characters = ((ServerGame) ServerGame.getInstance()).getCharactersNearPoint(currentCell, this.visionRadius);
 
         for (GameCharacter character : characters) {
             // found the player

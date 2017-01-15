@@ -7,6 +7,6 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
  */
 public interface ObjectInterface {
     void loadClient(String mapName, ResourceManager resourceManager);
-    void render();
-    void render(int layer);
+//    void render();
+//    void render(int layer);
 }

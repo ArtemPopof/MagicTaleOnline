@@ -16,6 +16,12 @@ public class SpriteSheet {
     private int tileWidth;
     private int tileHeight;
 
+    private BufferedImage image;
+
+    public SpriteSheet() {
+        sprites = new ArrayList<>();
+    }
+
     public SpriteSheet(String path) {
         sprites = new ArrayList<>();
 
@@ -25,7 +31,6 @@ public class SpriteSheet {
             e.printStackTrace();
         }
     }
-
 
     public SpriteSheet(String path, int width, int height) {
         this(path, width, height, true, false);
@@ -53,6 +58,35 @@ public class SpriteSheet {
         }
 
 
+    }
+
+    /**
+     * Load image. Using in parse objects.
+     * @// TODO: 15.01.2017 Need change SpriteSheet constructors
+     * @param path SpriteSheetPath
+     * @throws IOException
+     */
+    public void setImage(String path) throws IOException {
+        image = ImageIO.read(new File(path));
+    }
+
+    /**
+     *
+     */
+    public Sprite loadSprite(int spriteX, int spriteY, int width, int height) {
+        BufferedImage subImage = image.getSubimage(spriteX, spriteY, width, height);
+//                System.out.println("subImage x:" + subImage.getWidth() + " h: " + subImage.getHeight());
+        Sprite sprite = null;
+        try {
+            sprite = new Sprite(subImage, (float)width, (float)height);
+        } catch (Exception e) {
+            System.out.println("Error create sprite from subImage" + e);
+        }
+        //ImageIO.write(subImage, "PNG", new File("res/map/background/tile" + index + ".png"));
+        if (sprite != null) {
+            sprites.add(sprite);
+        }
+        return sprite;
     }
 
     //TODO implement
