@@ -2,7 +2,6 @@ package client;
 
 import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.engine.MagicMain;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
@@ -39,7 +38,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -148,6 +146,11 @@ public class ClientGame extends AbstractGame implements Constants {
     public void tick() {
         // получение объектов с из очереди полученных с сервера
         receiver.tick();
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            isRunning = false;
+        }
+        processInput();
 
         // а это что-то
         this.guiManager.update();
@@ -540,7 +543,7 @@ public class ClientGame extends AbstractGame implements Constants {
             Keyboard.create();
             Display.setVSyncEnabled(true);
         } catch (LWJGLException ex) {
-            Logger.getLogger(MagicMain.class.getName()).log(java.util.logging.Level.SEVERE, "Something went wrong in initDisplay()");
+            System.err.println("Something went wrong in initDisplay()");
         }
     }
 
