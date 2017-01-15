@@ -28,7 +28,7 @@ public class Receiver implements Runnable {
     private Receiver() throws SocketException {
         socket = new DatagramSocket(Constants.CLIENT_UDP_PORT);
         // если в течение 2 секунд не придут данные - сервер отключил нас
-        socket.setSoTimeout(2000);
+//        socket.setSoTimeout(2000);
         objectsQueue = new ConcurrentLinkedQueue<>();
     }
 
@@ -51,9 +51,9 @@ public class Receiver implements Runnable {
     public void run() {
         while (true) {
             try {
-//                System.out.println("Wait for packet");
+                System.out.println("Wait for packet");
                 socket.receive(packet);
-//                System.out.println("Got packet " + packet.getLength());
+                System.out.println("Got packet " + packet.getLength());
 
                 // проверка checksum
                 byte[] bytes = packet.getData();
@@ -80,7 +80,7 @@ public class Receiver implements Runnable {
                         float x = objectsBuffer.getFloat();
                         float y = objectsBuffer.getFloat();
 
-                        objectsQueue.add(new ReceivedObject(id, spriteId, x, y));
+                        objectsQueue.add(new ReceivedObject(id, spriteId, x, y, timestamp));
                     }
                 }
             } catch (IOException e) {
@@ -104,12 +104,14 @@ public class Receiver implements Runnable {
         private final int spriteId;
         private final float x;
         private final float y;
+        private final long timestamp;
 
-        ReceivedObject(int id, int spriteId, float x, float y) {
+        ReceivedObject(int id, int spriteId, float x, float y, long timestamp) {
             this.id = id;
             this.spriteId = spriteId;
             this.x = x;
             this.y = y;
+            this.timestamp = timestamp;
         }
 
         public int getId() {
@@ -126,6 +128,10 @@ public class Receiver implements Runnable {
 
         public float getY() {
             return y;
+        }
+
+        public long getTimestamp() {
+            return timestamp;
         }
     }
 }

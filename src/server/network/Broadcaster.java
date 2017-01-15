@@ -92,7 +92,7 @@ public class Broadcaster {
                 packet.setPort(Constants.CLIENT_UDP_PORT);
 
                 socket.send(packet);
-//                System.out.println("Send packet " + packet.getAddress().getHostAddress() + " " + packet.getPort());
+                System.out.println("Send packet " + packet.getAddress().getHostAddress() + " " + packet.getPort());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
