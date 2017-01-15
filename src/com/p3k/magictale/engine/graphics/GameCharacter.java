@@ -176,7 +176,8 @@ public class GameCharacter extends GameObject implements Serializable {
         // Sync with server
         this.animations.get(this.currentState).getCurrentFrame();
 
-        ((ServerGame) ServerGame.getInstance()).(this.getId(), new ServerObject())
+        ((ServerGame) ServerGame.getInstance()).putServerObject
+                (getId(), animations.get(currentState).getCurrentFrame().getSpriteId(), this.x, this.y);
 
         // current animation stops, so zero some
         // states
