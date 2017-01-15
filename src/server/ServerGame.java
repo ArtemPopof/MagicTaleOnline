@@ -114,8 +114,6 @@ public class ServerGame extends AbstractGame {
 //            putServerObject(object.getId(), object.getSpriteId(), object.getX(), object.getY());
 //        }
 
-
-
         //TODO DON'T DELETE IT. Need for render
 //        TileMap[][] tilesOfLevel = null;
 //        try {

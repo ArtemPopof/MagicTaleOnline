@@ -398,4 +398,9 @@ public class ClientGame extends AbstractGame implements Constants {
             clientObjects.put(id, object);
         }
     }
+
+
+    public GameController getController() {
+        return controller;
+    }
 }

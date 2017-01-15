@@ -56,4 +56,8 @@ public class ActiveAccounts {
                 .map(Account::getIP)
                 .toArray(String[]::new);
     }
+
+    public Account getAccount(String ip) {
+        return accountsInUse.getOrDefault(ip, null);
+    }
 }

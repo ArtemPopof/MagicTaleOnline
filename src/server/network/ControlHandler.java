@@ -1,6 +1,8 @@
 package server.network;
 
+import com.p3k.magictale.game.Characters.Player;
 import common.remoteInterfaces.GameController;
+import server.accounts.Account;
 import server.accounts.ActiveAccounts;
 
 import java.rmi.RemoteException;
@@ -74,6 +76,12 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
      */
     @Override
     public int getHealth() throws RemoteException {
+        try {
+            Player player = ActiveAccounts.getInstance().getAccount(getClientHost()).getPlayerObject();
+            return player.getCurrentHealth();
+        } catch (ServerNotActiveException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
