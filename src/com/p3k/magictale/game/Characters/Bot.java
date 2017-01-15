@@ -150,6 +150,8 @@ public class Bot extends GameCharacter {
 
         this.isAroundEnemy = false;
 
+        this.speed = 2f;
+
         // TEMP CODE NEXT
 
         this.field = new boolean[Constants.MAP_WIDTH][Constants.MAP_HEIGHT];
@@ -239,9 +241,11 @@ public class Bot extends GameCharacter {
 
         this.isAttacking = false;
 
-        // here will be simulation of bot virtual brain
+        // here will be simulation of bot virtual brain]
 
-        if (this.spottedEnemy == null && this.isAggressive && isAnyoneNotFriendlyAround()) {
+        boolean isAny = isAnyoneNotFriendlyAround();
+
+        if (this.spottedEnemy != null && this.isAggressive && isAny) {
             setBotState(BOT_TARGETSPOTED_STATE);
         }
 
@@ -283,7 +287,7 @@ public class Bot extends GameCharacter {
             setBotState(BOT_WAITING_STATE);
             this.spottedEnemy = null;
 
-            System.out.println("LOST TARGET");
+            //System.out.println("LOST TARGET");
             return;
         }
 
@@ -494,7 +498,7 @@ public class Bot extends GameCharacter {
 
             }
             this.spottedEnemy = character;
-            System.out.println("Spotted enemy: " + character.toString());
+           // System.out.println("Spotted enemy: " + character.toString());
             return true;
         }
 
