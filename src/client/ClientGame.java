@@ -100,7 +100,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initSoundManager();
 
-//        initObjectManager();
+        initObjectManager();
 
         initGuiManager();
 

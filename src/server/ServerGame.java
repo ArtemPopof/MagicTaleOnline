@@ -4,12 +4,14 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.Map.TileMap;
+import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
+import com.p3k.magictale.map.objects.ObjectManager;
 import server.accounts.ActiveAccounts;
 import server.network.Broadcaster;
 import server.network.ControlHandler;
@@ -40,6 +42,9 @@ public class ServerGame extends AbstractGame {
     private final ControlHandler handler;
 
     private Level levelManager;
+    private ObjectManager objectManager;
+    private final String mapName = "forest_v2";
+
 
     /**
      * container for all single-sprite objects in game
@@ -68,6 +73,8 @@ public class ServerGame extends AbstractGame {
         Naming.bind(name, handler);
 
         initLevelManager();
+        initObjectManager();
+
         try {
             initObjects();
         } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
@@ -98,19 +105,16 @@ public class ServerGame extends AbstractGame {
     @Override
     public void tick() {
 
-        for (Integer key : this.objects.keySet()) {
-            GameObject object = this.objects.get(key);
-            object.update();
+        objectManager.update();
 
-            if (!serverObjects.containsKey(object.getId())) {
-                serverObjects.put(object.getId(), new ServerObject(object.getSpriteId(), object.getX(), object.getY()));
-            } else {
-                ServerObject o = serverObjects.get(object.getId());
-                o.setIdResMan(object.getSpriteId());
-                o.setX(object.getX());
-                o.setY(object.getY());
-            }
-        }
+//        for (Integer key : this.objects.keySet()) {
+//            GameObject object = this.objects.get(key);
+//            object.update();
+//
+//            putServerObject(object.getId(), object.getSpriteId(), object.getX(), object.getY());
+//        }
+
+
 
         //TODO DON'T DELETE IT. Need for render
 //        TileMap[][] tilesOfLevel = null;
@@ -149,6 +153,20 @@ public class ServerGame extends AbstractGame {
         try {
             String mapName = "forest_v2";
             this.levelManager.loadServer(mapName);
+        } catch (Exception e) {
+            System.err.println("Error render levelManager manager: " + e);
+        }
+    }
+
+    private void initObjectManager() {
+        try {
+            this.objectManager = ObjectManager.getInstance();
+        } catch (Exception e) {
+            System.err.println("Error initializing levelManager manager: " + e);
+        }
+
+        try {
+            this.objectManager.loadServer(this.mapName);
         } catch (Exception e) {
             System.err.println("Error render levelManager manager: " + e);
         }
@@ -314,5 +332,15 @@ public class ServerGame extends AbstractGame {
         return null;
     }
 
-
+    public void putServerObject(int id, int spriteId, float x, float y) {
+        if (!serverObjects.containsKey(id)) {
+//                serverObjects.put(object.getId(), new ServerObject(object.getSpriteId(), object.getX(), object.getY()));
+            serverObjects.put(id, new ServerObject(spriteId, x, y));
+        } else {
+            ServerObject o = serverObjects.get(id);
+            o.setIdResMan(spriteId);
+            o.setX(x);
+            o.setY(y);
+        }
+    }
 }

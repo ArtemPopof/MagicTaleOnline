@@ -14,6 +14,7 @@ import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.map.XmlParser;
 import com.p3k.magictale.map.level.LevelManager;
 import org.xml.sax.SAXException;
+import server.ServerGame;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
@@ -102,25 +103,6 @@ public class ObjectManager implements ObjectInterface {
         if (objectsSheet != null) {
             loadObjTexturePack(LEVEL_DIR + "pack_forest_summer.png", resourceManager, firstId, objectsSheet);
         }
-        loadTileSheet(xmlObj, resourceManager, firstId);
-        loadTemplateGroupObjects(xmlObj);
-
-        // Parse and add to map TileObjects and GroupObjects
-        loadLvlGroupObjects(xmlLvl);
-
-        // TODO DEBUG DELETE IT When would be server
-        for(TreeMap<String, ArrayList<GroupObject>> treeOfObjects: groupObjects.values()) {
-            for (ArrayList<GroupObject> arrayOfObjects : treeOfObjects.values()) {
-                if (arrayOfObjects.size() != 1) {
-                    for (GroupObject obj : arrayOfObjects) {
-                        if (arrayOfObjects.indexOf(obj) != 0) {
-                            obj.setSpriteTest(resourceManager.getSprite(obj.getSpriteId()),
-                                    obj.getX() * Constants.TILE_SIZE, (Constants.MAP_HEIGHT - obj.getY() - 1) * Constants.TILE_SIZE);
-                        }
-                    }
-                }
-            }
-        }
 
         // FOR DEBUG
 //        try {
@@ -151,6 +133,26 @@ public class ObjectManager implements ObjectInterface {
         System.out.println("HERE ObjectManager loaded");
     }
 
+    public void loadServer(String mapName) {
+        System.out.println("HERE ObjectManager loadClient");
+
+        // Parse and add to map GroupObject"sheet"
+        XmlParser xmlObj = null, xmlLvl = null, xmlTileProps = null;
+        try {
+            xmlObj = new XmlParser(dbf, LEVEL_DIR + "obj_" + mapName + ".tmx");
+            xmlLvl = new XmlParser(dbf, LevelManager.getLevelDir() + "lvl_" + mapName + ".tmx");
+        } catch (IOException | SAXException e) {
+            e.printStackTrace();
+        }
+
+        int firstId = 7000;
+        loadTileSheet(xmlObj, firstId);
+        loadTemplateGroupObjects(xmlObj);
+
+        // Parse and add to map TileObjects and GroupObjects
+        loadLvlGroupObjects(xmlLvl);
+    }
+
     public void loadObjTexturePack(String packName, ResourceManager resourceManager, int firstId,
                                    ArrayList<ObjectSheetResource> objectsSheet) {
         try {
@@ -161,7 +163,7 @@ public class ObjectManager implements ObjectInterface {
         }
     }
 
-    private void loadTileSheet(XmlParser xml, ResourceManager resourceManager, int firstId) {
+    private void loadTileSheet(XmlParser xml, int firstId) {
         ArrayList<String> layerTemplateContext = null;
         ArrayList<ITileProperties> tilesProperties = null;
         int tilesetWidth = 0;
@@ -180,8 +182,6 @@ public class ObjectManager implements ObjectInterface {
                     ++idInSprSh;
                     continue;
                 }
-//                int idInGl = resourceManager.getTexture(idInSprSh + firstId);
-//                Sprite sprite = new Sprite(idInGl, Constants.MAP_TILE_SIZE, Constants.MAP_TILE_SIZE);
                 tileSheet[w][h] = new Tile(idInSprSh + firstId, w * Constants.MAP_TILE_SIZE, h * Constants.MAP_TILE_SIZE,
                         (TileProperties) tilesProperties.get(idInTileProp));
                 ++id;
@@ -439,5 +439,24 @@ public class ObjectManager implements ObjectInterface {
 
         return result;
 
+    }
+
+    public void update() {
+        ServerGame serverGame = (ServerGame) ServerGame.getInstance();
+        for (TreeMap<String, ArrayList<GroupObject>> treeOfObjects : groupObjects.values()) {
+            for (ArrayList<GroupObject> arrayOfObjects : treeOfObjects.values()) {
+                if (arrayOfObjects.size() != 1) {
+                    for (GroupObject obj : arrayOfObjects) {
+//                        if (arrayOfObjects.indexOf(obj) != 0) {
+//                            obj.setSpriteTest(resourceManager.getSprite(obj.getSpriteId()),
+//                                    obj.getX() * Constants.TILE_SIZE, (Constants.MAP_HEIGHT - obj.getY() - 1) * Constants.TILE_SIZE);
+//                        }
+                        serverGame.putServerObject(obj.getId(), obj.getSpriteId(),
+                                obj.getX() * Constants.TILE_SIZE,
+                                (Constants.MAP_HEIGHT - obj.getY() - 1) * Constants.TILE_SIZE);
+                    }
+                }
+            }
+        }
     }
 }
