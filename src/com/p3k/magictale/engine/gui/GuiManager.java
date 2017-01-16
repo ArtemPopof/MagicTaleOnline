@@ -4,10 +4,13 @@ import client.ClientGame;
 import client.Player;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
-import common.remoteInterfaces.GameController;
+import com.p3k.magictale.engine.Utils;
+import com.p3k.magictale.engine.graphics.Sprite;
 import org.lwjgl.input.Mouse;
 import server.ServerGame;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +28,8 @@ public class GuiManager extends MComponent implements Constants {
 
     private Text mousePosition;
     private Text fps;
+
+    private Widget cursor;
 
     public GuiManager(Player player) {
         super(null);
@@ -51,6 +56,8 @@ public class GuiManager extends MComponent implements Constants {
         this.add("fpsCounter", fps);
 
         this.mousePosition.setSize(16);
+
+        this.cursor = null;
 
         createHud();
     }
@@ -95,6 +102,22 @@ public class GuiManager extends MComponent implements Constants {
             ((ServerGame) ServerGame.getInstance()).spawnBot();
         });
 
+        try {
+            BufferedImage img = null;
+
+            try {
+                img = Utils.loadImage("res/cursor.png");
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw e;
+            }
+
+            this.cursor = new Widget(this, new Sprite(img, img.getWidth(), img.getHeight()));
+        } catch (IOException e) {
+            Logger.log("Error loading cursor: " + e.getMessage(), Logger.ERROR);
+            e.printStackTrace();
+        }
+
         this.put("statusBar", statusBar);
         this.put("actionBar", actionBar);
         this.put("playerMenu", playerMenu);
@@ -121,10 +144,7 @@ public class GuiManager extends MComponent implements Constants {
             mousePosition.move(10, mousePosition.getHeight() + 10);
         }
 
- //       String scoreText = "Score: " + ((ClientGame) ClientGame.getInstance()).getScore();
-//        this.score.setText(scoreText);
-        //this.fps.setText("FPS: " + Display)
-
+        this.cursor.render();
     }
 
     @Override
@@ -171,6 +191,9 @@ public class GuiManager extends MComponent implements Constants {
 
         this.objects.get("statusBar").update();
 
+        if ( this.cursor != null ) {
+            this.cursor.move(Mouse.getX(), Mouse.getY());
+        }
     }
 
     public MComponent put(String name, MComponent child) {
