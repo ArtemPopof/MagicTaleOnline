@@ -3,12 +3,14 @@ package com.p3k.magictale.game.Characters;
 import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.enums.Direction;
+import com.p3k.magictale.engine.graphics.Animation;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.physics.Collision;
 import org.lwjgl.input.Keyboard;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by artem96 on 04.12.16.
@@ -26,7 +28,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
         this.type = CharacterTypes.ABSTRACT_PLAYER;
 
         try {
-       //     this.animations = ResourceManager.getInstance().getAnimations(this);
+           this.animations = (ArrayList<Animation>) ResourceManager.getInstance(false).getServerAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }

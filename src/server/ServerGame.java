@@ -160,13 +160,13 @@ public class ServerGame extends AbstractGame {
 
         Bot bat = new Bat(300, 300);
 
-        Bot bot = new Bot(350, 280, 64, 64);
+        Bot bot = new Bat(580, 150);
 //        Bot bot2 = new Bot(330, 280, 64, 64);
 //        Bat bot3 = new Bat(330, 240);
 //        Bat bot4 = new Bat(350, 200);
 
-        objects.put(this.objects.size(), bat);
-        objects.put(this.objects.size(), bot);
+       // objects.put(this.objects.size(), bat);
+            objects.put(this.objects.size(), bot);
        // objects.put(this.objects.size(), bot2);
      //   objects.put(this.objects.size(), bot3);
 //        objects.put(this.objects.size(), bot4);
@@ -330,9 +330,9 @@ public class ServerGame extends AbstractGame {
 
         ArrayList<GameCharacter> characters = new ArrayList<>();
 
-        for (int i = 0; i < this.objects.size(); i++) {
-            Object object;
-            object = this.objects.get(i);
+        for (Integer index : objects.keySet()) {
+            GameObject object;
+            object = this.objects.get(index);
 
 
             if (!GameCharacter.class.isInstance(object)) continue;
@@ -361,7 +361,7 @@ public class ServerGame extends AbstractGame {
 
     public Player getNewPlayer() {
 
-        Player newPlayer = new Player(500, 200);
+        Player newPlayer = new Player(560, 200);
 
         objects.put(newPlayer.getId(), newPlayer);
 
