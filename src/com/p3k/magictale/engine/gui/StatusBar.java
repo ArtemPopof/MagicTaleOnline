@@ -46,8 +46,8 @@ public class StatusBar extends Widget {
         // PLAYER ICON
         this.playerIcon = new Widget(this, this.player.getSprite());
 
-        paddingLeft = -2.0f;
-        paddingTop =  4.0f;
+        paddingLeft = 6.0f;
+        paddingTop =  -5.0f;
         playerIcon.move(paddingLeft, paddingTop);
 
         ComponentFactory factory = new StdComponentFactory();
@@ -84,8 +84,8 @@ public class StatusBar extends Widget {
 
         this.playerIcon.setBackground(this.player.getSprite());
         this.playerIcon.resize(
-                (int) (this.width * 0.30f),
-                (int) (this.width * 0.30f));
+                (int) (this.width * 0.25f),
+                (int) (this.width * 0.25f));
 
         this.playerLevel.setText("Level: " + player.getCurrentLevel());
     }
