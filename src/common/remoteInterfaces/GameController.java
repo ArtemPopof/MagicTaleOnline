@@ -8,10 +8,11 @@ import java.rmi.RemoteException;
  */
 public interface GameController extends Remote {
     /**
+     * @return id of your player
      * @param nickname - player nickname
      * @throws RemoteException java rmi exception
      */
-    void signUp(String nickname) throws RemoteException;
+    int signUp(String nickname) throws RemoteException;
 
     /**
      * @param x x coordinate on map

@@ -4,15 +4,6 @@ package client;
  * Created by jorgen on 16.01.17.
  */
 public class Player {
-
-    enum MoveDirection {
-        NONE,
-        MOVE_RIGHT,
-        MOVE_LEFT,
-        MOVE_UP,
-        MOVE_DOWN
-    }
-
     private int currentHealth;
     private int maxHealth;
     private float speed;
@@ -21,6 +12,7 @@ public class Player {
     private int currentLevel;
     private int xpForNextLevel;
     private int xp;
+    private long timestamp = 0;
 
     public int getCurrentHealth() {
         return currentHealth;
@@ -84,5 +76,13 @@ public class Player {
 
     public void setXpForNextLevel(int xpForNextLevel) {
         this.xpForNextLevel = xpForNextLevel;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

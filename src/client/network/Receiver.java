@@ -2,6 +2,7 @@ package client.network;
 
 import client.ClientGame;
 import client.ClientObject;
+import client.Player;
 import com.p3k.magictale.engine.Constants;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class Receiver implements Runnable {
     private final DatagramSocket socket;
     private final ConcurrentLinkedQueue<ReceivedObject> objectsQueue;
     private final ConcurrentLinkedQueue<DatagramPacket> packets;
+    private final ConcurrentLinkedQueue<Player> playerUpdates;
     private final DatagramCatcher catcher;
     private final Thread catchersThread;
 
@@ -33,6 +35,7 @@ public class Receiver implements Runnable {
         socket.setSoTimeout(2000);
         objectsQueue = new ConcurrentLinkedQueue<>();
         packets = new ConcurrentLinkedQueue<>();
+        playerUpdates = new ConcurrentLinkedQueue<>();
 
         catcher = new DatagramCatcher(socket);
         catchersThread = new Thread(catcher);
@@ -73,9 +76,9 @@ public class Receiver implements Runnable {
                     data.position(0);
 
                     byte type = data.get();
+                    long timestamp = data.getLong();
                     switch (type) {
                         case 0:
-                            long timestamp = data.getLong();
                             byte[] objects = new byte[16 * 16];
                             data.get(objects);
 
@@ -91,6 +94,29 @@ public class Receiver implements Runnable {
                                 objectsQueue.add(new ReceivedObject(id, spriteId, x, y, timestamp));
                             }
                             break;
+                        case 1:
+                            Player player = new Player();
+                            /*
+                                private int currentHealth;
+                                private int maxHealth;
+                                private float speed;
+                                private int attack;
+                                private boolean isDead;
+                                private int currentLevel;
+                                private int xpForNextLevel;
+                                private int xp;
+                             */
+                            player.setTimestamp(timestamp);
+                            player.setCurrentHealth(data.getInt());
+                            player.setMaxHealth(data.getInt());
+                            player.setSpeed(data.getFloat());
+                            player.setAttack(data.getInt());
+                            player.setDead(data.get());
+                            player.setCurrentLevel(data.getInt());
+                            player.setXpForNextLevel(data.getInt());
+                            player.setXp(data.getInt());
+                            playerUpdates.add(player);
+                            break;
                         default:
                             break;
                     }
@@ -100,12 +126,18 @@ public class Receiver implements Runnable {
     }
 
     public void tick() {
+        ClientGame clientGame = (ClientGame) ClientGame.getInstance();
         while (!objectsQueue.isEmpty()) {
             ReceivedObject object = objectsQueue.poll();
-            ((ClientGame) ClientGame.getInstance()).updateObject(object.getId(),
-                    new ClientObject(object.getSpriteId(), object.getX(), object.getY()));
+            ClientObject clientObject = new ClientObject(object.getSpriteId(), object.getX(), object.getY());
+            clientObject.setTimestamp(object.getTimestamp());
+            clientGame.updateObject(object.getId(), clientObject);
         }
 //        System.out.println(packets.size());
+        while (!playerUpdates.isEmpty()) {
+            Player player = playerUpdates.poll();
+            clientGame.updatePlayer(player);
+        }
     }
 
     private class ReceivedObject {

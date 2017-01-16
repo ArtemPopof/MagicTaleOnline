@@ -63,6 +63,6 @@ public class ActiveAccounts {
 
     public void tick() {
         accountsInUse.values().forEach(Account::tick);
-        System.out.println("Send status to " + accountsInUse.size() + " players");
+//        System.out.println("Send status to " + accountsInUse.size() + " players");
     }
 }

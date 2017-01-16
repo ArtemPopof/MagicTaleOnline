@@ -29,17 +29,20 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
 
 
     /**
-     * @param nickname - player nickname
+     * @return id of your player
+     * @param nickname - player nickname or -1 if something went wrong
      * @throws RemoteException java rmi exception
      */
     @Override
-    public void signUp(String nickname) throws RemoteException {
+    public int signUp(String nickname) throws RemoteException {
         try {
             ActiveAccounts.getInstance().setEnable(getClientHost(), nickname);
             System.out.println("New client connected " + nickname + " " + getClientHost());
+            return ActiveAccounts.getInstance().getAccount(getClientHost()).getPlayerObject().getId();
         } catch (ServerNotActiveException e) {
             System.err.println(e.getMessage());
         }
+        return -1;
     }
 
     /**

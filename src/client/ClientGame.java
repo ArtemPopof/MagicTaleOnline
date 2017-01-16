@@ -3,17 +3,11 @@ package client;
 import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
-import com.p3k.magictale.engine.graphics.GameCharacter;
-import com.p3k.magictale.engine.graphics.GameObject;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.gui.GuiManager;
-import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.AbstractGame;
-import com.p3k.magictale.game.Characters.Bat;
-import com.p3k.magictale.game.Characters.Bot;
-import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
 import com.p3k.magictale.map.level.LevelManager;
 import com.p3k.magictale.map.objects.ObjectInterface;
@@ -24,22 +18,13 @@ import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import server.ServerGame;
-import server.ServerObject;
 
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -52,9 +37,11 @@ public class ClientGame extends AbstractGame implements Constants {
 
     private final String mapName = "forest_v2";
     private final Receiver receiver;
-    private Map<Integer, ClientObject> clientObjects;
     //TODO Client objects
-    private int playerIndex;
+    private final int playerIndex;
+    private final GameController controller;
+    private Player player;
+    private Map<Integer, ClientObject> clientObjects;
     private Level levelManager;
     private ObjectInterface objectManager;
     private ResourceManager resourceManager;
@@ -70,8 +57,6 @@ public class ClientGame extends AbstractGame implements Constants {
     private boolean isMouseLeftReleased = false;
     private boolean isMouseRightReleased = false;
     private boolean isInFullScreenMode = false;
-    private final GameController controller;
-
     private int score = 0;
 
     private Cursor cursor;
@@ -85,7 +70,11 @@ public class ClientGame extends AbstractGame implements Constants {
         receiver = Receiver.getInstance();
         Registry registry = LocateRegistry.getRegistry(ip);
         controller = (GameController) registry.lookup("game");
-        controller.signUp(nickname);
+        playerIndex = controller.signUp(nickname);
+        if (playerIndex < 0) {
+            System.exit(1);
+        }
+        player = new Player();
 
         clientObjects = new TreeMap<>();
 
@@ -149,7 +138,6 @@ public class ClientGame extends AbstractGame implements Constants {
         processInput();
 
         this.guiManager.update();
-
 
 
         render();
@@ -247,34 +235,34 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     /**
-    private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
-
-        Player player = new Player(100, 520);
-
-        synchronized (this.objects) {
-            this.playerIndex = this.objects.size();
-            this.objects.put(this.playerIndex, player);
-        }
-
-        // test bot
-        //Bot testBot = new Bot(500, 400, 64, 64);
-        //objects.add(testBot);
-
-        // test bot
-        // Bot testBot2 = new Bot(200, 354, 64, 64);
-        //objects.add(testBot2);
-
-        // test bot
-        Bot testBot3 = new Bot(252, 272, 64, 64);
-
-        //test bat
-        Bot batBot = new Bat(270, 280);
-
-        this.objects.put(this.objects.size(), testBot3);
-        this.objects.put(this.objects.size(), batBot);
-
-    }
-    **/
+     * private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
+     * <p>
+     * Player player = new Player(100, 520);
+     * <p>
+     * synchronized (this.objects) {
+     * this.playerIndex = this.objects.size();
+     * this.objects.put(this.playerIndex, player);
+     * }
+     * <p>
+     * // test bot
+     * //Bot testBot = new Bot(500, 400, 64, 64);
+     * //objects.add(testBot);
+     * <p>
+     * // test bot
+     * // Bot testBot2 = new Bot(200, 354, 64, 64);
+     * //objects.add(testBot2);
+     * <p>
+     * // test bot
+     * Bot testBot3 = new Bot(252, 272, 64, 64);
+     * <p>
+     * //test bat
+     * Bot batBot = new Bat(270, 280);
+     * <p>
+     * this.objects.put(this.objects.size(), testBot3);
+     * this.objects.put(this.objects.size(), batBot);
+     * <p>
+     * }
+     **/
 
     private void initSoundManager() {
         try {
@@ -338,7 +326,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
     private void initGuiManager() {
 
-       this.guiManager = new GuiManager(this.controller);
+        this.guiManager = new GuiManager(this.controller);
 
     }
 
@@ -438,4 +426,9 @@ public class ClientGame extends AbstractGame implements Constants {
         return controller;
     }
 
+    public void updatePlayer(Player player) {
+        if (this.player.getTimestamp() < player.getTimestamp()) {
+            this.player = player;
+        }
+    }
 }
