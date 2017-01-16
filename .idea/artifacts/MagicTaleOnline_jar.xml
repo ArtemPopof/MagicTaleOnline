@@ -1,0 +1,24 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MagicTaleOnline:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MagicTaleOnline_jar</output-path>
+    <root id="archive" name="MagicTaleOnline.jar">
+      <element id="module-output" name="MagicTaleOnline" />
+      <element id="library" level="project" name="windows" />
+      <element id="library" level="project" name="linux" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/lzma.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/jinput.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/lwjgl_test.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/lwjgl_util.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/lwjgl-debug.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/asm-debug-all.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/trident-7.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/substance-7.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/laf-plugin-7.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/laf-widget-7.2.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/lwjgl_util_applet.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/AppleJavaExtensions.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/lwjgl-2.9.3/jar/log4j-api-2.0-beta9.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

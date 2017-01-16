@@ -159,8 +159,8 @@ public class ClientGame extends AbstractGame implements Constants {
 //        }
 
         // Player handlin
-        /**
-        if (isDead()) {
+/*
+        if (player.isDead()) {
             System.out.println("WASTED BUDDY!");
             return;
         }
@@ -168,7 +168,7 @@ public class ClientGame extends AbstractGame implements Constants {
         boolean isStateChanged = false;
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            changeState(UP_MOVE_STATE);
+            controller.changeState(UP_MOVE_STATE);
             move(0, 1);
             setDirection(Direction.UP);
             isStateChanged = true;
@@ -210,7 +210,7 @@ public class ClientGame extends AbstractGame implements Constants {
         if (!isStateChanged) {
             this.animations.get(getState()).pause();
         }
-        **/
+        */
 
         // Mouse handle
         this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
