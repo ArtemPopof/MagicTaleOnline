@@ -84,15 +84,14 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initObjectManager();
 
-        if (System.getProperty("os.name").startsWith("Windows")) {
-            Mouse.setGrabbed(true);
-        } else {
+        if (!System.getProperty("os.name").startsWith("Windows"))  {
             try {
                 Mouse.setNativeCursor(ResourceManager.getInstance(true).loadCursor("res/cursor.png"));
             } catch (LWJGLException e) {
                 e.printStackTrace();
             }
         }
+        Mouse.setGrabbed(true);
 
         initGuiManager();
 

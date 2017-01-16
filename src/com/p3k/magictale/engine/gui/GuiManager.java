@@ -32,6 +32,8 @@ public class GuiManager extends MComponent implements Constants {
 
     private Widget cursor;
 
+    private boolean softwareCursor = false;
+
     public GuiManager(Player player) {
         super(null);
 
@@ -66,6 +68,10 @@ public class GuiManager extends MComponent implements Constants {
         this.mousePosition.setSize(16);
 
         this.cursor = null;
+
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            softwareCursor = true;
+        }
 
         createHud();
     }
@@ -152,7 +158,9 @@ public class GuiManager extends MComponent implements Constants {
             mousePosition.move(10, mousePosition.getHeight() + 10);
         }
 
-        this.cursor.render();
+        if (softwareCursor) {
+            this.cursor.render();
+        }
     }
 
     @Override
