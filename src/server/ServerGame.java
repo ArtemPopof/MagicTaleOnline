@@ -45,6 +45,7 @@ public class ServerGame extends AbstractGame {
     private Level levelManager;
     private ObjectManager objectManager;
     private final String mapName = "forest_v2";
+    private boolean send = true;
 
 
     /**
@@ -149,10 +150,16 @@ public class ServerGame extends AbstractGame {
 //            }
 //        }
 
-        // отправка данных подключенным клиентам
-        broadcaster.sendObjects(serverObjects.entrySet());
-        // отправка статуса плееров подключенным игрокам
-        ActiveAccounts.getInstance().tick();
+        if (send) {
+            // отправка данных подключенным клиентам
+            broadcaster.sendObjects(serverObjects.entrySet());
+            // отправка статуса плееров подключенным игрокам
+            ActiveAccounts.getInstance().tick();
+
+            send = false;
+        } else {
+            send = true;
+        }
 
     }
 

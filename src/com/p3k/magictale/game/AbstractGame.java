@@ -28,7 +28,7 @@ public abstract class AbstractGame {
      */
     protected AbstractGame() {
         this.isRunning = true;
-        this.tickTimeMills = 40;
+        this.tickTimeMills = 20;
         System.out.println("Server tickrate: " + 1000 / this.tickTimeMills + " t/s");
     }
 
