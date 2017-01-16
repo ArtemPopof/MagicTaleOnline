@@ -3,7 +3,6 @@ package client;
 import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
-import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.gui.GuiManager;
@@ -16,7 +15,6 @@ import com.p3k.magictale.map.objects.ObjectInterface;
 import com.p3k.magictale.map.objects.ObjectManager;
 import common.remoteInterfaces.GameController;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -86,7 +84,15 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initObjectManager();
 
-        Mouse.setGrabbed(true);
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            Mouse.setGrabbed(true);
+        } else {
+            try {
+                Mouse.setNativeCursor(ResourceManager.getInstance(true).loadCursor("res/cursor.png"));
+            } catch (LWJGLException e) {
+                e.printStackTrace();
+            }
+        }
 
         initGuiManager();
 
