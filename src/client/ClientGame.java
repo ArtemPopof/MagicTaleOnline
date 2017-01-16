@@ -131,8 +131,8 @@ public class ClientGame extends AbstractGame implements Constants {
         }
         processInput();
 
+        updateCamera();
         this.guiManager.update();
-
 
         render();
     }
@@ -149,58 +149,58 @@ public class ClientGame extends AbstractGame implements Constants {
 //        }
 
         // Player handlin
-/*
-        if (player.isDead()) {
-            System.out.println("WASTED BUDDY!");
-            return;
-        }
 
-        boolean isStateChanged = false;
+//        if (player.isDead()) {
+//            System.out.println("WASTED BUDDY!");
+//            return;
+//        }
+//
+//        boolean isStateChanged = false;
+//
+//        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+//            controller.changeState(UP_MOVE_STATE);
+//            move(0, 1);
+//            setDirection(Direction.UP);
+//            isStateChanged = true;
+//        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+//            changeState(DOWN_MOVE_STATE);
+//            move(0, -1);
+//            setDirection(Direction.DOWN);
+//            isStateChanged = true;
+//        } else {
+//
+//            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+//                changeState(LEFT_MOVE_STATE);
+//                move(-1, 0);
+//                setDirection(Direction.LEFT);
+//                isStateChanged = true;
+//            }
+//            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+//                changeState(RIGHT_MOVE_STATE);
+//                move(1, 0);
+//                setDirection(Direction.RIGHT);
+//                isStateChanged = true;
+//            }
+//        }
+//
+//        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+//            //attackSound.play("user/attack_axe.wav");
+//        }
+//
+//        // mouse events
+//        if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
+//            doAttack();
+//        }
+//
+//        if (this.isAttacking) {
+//            isStateChanged = true;
+//        }
+//
+//        // if nothing happens with player, then wait
+//        if (!isStateChanged) {
+//            this.animations.get(getState()).pause();
+//        }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            controller.changeState(UP_MOVE_STATE);
-            move(0, 1);
-            setDirection(Direction.UP);
-            isStateChanged = true;
-        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            changeState(DOWN_MOVE_STATE);
-            move(0, -1);
-            setDirection(Direction.DOWN);
-            isStateChanged = true;
-        } else {
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                changeState(LEFT_MOVE_STATE);
-                move(-1, 0);
-                setDirection(Direction.LEFT);
-                isStateChanged = true;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                changeState(RIGHT_MOVE_STATE);
-                move(1, 0);
-                setDirection(Direction.RIGHT);
-                isStateChanged = true;
-            }
-        }
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            //attackSound.play("user/attack_axe.wav");
-        }
-
-        // mouse events
-        if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
-            doAttack();
-        }
-
-        if (this.isAttacking) {
-            isStateChanged = true;
-        }
-
-        // if nothing happens with player, then wait
-        if (!isStateChanged) {
-            this.animations.get(getState()).pause();
-        }
-        */
 
         // Mouse handle
         this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
@@ -398,6 +398,14 @@ public class ClientGame extends AbstractGame implements Constants {
     public void moveCamera(float x, float y) {
         this.cameraX += x;
         this.cameraY += y;
+    }
+
+    public void updateCamera() {
+        ClientObject player = clientObjects.get(playerIndex);
+        Sprite playerSprite = player.getSprite();
+
+        this.cameraX = player.getX() - 400 + playerSprite.getWidth() / 2;
+        this.cameraY = player.getY() - 300 + playerSprite.getHeight() / 2;
     }
 
     public boolean isMouseMoved() {
