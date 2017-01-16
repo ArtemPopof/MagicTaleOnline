@@ -82,7 +82,7 @@ public class StatusBar extends Widget {
 
         this.xpBar.setWidth(barWidth);
 
-        this.playerIcon.setBackground(this.player.getSprite());
+        this.playerIcon.setBackground(new Sprite(this.player.getSprite()));
         this.playerIcon.resize(
                 (int) (this.width * 0.25f),
                 (int) (this.width * 0.25f));
