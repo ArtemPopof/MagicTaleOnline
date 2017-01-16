@@ -96,25 +96,35 @@ public class Receiver implements Runnable {
                             break;
                         case 1:
                             Player player = new Player();
-                            /*
-                                private int currentHealth;
-                                private int maxHealth;
-                                private float speed;
-                                private int attack;
-                                private boolean isDead;
-                                private int currentLevel;
-                                private int xpForNextLevel;
-                                private int xp;
-                             */
+
+                            int currentHealth = data.getInt();
+                            int maxHealth = data.getInt();
+                            float speed = data.getFloat();
+                            int attack = data.getInt();
+                            byte isDead = data.get();
+                            int currentLevel = data.getInt();
+                            int xpForNextLevel = data.getInt();
+                            int xp = data.getInt();
+
+                            System.out.println();
+                            System.out.println(currentHealth);
+                            System.out.println(maxHealth);
+                            System.out.println(speed);
+                            System.out.println(attack);
+                            System.out.println(isDead);
+                            System.out.println(currentLevel);
+                            System.out.println(xpForNextLevel);
+                            System.out.println(xp);
+
                             player.setTimestamp(timestamp);
-                            player.setCurrentHealth(data.getInt());
-                            player.setMaxHealth(data.getInt());
-                            player.setSpeed(data.getFloat());
-                            player.setAttack(data.getInt());
-                            player.setDead(data.get());
-                            player.setCurrentLevel(data.getInt());
-                            player.setXpForNextLevel(data.getInt());
-                            player.setXp(data.getInt());
+                            player.setCurrentHealth(currentHealth);
+                            player.setMaxHealth(maxHealth);
+                            player.setSpeed(speed);
+                            player.setAttack(attack);
+                            player.setDead(isDead);
+                            player.setCurrentLevel(currentLevel);
+                            player.setXpForNextLevel(xpForNextLevel);
+                            player.setXp(xp);
                             playerUpdates.add(player);
                             break;
                         default:

@@ -73,9 +73,9 @@ public class Player extends GameCharacter implements Constants, Serializable {
     public void update() {
         super.update();
 
-        System.out.println("EXP: " + getXp());
-        System.out.println("LVL: " + getLevel());
-        System.out.println("MAXHP: " + getMaxHealth());
+//        System.out.println("EXP: " + getXp());
+//        System.out.println("LVL: " + getLevel());
+//        System.out.println("MAXHP: " + getMaxHealth());
 
         //TODO do not left it undone
 //        this.x = 800 / 2 + ((ClientGame) ClientGame.getInstance()).getCameraX();

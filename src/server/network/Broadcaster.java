@@ -52,26 +52,35 @@ public class Broadcaster {
         byte[] datagram = new byte[datagramSize];
         ByteBuffer datagramBuffer = ByteBuffer.wrap(datagram);
 
-        /*
-        private int currentHealth;
-        private int maxHealth;
-        private float speed;
-        private int attack;
-        private boolean isDead;
-        private int currentLevel;
-        private int xpForNextLevel;
-        private int xp;
-         */
+        int currentHealth = player.getCurrentHealth();
+        int maxHealth = player.getMaxHealth();
+        float speed = player.getSpeed();
+        int attack = player.getAttack();
+        byte isDead = (byte) (player.isDead() ? 1 : 0);
+        int currentLevel = player.getLevel();
+        int xpForNextLevel = player.getExperienceForNextLevel();
+        int xp = player.getXp();
+
         datagramBuffer.put(type);
         datagramBuffer.putLong(timestamp);
-        datagramBuffer.putInt(player.getCurrentHealth());
-        datagramBuffer.putInt(player.getMaxHealth());
-        datagramBuffer.putFloat(player.getSpeed());
-        datagramBuffer.putInt(player.getAttack());
-        datagramBuffer.put((byte) (player.isDead() ? 1 : 0));
-        datagramBuffer.putInt(player.getLevel());
-        datagramBuffer.putInt(player.getExperienceForNextLevel());
-        datagramBuffer.putInt(player.getXp());
+        datagramBuffer.putInt(currentHealth);
+        datagramBuffer.putInt(maxHealth);
+        datagramBuffer.putFloat(speed);
+        datagramBuffer.putInt(attack);
+        datagramBuffer.put(isDead);
+        datagramBuffer.putInt(currentLevel);
+        datagramBuffer.putInt(xpForNextLevel);
+        datagramBuffer.putInt(xp);
+
+        System.out.println();
+        System.out.println(currentHealth);
+        System.out.println(maxHealth);
+        System.out.println(speed);
+        System.out.println(attack);
+        System.out.println(isDead);
+        System.out.println(currentLevel);
+        System.out.println(xpForNextLevel);
+        System.out.println(xp);
 
         // подписываем датаграмму
         byte sign = datagram[0];
