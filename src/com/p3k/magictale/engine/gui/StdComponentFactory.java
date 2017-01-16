@@ -167,7 +167,8 @@ public class StdComponentFactory extends ComponentFactory {
 
     @Override
     public Inventory createInventory(Player player) {
-        return new Inventory(inventory, createText("Inventory", "big"), player);
+        Text text = createText("Inventory", "regular");
+        return new Inventory(inventory, text, player);
     }
 
     @Override

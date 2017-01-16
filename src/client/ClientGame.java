@@ -59,9 +59,6 @@ public class ClientGame extends AbstractGame implements Constants {
     private boolean isMouseLeftReleased = false;
     private boolean isMouseRightReleased = false;
     private boolean isInFullScreenMode = false;
-    private int score = 0;
-
-    private Cursor cursor;
 
     private ClientGame(String ip, String nickname) throws RemoteException, NotBoundException {
         initDisplay();
@@ -83,18 +80,11 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initLevelManager();
 
-        // INITIALIZING CURSOR
-        try {
-            this.cursor = ResourceManager.getInstance(true).loadCursor("res/cursor.png");
-
-            Mouse.setNativeCursor(this.cursor);
-        } catch (Exception e) {
-            System.err.println("Error loading cursor");
-        }
-
         initSoundManager();
 
         initObjectManager();
+
+        Mouse.setGrabbed(true);
 
         initGuiManager();
 

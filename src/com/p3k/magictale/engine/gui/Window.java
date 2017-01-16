@@ -18,7 +18,7 @@ public class Window extends Widget {
         this.title.setSize(18);
 
         int padLeft =  (int) (  this.width * 0.15f);
-        int padTop  =  (int) (- this.height * 0.03f);
+        int padTop  =  (int) (- this.height * 0.1f);
 
         this.title.move(padLeft, padTop);
 
