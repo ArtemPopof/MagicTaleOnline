@@ -106,15 +106,15 @@ public class Receiver implements Runnable {
                             int xpForNextLevel = data.getInt();
                             int xp = data.getInt();
 
-                            System.out.println();
-                            System.out.println(currentHealth);
-                            System.out.println(maxHealth);
-                            System.out.println(speed);
-                            System.out.println(attack);
-                            System.out.println(isDead);
-                            System.out.println(currentLevel);
-                            System.out.println(xpForNextLevel);
-                            System.out.println(xp);
+//                            System.out.println();
+//                            System.out.println(currentHealth);
+//                            System.out.println(maxHealth);
+//                            System.out.println(speed);
+//                            System.out.println(attack);
+//                            System.out.println(isDead);
+//                            System.out.println(currentLevel);
+//                            System.out.println(xpForNextLevel);
+//                            System.out.println(xp);
 
                             player.setTimestamp(timestamp);
                             player.setCurrentHealth(currentHealth);

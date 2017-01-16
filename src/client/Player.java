@@ -57,6 +57,10 @@ public class Player {
         isDead = dead != 0;
     }
 
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
     public int getCurrentLevel() {
         return currentLevel;
     }
