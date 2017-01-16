@@ -373,6 +373,12 @@ public class ResourceManager {
                         charType = CharacterTypes.BAT_BOT;
                     }
 
+                    if (nextAnimations.size() >= 6) {
+                        // there are death animation
+                        nextAnimations.get(5).setShouldStartOver(false);
+                        nextAnimations.get(5).setLooped(false);
+                    }
+
                     serverAnimations.put(charType, nextAnimations);
 
                 }
