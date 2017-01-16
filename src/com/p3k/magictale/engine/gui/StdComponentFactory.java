@@ -4,12 +4,11 @@ package com.p3k.magictale.engine.gui;
  * Created by jorgen on 14.12.16.
  */
 
+import client.Player;
 import com.p3k.magictale.engine.Utils;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.graphics.SpriteSheet;
-import com.p3k.magictale.engine.gui.fonts.Font;
 import com.p3k.magictale.engine.gui.fonts.FontManager;
-import com.p3k.magictale.game.Characters.Player;
 import common.remoteInterfaces.GameController;
 
 import java.awt.image.BufferedImage;
@@ -110,7 +109,7 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     @Override
-    public StatusBar createStatusBar(GameController player) {
+    public StatusBar createStatusBar(Player player) {
         return new StatusBar(
                 new Sprite(statusBar.getTextureId(),
                         statusBar.getWidth(),
@@ -119,7 +118,7 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     @Override
-    public ActionBar createActionBar(GameController player) {
+    public ActionBar createActionBar(Player player) {
         return new ActionBar(
                 new Sprite(actionBar.getTextureId(),
                         actionBar.getWidth(),
@@ -167,7 +166,7 @@ public class StdComponentFactory extends ComponentFactory {
     }
 
     @Override
-    public Inventory createInventory(GameController player) {
+    public Inventory createInventory(Player player) {
         return new Inventory(inventory, createText("Inventory", "big"), player);
     }
 

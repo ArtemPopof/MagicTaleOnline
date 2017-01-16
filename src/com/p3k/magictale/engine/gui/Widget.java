@@ -21,8 +21,11 @@ public class Widget extends MComponent {
         super(parent);
 
         this.background = background;
-        this.resize((int) background.getWidth(),
+
+        if ( this.background != null ) {
+            this.resize((int) background.getWidth(),
                     (int) background.getHeight());
+        }
     }
 
     @Override
@@ -30,7 +33,9 @@ public class Widget extends MComponent {
         glPushMatrix();
 
         glTranslatef(this.x, this.y, 0);
-        background.render();
+        if ( background != null) {
+            background.render();
+        }
 
         children.forEach(child -> {
             child.render();
@@ -48,8 +53,10 @@ public class Widget extends MComponent {
 
     @Override
     protected void onResized() {
-        this.background.setWidth(width);
-        this.background.setHeight(height);
+        if ( background != null ) {
+            this.background.setWidth(width);
+            this.background.setHeight(height);
+        }
     }
 
     @Override

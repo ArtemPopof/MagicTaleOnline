@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.gui;
 
 import client.ClientGame;
+import client.Player;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
 import common.remoteInterfaces.GameController;
@@ -20,14 +21,12 @@ public class GuiManager extends MComponent implements Constants {
     private ComponentFactory factory;
     private Map<String, MComponent> objects;
 
-    private GameController playerController; // An user of all this stuff
+    private Player playerController; // An user of all this stuff
 
     private Text mousePosition;
-
-    private Text score;
     private Text fps;
 
-    public GuiManager(GameController player) {
+    public GuiManager(Player player) {
         super(null);
 
         Logger.log("GuiManager here!", Logger.DEBUG);
@@ -169,6 +168,8 @@ public class GuiManager extends MComponent implements Constants {
                 }
             }
         }
+
+        this.objects.get("statusBar").update();
 
     }
 

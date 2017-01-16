@@ -1,5 +1,6 @@
 package com.p3k.magictale.engine.gui;
 
+import client.Player;
 import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.engine.graphics.Sprite;
 import common.remoteInterfaces.GameController;
@@ -11,20 +12,27 @@ import java.rmi.RemoteException;
  */
 public class StatusBar extends Widget {
 
-    GameController player;
-    Widget hpBar;
+    Player player;
     Widget playerIcon;
+    Widget hpBar;
+    Widget xpBar;
+    Text playerLevel;
 
     /**
      * Creates player statusbar
      * @param sprite Status bar sprite
      * @param player Player to get status
      */
-    public StatusBar(Sprite sprite, GameController player) {
+    public StatusBar(Sprite sprite, Player player) {
         super(null, sprite);
 
         this.player = player;
+
+        // XP and HP bars
         this.hpBar = new Widget(this, new Sprite(0.8f, 0.3f, 0.3f,
+                    this.width,
+                    this.height * 0.29f));
+        this.xpBar = new Widget(this, new Sprite(0.3f, 0.8f, 0.3f,
                     this.width,
                     this.height * 0.29f));
 
@@ -32,14 +40,27 @@ public class StatusBar extends Widget {
         float paddingTop  =  (-this.height * 0.14f); // 0.9f - bar height
         hpBar.move(paddingLeft, paddingTop);
 
-        //this.playerIcon = new Widget(this, this.player.getSprite());
+        paddingTop = (-this.height * 1.05f);
+        xpBar.move(paddingLeft, paddingTop);
 
-        paddingLeft = (this.width * 0.08f);
-        paddingTop = (-this.height * 0.08f);
-        //playerIcon.move(paddingLeft, paddingTop);
+        // PLAYER ICON
+        this.playerIcon = new Widget(this, this.player.getSprite());
 
-        //this.put(playerIcon);
+        paddingLeft = -2.0f;
+        paddingTop =  4.0f;
+        playerIcon.move(paddingLeft, paddingTop);
+
+        ComponentFactory factory = new StdComponentFactory();
+
+        // PLAYER LEVEL TEXT
+        this.playerLevel = factory.createText("Level: ");
+        this.playerLevel.move(this.x + 7.0f, -this.height - 12.0f);
+
+
         this.put(hpBar);
+        this.put(xpBar);
+        this.put(playerLevel);
+        this.put(playerIcon);
     }
 
     @Override
@@ -47,23 +68,26 @@ public class StatusBar extends Widget {
         super.update();
 
         float percent;
-        try {
-            percent = this.player.getHealth() / (float) this.player.getMaxHealth();
+        percent = this.player.getCurrentHealth() / (float) this.player.getMaxHealth();
 
-            Logger.log("HP BAR WIDTH Percent: " + percent, Logger.DEBUG);
+        int barWidth = (int) (this.width * 0.52f * percent);
+        barWidth = Math.max(barWidth, 2);
 
-            int barWidth = (int) (this.width * 0.78f * percent);
-            barWidth = Math.max(barWidth, 4);
+        this.hpBar.setWidth(barWidth);
 
-            this.hpBar.setWidth(barWidth);
+        percent = this.player.getXp() / (float) this.player.getXpForNextLevel();
 
-            //this.playerIcon.setBackground(this.player.getSprite());
-            //this.playerIcon.setWidth((int) (playerIcon.getWidth() * 0.60f));
-            //this.playerIcon.setHeight((int) (playerIcon.getHeight() * 0.60f));
-        } catch (RemoteException e) {
-            Logger.log("Status bar update failed. Cannot get player info.", Logger.ERROR);
-            e.printStackTrace();
-        }
+        barWidth = (int) (this.width * 0.52f * percent);
+        barWidth = Math.max(barWidth, 2);
+
+        this.xpBar.setWidth(barWidth);
+
+        this.playerIcon.setBackground(this.player.getSprite());
+        this.playerIcon.resize(
+                (int) (this.width * 0.30f),
+                (int) (this.width * 0.30f));
+
+        this.playerLevel.setText("Level: " + player.getCurrentLevel());
     }
 
     @Override

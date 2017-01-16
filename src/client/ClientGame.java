@@ -382,9 +382,7 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     private void initGuiManager() {
-
-        this.guiManager = new GuiManager(this.controller);
-
+        this.guiManager = new GuiManager(this.player);
     }
 
     public Level getLevelManager() {

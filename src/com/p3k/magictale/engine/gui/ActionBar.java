@@ -1,18 +1,17 @@
 package com.p3k.magictale.engine.gui;
 
+import client.Player;
 import com.p3k.magictale.engine.graphics.Sprite;
-import com.p3k.magictale.game.Characters.Player;
-import common.remoteInterfaces.GameController;
 
 /**
  * Created by jorgen on 20.12.16.
  */
 public class ActionBar extends Widget {
 
-    private GameController player;
+    private Player player;
     private boolean fixed;
 
-    public ActionBar(Sprite background, GameController player) {
+    public ActionBar(Sprite background, Player player) {
         super(null, background);
 
         this.player = player;
@@ -36,7 +35,7 @@ public class ActionBar extends Widget {
         return fixed;
     }
 
-    public void setPlayer(GameController player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 }
