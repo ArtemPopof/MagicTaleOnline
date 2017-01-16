@@ -19,17 +19,24 @@ public class Receiver implements Runnable {
     private static Thread thread;
     private final DatagramSocket socket;
     private final ConcurrentLinkedQueue<ReceivedObject> objectsQueue;
+    private final ConcurrentLinkedQueue<DatagramPacket> packets;
+    private final DatagramCatcher catcher;
+    private final Thread catchersThread;
 
     // type (byte) + timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
     private final int bufferSize = 1 + 8 + 16 * 16 + 2;
     private final byte[] buffer = new byte[bufferSize];
-    private final DatagramPacket packet = new DatagramPacket(buffer, bufferSize);
 
     private Receiver() throws SocketException {
         socket = new DatagramSocket(Constants.CLIENT_UDP_PORT);
         // если в течение 2 секунд не придут данные - сервер отключил нас
         socket.setSoTimeout(2000);
         objectsQueue = new ConcurrentLinkedQueue<>();
+        packets = new ConcurrentLinkedQueue<>();
+
+        catcher = new DatagramCatcher(socket);
+        catchersThread = new Thread(catcher);
+        catchersThread.start();
     }
 
     public static Receiver getInstance() {
@@ -50,10 +57,8 @@ public class Receiver implements Runnable {
     @Override
     public void run() {
         while (true) {
-            try {
-                //Logger.log("Wait for packet", Logger.DEBUG);
-                socket.receive(packet);
-                //Logger.log("Got packet " + packet.getLength(), Logger.DEBUG);
+            if (!packets.isEmpty()) {
+                DatagramPacket packet = packets.poll();
 
                 // проверка checksum
                 byte[] bytes = packet.getData();
@@ -67,26 +72,29 @@ public class Receiver implements Runnable {
                     ByteBuffer data = ByteBuffer.wrap(bytes);
                     data.position(0);
 
-                    long timestamp = data.getLong();
-                    byte[] objects = new byte[16 * 16];
-                    data.get(objects);
+                    byte type = data.get();
+                    switch (type) {
+                        case 0:
+                            long timestamp = data.getLong();
+                            byte[] objects = new byte[16 * 16];
+                            data.get(objects);
 
-                    byte count = data.get();
-                    ByteBuffer objectsBuffer = ByteBuffer.wrap(objects);
-                    objectsBuffer.position(0);
-                    for (byte i = 0; i < count; i++) {
-                        int id = objectsBuffer.getInt();
-                        int spriteId = objectsBuffer.getInt();
-                        float x = objectsBuffer.getFloat();
-                        float y = objectsBuffer.getFloat();
+                            byte count = data.get();
+                            ByteBuffer objectsBuffer = ByteBuffer.wrap(objects);
+                            objectsBuffer.position(0);
+                            for (byte i = 0; i < count; i++) {
+                                int id = objectsBuffer.getInt();
+                                int spriteId = objectsBuffer.getInt();
+                                float x = objectsBuffer.getFloat();
+                                float y = objectsBuffer.getFloat();
 
-                        objectsQueue.add(new ReceivedObject(id, spriteId, x, y, timestamp));
+                                objectsQueue.add(new ReceivedObject(id, spriteId, x, y, timestamp));
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
-            } catch (IOException e) {
-                System.err.println(e.getMessage());
-                System.err.println("Server disconnect us");
-                System.exit(1);
             }
         }
     }
@@ -97,6 +105,7 @@ public class Receiver implements Runnable {
             ((ClientGame) ClientGame.getInstance()).updateObject(object.getId(),
                     new ClientObject(object.getSpriteId(), object.getX(), object.getY()));
         }
+//        System.out.println(packets.size());
     }
 
     private class ReceivedObject {
@@ -132,6 +141,29 @@ public class Receiver implements Runnable {
 
         public long getTimestamp() {
             return timestamp;
+        }
+    }
+
+    private class DatagramCatcher implements Runnable {
+        private final DatagramSocket socket;
+
+        DatagramCatcher(DatagramSocket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    DatagramPacket packet = new DatagramPacket(buffer, bufferSize);
+                    socket.receive(packet);
+                    packets.add(packet);
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                    System.err.println("Server disconnect us");
+                    System.exit(1);
+                }
+            }
         }
     }
 }

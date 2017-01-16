@@ -156,18 +156,18 @@ public class ServerGame extends AbstractGame {
 
     private void initObjects() {
 
-        Bot bat = new Bat(300, 300);
+//        Bot bat = new Bat(300, 300);
 
         Bot bot = new Bot(350, 280, 64, 64);
-        Bot bot2 = new Bot(330, 280, 64, 64);
-        Bat bot3 = new Bat(330, 240);
-        Bat bot4 = new Bat(350, 200);
+//        Bot bot2 = new Bot(330, 280, 64, 64);
+//        Bat bot3 = new Bat(330, 240);
+//        Bat bot4 = new Bat(350, 200);
 
-        objects.put(this.objects.size(), bat);
+//        objects.put(this.objects.size(), bat);
         objects.put(this.objects.size(), bot);
        // objects.put(this.objects.size(), bot2);
      //   objects.put(this.objects.size(), bot3);
-        objects.put(this.objects.size(), bot4);
+//        objects.put(this.objects.size(), bot4);
 
     }
 

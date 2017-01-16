@@ -61,6 +61,8 @@ public class Broadcaster {
             byte[] datagram = new byte[datagramSize];
 
             ByteBuffer datagramBuffer = ByteBuffer.wrap(datagram);
+            // type == 0 -> objects update
+            datagramBuffer.put((byte) 0);
             datagramBuffer.putLong(timestamp);
             datagramBuffer.put(bytes, i, length);
             datagramBuffer.put((byte) (length / 16));
@@ -92,7 +94,7 @@ public class Broadcaster {
                 packet.setPort(Constants.CLIENT_UDP_PORT);
 
                 socket.send(packet);
-                System.out.println("Send packet " + packet.getAddress().getHostAddress() + " " + packet.getPort());
+//                System.out.println("Send packet " + packet.getAddress().getHostAddress() + " " + packet.getPort());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
