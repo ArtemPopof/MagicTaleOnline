@@ -428,7 +428,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
     // обновляем (или добавляем) полученный объект в список клиентских объектов
     public void updateObject(int id, ClientObject object) {
-        if (!clientObjects.containsKey(id) || clientObjects.get(id).getTimestamp() < object.getTimestamp()) {
+        if (!clientObjects.containsKey(id) || clientObjects.get(id).getTimestamp() <= object.getTimestamp()) {
             clientObjects.put(id, object);
         }
     }
