@@ -26,6 +26,7 @@ public class GuiManager extends MComponent implements Constants {
 
     private Player playerController; // An user of all this stuff
 
+    private Text gameOverText;
     private Text mousePosition;
     private Text fps;
 
@@ -49,9 +50,16 @@ public class GuiManager extends MComponent implements Constants {
 
         this.mousePosition.setSize(16);
 
+        this.gameOverText = factory.createText("GAME OVER. BUT YOU ARE AWESOME!", "big");
+        this.gameOverText.move(
+                WINDOW_WIDTH / 2 - (this.gameOverText.getWidth() / 2),
+                WINDOW_HEIGHT / 2 + (this.gameOverText.getHeight() / 2));
+        this.gameOverText.hide();
+
         this.mousePosition = factory.createText("Mouser position: ", "regular");
         this.fps = factory.createText("FPS: ");
 
+        this.add("gameOverText", gameOverText);
         this.add("mousePosition", mousePosition);
         this.add("fpsCounter", fps);
 
@@ -190,6 +198,10 @@ public class GuiManager extends MComponent implements Constants {
         }
 
         this.objects.get("statusBar").update();
+
+        if ( this.playerController.isDead() ) {
+            this.gameOverText.show();
+        }
 
         if ( this.cursor != null ) {
             this.cursor.move(Mouse.getX(), Mouse.getY());
