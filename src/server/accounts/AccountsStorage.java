@@ -26,7 +26,11 @@ public class AccountsStorage {
     }
 
     public Account getAccount(String nickname) {
-        Account account = registeredAccounts.getOrDefault(nickname, new Account(nickname));
+        Account account = registeredAccounts.get(nickname);
+        if (account == null) {
+            account = new Account(nickname);
+            System.out.println("New account created: " + nickname);
+        }
         registeredAccounts.putIfAbsent(nickname, account);
         return account;
     }
