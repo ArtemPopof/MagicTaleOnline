@@ -151,6 +151,8 @@ public class ServerGame extends AbstractGame {
 
         // отправка данных подключенным клиентам
         broadcaster.sendObjects(serverObjects.entrySet());
+        // отправка статуса плееров подключенным игрокам
+        ActiveAccounts.getInstance().tick();
 
     }
 

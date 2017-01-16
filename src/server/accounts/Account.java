@@ -2,6 +2,7 @@ package server.accounts;
 
 import com.p3k.magictale.game.Characters.Player;
 import server.ServerGame;
+import server.network.Broadcaster;
 
 public class Account {
     private final Player playerObject;
@@ -38,5 +39,9 @@ public class Account {
 
     public void updateLastAccess() {
         lastAccessTime = System.currentTimeMillis();
+    }
+
+    public void tick() {
+        Broadcaster.getInstance().sendPlayerStatus(playerObject, ip);
     }
 }

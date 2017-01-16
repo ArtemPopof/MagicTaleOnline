@@ -1,13 +1,16 @@
 package server.network;
 
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.game.Characters.Player;
 import server.ServerObject;
 import server.accounts.ActiveAccounts;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,6 +21,10 @@ public class Broadcaster {
     private static Broadcaster broadcaster;
     private final DatagramSocket socket;
     private final ActiveAccounts activeAccounts;
+
+    private final int dataSize = 16 * 16;
+    // type (byte), timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
+    private final int datagramSize = 1 + 8 + dataSize + 2;
 
     private Broadcaster() throws SocketException {
         socket = new DatagramSocket(Constants.SERVER_UDP_PORT);
@@ -37,6 +44,54 @@ public class Broadcaster {
         return broadcaster;
     }
 
+    public void sendPlayerStatus(Player player, String ip) {
+        // тип "обновление статуса игрока"
+        byte type = 1;
+        long timestamp = System.currentTimeMillis();
+
+        byte[] datagram = new byte[datagramSize];
+        ByteBuffer datagramBuffer = ByteBuffer.wrap(datagram);
+
+        /*
+        private int currentHealth;
+        private int maxHealth;
+        private float speed;
+        private int attack;
+        private boolean isDead;
+        private int currentLevel;
+        private int xpForNextLevel;
+        private int xp;
+         */
+        datagramBuffer.put(type);
+        datagramBuffer.putLong(timestamp);
+        datagramBuffer.putInt(player.getCurrentHealth());
+        datagramBuffer.putInt(player.getMaxHealth());
+        datagramBuffer.putFloat(player.getSpeed());
+        datagramBuffer.putInt(player.getAttack());
+        datagramBuffer.put((byte) (player.isDead() ? 1 : 0));
+        datagramBuffer.putInt(player.getLevel());
+        datagramBuffer.putInt(player.getExperienceForNextLevel());
+        datagramBuffer.putInt(player.getXp());
+
+        // подписываем датаграмму
+        byte sign = datagram[0];
+        for (int j = 1; j < datagramSize - 1; j++) {
+            sign ^= datagram[j];
+        }
+        datagram[datagramSize - 1] = sign;
+
+        // создаём DatagramPacket
+        DatagramPacket packet = new DatagramPacket(datagram, datagramSize);
+        try {
+            packet.setAddress(InetAddress.getByName(ip));
+            packet.setPort(Constants.CLIENT_UDP_PORT);
+
+            socket.send(packet);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void sendObjects(Set<Map.Entry<Integer, ServerObject>> values) {
         long timestamp = System.currentTimeMillis();
 
@@ -52,12 +107,9 @@ public class Broadcaster {
 
         byte[] bytes = buffer.array();
         // упаковываем до 16 объектов в датаграмму
-        int dataSize = 16 * 16;
         for (int i = 0; i < bytes.length; i += dataSize) {
             int length = Math.min(dataSize, bytes.length - i);
 
-            // type (byte), timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
-            int datagramSize = 1 + 8 + dataSize + 2;
             byte[] datagram = new byte[datagramSize];
 
             ByteBuffer datagramBuffer = ByteBuffer.wrap(datagram);
