@@ -260,9 +260,9 @@ public class Bot extends GameCharacter {
     @Override
     public void update() {
 
-        this.x++;
-
         super.update();
+
+        this.processInput();
 
         if (isDead()) {
             return;
