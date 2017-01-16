@@ -100,7 +100,7 @@ public class Player {
     public void setSprite(Sprite sprite) {
         if (sprite != null) {
             this.sprite = sprite;
-            System.out.println("Sprite updated: " + sprite.getTextureId());
+//            System.out.println("Sprite updated: " + sprite.getTextureId());
         }
     }
 }
