@@ -61,6 +61,8 @@ public class ClientGame extends AbstractGame implements Constants {
     private boolean isInFullScreenMode = false;
 
     private ClientGame(String ip, String nickname) throws RemoteException, NotBoundException {
+        tickTimeMills = 20;
+        System.out.println("Client tickrate: " + 1000 / this.tickTimeMills + " t/s");
         initDisplay();
         initGl();
 

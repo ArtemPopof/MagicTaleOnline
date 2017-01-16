@@ -1,10 +1,7 @@
 package server;
 
-import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.graphics.GameCharacter;
 import com.p3k.magictale.engine.graphics.GameObject;
-import com.p3k.magictale.engine.graphics.Map.TileMap;
-import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.AbstractGame;
 import com.p3k.magictale.game.Characters.Bat;
@@ -22,45 +19,32 @@ import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.p3k.magictale.engine.Constants.MAP_HEIGHT;
-import static com.p3k.magictale.engine.Constants.MAP_WIDTH;
-import static com.p3k.magictale.engine.Constants.TILE_SIZE;
+import static com.p3k.magictale.engine.Constants.*;
 
 public class ServerGame extends AbstractGame {
-    private ServerSocket serverSocket;
-    private final ActiveAccounts activeAccounts;
-    private final Broadcaster broadcaster;
-    private final ControlHandler handler;
-
-    private Level levelManager;
-    private ObjectManager objectManager;
-    private final String mapName = "forest_v2";
-    private boolean send = true;
-
-
     /**
      * container for all single-sprite objects in game
      * Integer - object id
      * GameObject - reference
      */
     protected final ConcurrentHashMap<Integer, GameObject> objects;
+    private final ActiveAccounts activeAccounts;
+    private final Broadcaster broadcaster;
+    private final ControlHandler handler;
+    private final String mapName = "forest_v2";
+    private Level levelManager;
+    private ObjectManager objectManager;
     private HashMap<Integer, ServerObject> serverObjects;
 
-    private int playerIndex;
-
-
     private ServerGame() throws RemoteException, AlreadyBoundException, MalformedURLException {
-
+        System.out.println("Server tickrate: " + 1000 / this.tickTimeMills + " t/s");
         // TODO: init all
         serverObjects = new HashMap<>();
         this.objects = new ConcurrentHashMap<>();
@@ -79,11 +63,11 @@ public class ServerGame extends AbstractGame {
 
         initObjects();
 /**
-        try {
-            initObjects();
-        } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
-            e.printStackTrace();
-        }
+ try {
+ initObjects();
+ } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
+ e.printStackTrace();
+ }
 
  **/
     }
@@ -150,17 +134,10 @@ public class ServerGame extends AbstractGame {
 //            }
 //        }
 
-        if (send) {
-            // отправка данных подключенным клиентам
-            broadcaster.sendObjects(serverObjects.entrySet());
-            // отправка статуса плееров подключенным игрокам
-            ActiveAccounts.getInstance().tick();
-
-            send = false;
-        } else {
-            send = true;
-        }
-
+        // отправка данных подключенным клиентам
+        broadcaster.sendObjects(serverObjects.entrySet());
+        // отправка статуса плееров подключенным игрокам
+        activeAccounts.tick();
     }
 
     private void initObjects() {
@@ -172,10 +149,10 @@ public class ServerGame extends AbstractGame {
 //        Bat bot3 = new Bat(330, 240);
 //        Bat bot4 = new Bat(350, 200);
 
-       // objects.put(this.objects.size(), bat);
-            objects.put(this.objects.size(), bot);
-       // objects.put(this.objects.size(), bot2);
-     //   objects.put(this.objects.size(), bot3);
+        // objects.put(this.objects.size(), bat);
+        objects.put(this.objects.size(), bot);
+        // objects.put(this.objects.size(), bot2);
+        //   objects.put(this.objects.size(), bot3);
 //        objects.put(this.objects.size(), bot4);
 
     }
@@ -210,28 +187,28 @@ public class ServerGame extends AbstractGame {
     }
 
     /**
-    private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
-        Player player = new Player(100, 520);
+     private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
+     Player player = new Player(100, 520);
 
-        synchronized (this.objects) {
-            this.playerIndex = this.objects.size();
-            this.objects.put(this.playerIndex, player);
-        }
+     synchronized (this.objects) {
+     this.playerIndex = this.objects.size();
+     this.objects.put(this.playerIndex, player);
+     }
 
-        // test bot
-        //Bot testBot = new Bot(500, 400, 64, 64);
-        //objects.add(testBot);
+     // test bot
+     //Bot testBot = new Bot(500, 400, 64, 64);
+     //objects.add(testBot);
 
-        // test bot
-        // Bot testBot2 = new Bot(200, 354, 64, 64);
-        //objects.add(testBot2);
+     // test bot
+     // Bot testBot2 = new Bot(200, 354, 64, 64);
+     //objects.add(testBot2);
 
-        // test bot
-        Bot testBot3 = new Bot(252, 272, 64, 64);
-        this.objects.put(this.objects.size(), testBot3);
+     // test bot
+     Bot testBot3 = new Bot(252, 272, 64, 64);
+     this.objects.put(this.objects.size(), testBot3);
 
-    }
-    **/
+     }
+     **/
 
     /**
      * Is anyone is now in given cell
@@ -308,14 +285,6 @@ public class ServerGame extends AbstractGame {
      */
     public ConcurrentHashMap<Integer, GameObject> getObjects() {
         return this.objects;
-    }
-
-    public Player getPlayer() {
-        return (Player) this.objects.get(this.playerIndex);
-    }
-
-    public void setPlayer(Player player) {
-        this.objects.put(this.playerIndex, player);
     }
 
     /**

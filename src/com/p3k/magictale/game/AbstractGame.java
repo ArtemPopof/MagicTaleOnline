@@ -15,7 +15,7 @@ public abstract class AbstractGame {
     /**
      * mainloop tick time between update (maybe render) actions
      */
-    private final long tickTimeMills;
+    protected long tickTimeMills;
     /**
      * game global run state
      */
@@ -28,8 +28,7 @@ public abstract class AbstractGame {
      */
     protected AbstractGame() {
         this.isRunning = true;
-        this.tickTimeMills = 20;
-        System.out.println("Server tickrate: " + 1000 / this.tickTimeMills + " t/s");
+        this.tickTimeMills = 40;
     }
 
     public static AbstractGame getInstance() {
