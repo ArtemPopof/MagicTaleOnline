@@ -60,4 +60,9 @@ public class ActiveAccounts {
     public Account getAccount(String ip) {
         return accountsInUse.getOrDefault(ip, null);
     }
+
+    public void tick() {
+        accountsInUse.values().forEach(Account::tick);
+        System.out.println("Send status to " + accountsInUse.size() + " players");
+    }
 }
