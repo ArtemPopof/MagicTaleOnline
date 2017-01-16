@@ -493,6 +493,7 @@ public class ClientGame extends AbstractGame implements Constants {
             this.player.setCurrentLevel(player.getCurrentLevel());
             this.player.setXpForNextLevel(player.getXpForNextLevel());
             this.player.setXp(player.getXp());
+            this.player.setSprite(ResourceManager.getInstance(true).getSprite(playerIndex));
         }
     }
 }
