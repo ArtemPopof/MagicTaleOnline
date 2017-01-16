@@ -90,8 +90,9 @@ public class ClientGame extends AbstractGame implements Constants {
             } catch (LWJGLException e) {
                 e.printStackTrace();
             }
+        } else {
+            Mouse.setGrabbed(true);
         }
-        Mouse.setGrabbed(true);
 
         initGuiManager();
 
