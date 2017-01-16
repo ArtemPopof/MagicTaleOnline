@@ -6,6 +6,7 @@ import com.p3k.magictale.game.Characters.CharacterTypes;
  * Created by jorgen on 16.01.17.
  */
 public class Player {
+
     enum MoveDirection {
         NONE,
         MOVE_RIGHT,
@@ -23,7 +24,7 @@ public class Player {
     private int attack;
     private boolean isDead;
     private int currentLevel;
-    private int gainedExperience;
+    private int xpForNextLevel;
     private int xp;
 
     public int getCurrentState() {
@@ -98,19 +99,19 @@ public class Player {
         this.currentLevel = currentLevel;
     }
 
-    public int getGainedExperience() {
-        return gainedExperience;
-    }
-
-    public void setGainedExperience(int gainedExperience) {
-        this.gainedExperience = gainedExperience;
-    }
-
     public int getXp() {
         return xp;
     }
 
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    public int getXpForNextLevel() {
+        return xpForNextLevel;
+    }
+
+    public void setXpForNextLevel(int xpForNextLevel) {
+        this.xpForNextLevel = xpForNextLevel;
     }
 }
