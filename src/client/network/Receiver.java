@@ -3,7 +3,6 @@ package client.network;
 import client.ClientGame;
 import client.ClientObject;
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.engine.Logger;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -21,8 +20,8 @@ public class Receiver implements Runnable {
     private final DatagramSocket socket;
     private final ConcurrentLinkedQueue<ReceivedObject> objectsQueue;
 
-    // timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
-    private final int bufferSize = 8 + 16 * 16 + 2;
+    // type (byte) + timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
+    private final int bufferSize = 1 + 8 + 16 * 16 + 2;
     private final byte[] buffer = new byte[bufferSize];
     private final DatagramPacket packet = new DatagramPacket(buffer, bufferSize);
 

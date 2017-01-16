@@ -56,8 +56,8 @@ public class Broadcaster {
         for (int i = 0; i < bytes.length; i += dataSize) {
             int length = Math.min(dataSize, bytes.length - i);
 
-            // timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
-            int datagramSize = 8 + dataSize + 2;
+            // type (byte), timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
+            int datagramSize = 1 + 8 + dataSize + 2;
             byte[] datagram = new byte[datagramSize];
 
             ByteBuffer datagramBuffer = ByteBuffer.wrap(datagram);
