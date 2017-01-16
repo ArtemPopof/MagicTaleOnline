@@ -1,5 +1,7 @@
 package client;
 
+import com.p3k.magictale.engine.graphics.Sprite;
+
 /**
  * Created by jorgen on 16.01.17.
  */
@@ -13,6 +15,7 @@ public class Player {
     private int xpForNextLevel;
     private int xp;
     private long timestamp = 0;
+    private Sprite sprite;
 
     public int getCurrentHealth() {
         return currentHealth;
@@ -84,5 +87,13 @@ public class Player {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
     }
 }

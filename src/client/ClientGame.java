@@ -429,6 +429,7 @@ public class ClientGame extends AbstractGame implements Constants {
     public void updatePlayer(Player player) {
         if (this.player.getTimestamp() < player.getTimestamp()) {
             this.player = player;
+            this.player.setSprite(ResourceManager.getInstance(true).getSprite(playerIndex));
         }
     }
 }
