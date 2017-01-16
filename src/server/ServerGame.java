@@ -363,7 +363,7 @@ public class ServerGame extends AbstractGame {
 
         Player newPlayer = new Player(500, 200);
 
-        //objects.put(newPlayer.getId(), newPlayer);
+        objects.put(newPlayer.getId(), newPlayer);
 
         return newPlayer;
     }
