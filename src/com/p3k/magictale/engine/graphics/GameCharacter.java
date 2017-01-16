@@ -3,14 +3,9 @@ package com.p3k.magictale.engine.graphics;
 import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.gui.ComponentFactory;
-import com.p3k.magictale.engine.gui.StdComponentFactory;
-import com.p3k.magictale.engine.gui.Text;
-import com.p3k.magictale.game.AbstractGame;
+import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Characters.CharacterTypes;
 import server.ServerGame;
-import com.sun.security.ntlm.Client;
-import server.ServerGame;
-import server.ServerObject;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -22,14 +17,14 @@ import static org.lwjgl.opengl.GL11.*;
  * GameCharacter class represent any living thing.
  * NPC or Players classes should be derived from
  * this one.
- *
+ * <p>
  * Created by artem96 on 06.12.16.
  */
 public class GameCharacter extends GameObject implements Serializable {
 
     protected static final int WAITING_STATE = 0;
     protected static final int RIGHT_MOVE_STATE = 1;
-    protected static final int LEFT_MOVE_STATE =  2;
+    protected static final int LEFT_MOVE_STATE = 2;
     protected static final int UP_MOVE_STATE = 3;
     protected static final int DOWN_MOVE_STATE = 4;
     protected static final int DEATH_STATE = 5;
@@ -40,9 +35,8 @@ public class GameCharacter extends GameObject implements Serializable {
 
     /**
      * Length of full hp bar
-     *
+     * <p>
      * in pixels.
-     *
      */
     private static final int FULL_HP_BAR_LENGTH = 40;
 
@@ -60,7 +54,7 @@ public class GameCharacter extends GameObject implements Serializable {
     /**
      * Unique identifier for current class.
      * for derived classes it value must be changed.
-     *
+     * <p>
      * exmpl: for Blood Mage class it might be some-
      * thing like BLOOD_MAGE_CHARACTER_ID = 59;
      */
@@ -86,15 +80,13 @@ public class GameCharacter extends GameObject implements Serializable {
     private int layer;
     /**
      * current state of this character
-     *
      */
-    private int currentState;
+    private volatile int currentState;
 
     private boolean isDead = false;
 
     /**
      * Experience gained by killind this mob
-     *
      */
     private int gainedExperience;
 
@@ -110,10 +102,9 @@ public class GameCharacter extends GameObject implements Serializable {
     private int takenHarm;
 
 
-
-
     /**
      * Basic constructor for GameCharacter
+     *
      * @param x
      * @param y
      * @param width
@@ -164,6 +155,14 @@ public class GameCharacter extends GameObject implements Serializable {
         //guiFactory = new StdComponentFactory();
     }
 
+    public static GameCharacter createGameCharacter(float x, float y, float width, float height) {
+        return new GameCharacter(x, y, width, height, true);
+    }
+
+    public static GameCharacter createServerCharacter(float x, float y, float width, float height) {
+        return new GameCharacter(x, y, width, height, false);
+    }
+
     public int getState() {
         return this.currentState;
     }
@@ -172,6 +171,15 @@ public class GameCharacter extends GameObject implements Serializable {
         this.currentState = state;
     }
 
+    /**
+     * render character
+     */
+//    public void render() {
+//        super.render();
+//
+//        if (this.isHPBarVisible)
+//            renderHPBar();
+//    }
     @Override
     public void update() {
 
@@ -188,11 +196,41 @@ public class GameCharacter extends GameObject implements Serializable {
             this.isAttacking = false;
         }
 
+        // movement
+        /*
+        protected static final int WAITING_STATE = 0;
+    protected static final int RIGHT_MOVE_STATE = 1;
+    protected static final int LEFT_MOVE_STATE =  2;
+    protected static final int UP_MOVE_STATE = 3;
+    protected static final int DOWN_MOVE_STATE = 4;
+    protected static final int DEATH_STATE = 5;
+    protected static final int LEFT_ATTACK_STATE = 6;
+    protected static final int UP_ATTACK_STATE = 7;
+    protected static final int RIGHT_ATTACK_STATE = 8;
+    protected static final int DOWN_ATTACK_STATE = 9;
+         */
+        switch (currentState) {
+            case RIGHT_MOVE_STATE:
+                move(1, 0);
+                break;
+            case LEFT_MOVE_STATE:
+                move(-1, 0);
+                break;
+            case UP_MOVE_STATE:
+                move(0, 1);
+                break;
+            case DOWN_MOVE_STATE:
+                move(0, -1);
+                break;
+            default:
+                break;
+        }
+
         //sync with server
         ((ServerGame) ServerGame.getInstance()).putServerObject(getId(), getSpriteId(), x, y);
 
-       // float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
-       // float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
+        // float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+        // float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
     }
 
     /**
@@ -201,16 +239,6 @@ public class GameCharacter extends GameObject implements Serializable {
     public void processInput() {
 
     }
-
-    /**
-     * render character
-     */
-//    public void render() {
-//        super.render();
-//
-//        if (this.isHPBarVisible)
-//            renderHPBar();
-//    }
 
     /**
      * Render HP Bar on top of char
@@ -225,15 +253,15 @@ public class GameCharacter extends GameObject implements Serializable {
 
             //if (takenHarm > -1) {
 
-             //   Text hitText = guiFactory.createText("Hit: " + takenHarm, "regular");
+            //   Text hitText = guiFactory.createText("Hit: " + takenHarm, "regular");
             //    hitText.setSize(16);
 
             //    hitText.move((this.x - cameraX) + getWidth() /4, this.y - cameraY + HP_BAR_PADDING * 2);
 
             //    hitText.render();
 
-          //      takenHarm = -1;
-           // }
+            //      takenHarm = -1;
+            // }
 
             glTranslatef((this.x - cameraX) + getWidth() / 4, this.y - cameraY + HP_BAR_PADDING, 0);
 
@@ -285,6 +313,11 @@ public class GameCharacter extends GameObject implements Serializable {
         this.x += deltaX;
         this.y += deltaY;
 
+        if (Collision.checkForCollision(this)) {
+            // freeze! collision!
+            this.setX(this.x - deltaX);
+            this.setY(this.y - deltaY);
+        }
     }
 
     /**
@@ -303,7 +336,6 @@ public class GameCharacter extends GameObject implements Serializable {
 
     /**
      * Perform attack action
-     *
      */
     public void doAttack() {
 
@@ -335,7 +367,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
         if (this.isAttacking) {
 
-            for(GameCharacter character : enemies) {
+            for (GameCharacter character : enemies) {
                 if (character.equals(this)) continue;
 
                 character.takeHarm(this.attack, this);
@@ -397,7 +429,7 @@ public class GameCharacter extends GameObject implements Serializable {
      * remove ourself from this game
      */
     public void playDeath() {
-        if ( this.isDead ) {
+        if (this.isDead) {
             return;
         }
 
@@ -422,7 +454,6 @@ public class GameCharacter extends GameObject implements Serializable {
     public boolean isDead() {
         return this.isDead;
     }
-
 
     /**
      * How much expirience will take Player, if
@@ -469,6 +500,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
     /**
      * Get expirience amount for specific level
+     *
      * @return
      */
     public int getExperienceForLevel(int level) {
@@ -495,7 +527,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
     /**
      * Set size for all sprites for this char
-     *
+     * <p>
      * Can be cpu-consuming, so use only when init
      *
      * @param width
@@ -513,15 +545,6 @@ public class GameCharacter extends GameObject implements Serializable {
     public int getSpriteId() {
         return this.animations.get(currentState).getCurrentFrame().getSpriteId();
     }
-
-    public static GameCharacter createGameCharacter(float x, float y, float width, float height) {
-        return new GameCharacter(x, y, width, height, true);
-    }
-
-    public static GameCharacter createServerCharacter(float x, float y, float width, float height) {
-        return new GameCharacter(x, y, width, height, false);
-    }
-
 
 
 }

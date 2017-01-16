@@ -8,8 +8,8 @@ import java.rmi.RemoteException;
  */
 public interface GameController extends Remote {
     /**
-     * @return id of your player
      * @param nickname - player nickname
+     * @return id of your player
      * @throws RemoteException java rmi exception
      */
     int signUp(String nickname) throws RemoteException;
@@ -22,34 +22,28 @@ public interface GameController extends Remote {
     void click(float x, float y) throws RemoteException;
 
     /**
-     * @return player current move direction
+     * @return current state of your player
      * @throws RemoteException java rmi exception
      */
-    MoveDirection getMoveDirection() throws RemoteException;
+    State getPlayerState() throws RemoteException;
+
 
     /**
-     * @param state player move direction
+     * @param state будет установлен твоему игроку
      * @throws RemoteException java rmi exception
      */
-    void setMoveDirection(MoveDirection state) throws RemoteException;
+    void setPlayerState(State state) throws RemoteException;
 
-    /**
-     * @return player current health
-     * @throws RemoteException java rmi exception
-     */
-    int getHealth() throws RemoteException;
-
-    /**
-     * @return player max health
-     * @throws RemoteException java rmi exception
-     */
-    int getMaxHealth() throws RemoteException;
-
-    enum MoveDirection {
-        NONE,
-        MOVE_RIGHT,
-        MOVE_LEFT,
-        MOVE_UP,
-        MOVE_DOWN
-    }
+    enum State {
+        WAITING_STATE,
+        RIGHT_MOVE_STATE,
+        LEFT_MOVE_STATE,
+        UP_MOVE_STATE,
+        DOWN_MOVE_STATE,
+        DEATH_STATE,
+        LEFT_ATTACK_STATE,
+        UP_ATTACK_STATE,
+        RIGHT_ATTACK_STATE,
+        DOWN_ATTACK_STATE
+    };
 }

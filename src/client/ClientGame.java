@@ -3,11 +3,10 @@ package client;
 import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
+import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.gui.GuiManager;
-import com.p3k.magictale.engine.enums.Direction;
-
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.AbstractGame;
@@ -166,32 +165,46 @@ public class ClientGame extends AbstractGame implements Constants {
 //        }
 //
 //        boolean isStateChanged = false;
-//
-//        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-//            controller.changeState(UP_MOVE_STATE);
-//            move(0, 1);
-//            setDirection(Direction.UP);
-//            isStateChanged = true;
-//        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-//            changeState(DOWN_MOVE_STATE);
-//            move(0, -1);
-//            setDirection(Direction.DOWN);
-//            isStateChanged = true;
-//        } else {
-//
-//            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-//                changeState(LEFT_MOVE_STATE);
-//                move(-1, 0);
-//                setDirection(Direction.LEFT);
-//                isStateChanged = true;
-//            }
-//            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-//                changeState(RIGHT_MOVE_STATE);
-//                move(1, 0);
-//                setDirection(Direction.RIGHT);
-//                isStateChanged = true;
-//            }
-//        }
+        // Mouse handle
+        this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
+        this.isMouseLeftReleased = this.isMouseLeftPressed && !Mouse.isButtonDown(MOUSE_BTN_LEFT);
+        this.isMouseRightReleased = this.isMouseRightPressed && !Mouse.isButtonDown(MOUSE_BTN_RIGHT);
+        this.isMouseLeftPressed = Mouse.isButtonDown(MOUSE_BTN_LEFT);
+        this.isMouseRightPressed = Mouse.isButtonDown(MOUSE_BTN_RIGHT);
+
+        try {
+            if (!player.isDead()) {
+                if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+                    if (isMouseLeftPressed) {
+                        controller.setPlayerState(GameController.State.UP_ATTACK_STATE);
+                    } else {
+                        controller.setPlayerState(GameController.State.UP_MOVE_STATE);
+                    }
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+                    if (isMouseLeftPressed) {
+                        controller.setPlayerState(GameController.State.DOWN_ATTACK_STATE);
+                    } else {
+                        controller.setPlayerState(GameController.State.DOWN_MOVE_STATE);
+                    }
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                    if (isMouseLeftPressed) {
+                        controller.setPlayerState(GameController.State.LEFT_ATTACK_STATE);
+                    } else {
+                        controller.setPlayerState(GameController.State.LEFT_MOVE_STATE);
+                    }
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                    if (isMouseLeftPressed) {
+                        controller.setPlayerState(GameController.State.RIGHT_ATTACK_STATE);
+                    } else {
+                        controller.setPlayerState(GameController.State.RIGHT_MOVE_STATE);
+                    }
+                } else {
+                    controller.setPlayerState(GameController.State.WAITING_STATE);
+                }
+            }
+        } catch (RemoteException e) {
+            Logger.log(e.getMessage(), Logger.ERROR);
+        }
 //
 //        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 //            //attackSound.play("user/attack_axe.wav");
@@ -210,14 +223,6 @@ public class ClientGame extends AbstractGame implements Constants {
 //        if (!isStateChanged) {
 //            this.animations.get(getState()).pause();
 //        }
-
-
-        // Mouse handle
-        this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
-        this.isMouseLeftReleased = this.isMouseLeftPressed && !Mouse.isButtonDown(MOUSE_BTN_LEFT);
-        this.isMouseRightReleased = this.isMouseRightPressed && !Mouse.isButtonDown(MOUSE_BTN_RIGHT);
-        this.isMouseLeftPressed = Mouse.isButtonDown(MOUSE_BTN_LEFT);
-        this.isMouseRightPressed = Mouse.isButtonDown(MOUSE_BTN_RIGHT);
     }
 
 //    public void update() {

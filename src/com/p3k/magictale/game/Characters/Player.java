@@ -96,26 +96,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
         if (this.isAttacking)
             this.isAttacking = false;
 
-        float deltaX = magX * getSpeed();
-        float deltaY = magY * getSpeed();
-
-        //  x += deltaX;
-        //  y += deltaY;
-
-//        float oldX = ((ClientGame) ClientGame.getInstance()).getCameraX();
-//        float oldY = ((ClientGame) ClientGame.getInstance()).getCameraY();
-
-        this.setX(this.x + deltaX);
-        this.setY(this.y + deltaY);
-
-        if (Collision.checkForCollision(this)) {
-            // freeze! collision!
-            this.setX(this.x - deltaX);
-            this.setY(this.y - deltaY);
-        } else {
-//            ((ClientGame) ClientGame.getInstance()).setCameraX(oldX + deltaX);
-//            ((ClientGame) ClientGame.getInstance()).setCameraY(oldY + deltaY);
-        }
+        super.move(magX, magY);
 
 
     }
