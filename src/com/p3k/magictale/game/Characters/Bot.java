@@ -139,13 +139,13 @@ public class Bot extends GameCharacter {
 
 
     public Bot(float x, float y, float width, float height) {
-        super(x, y, width, height);
+        super(x, y, width, height, false);
 
         // get player animations
         this.type = CharacterTypes.ABSTRACT_BOT;
 
         try {
-        //    this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
+            this.animations = (ArrayList<Animation>) ResourceManager.getInstance(false).getServerAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }

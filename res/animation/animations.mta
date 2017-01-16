@@ -1,0 +1,86 @@
+// Animation file for MagicTaleOnly,
+// edit it if you know what you do 
+
+// Char types:
+// 
+//
+//    ABSTRACT_CHARACTER  - 0
+//    ABSTRACT_PLAYER - 1
+//    ABSTRACT_BOT - 2
+//    BAT_BOT - 3
+//
+//
+//
+//
+//
+// CHAR_TYPE	SPRITE_SHEET_PATH	   WIDTH	HEIGHT		StartId		Length
+//	
+// 1			res/animations/goblin   64		  64	      3000		 300		
+//
+// after that header must be such struct with each animation description:
+//
+// OffsetInSS  Length
+// 		2		11			- WaitAnim
+// 		3 		19			- rightMove
+// 		4 		10			- LeftMove
+//	 	5		5			- UpMove
+//							- DownMove
+//							- DeathAnim
+
+//							- LeftAttack
+//							- RightAttack
+//							- UpAttack
+//							- DownAttack
+//
+//
+//
+//
+//
+# ABSTRACT_CHARACTER_ANIMATIONS
+0 res/animations/goblin/goblin.png 64 64 3000 55
+0 11
+$
+# ABSTRACT_PLAYER_ANIMATIONS
+1 res/animations/goblin/goblin.png 64 64 3000 55
+0 1
+11 8
+33 7
+22 7
+0 7
+44 5
+40 3
+29 3
+18 3
+7 3
+$
+# ABSTRACT_BOT_ANIMATIONS
+2 res/animations/goblin/goblin.png 64 64 3000 55
+0 1
+11 8
+33 7
+22 7
+0 7
+44 5
+40 3
+29 3
+18 3
+7 3
+$
+# BAT_BOT_ANIMATIONS
+3 res/animations/bat/bat.png 32 32 3055 16
+1 3
+5 3
+13 3
+9 3
+1 3
+12 1
+13 3
+9 3
+5 3
+1 3
+$
+
+
+
+
+

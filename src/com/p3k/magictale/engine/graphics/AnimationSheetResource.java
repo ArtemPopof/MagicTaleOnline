@@ -1,4 +1,4 @@
-package com.p3k.magictale.engine.graphics.Objects;
+package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.graphics.SpriteSheet;
@@ -24,6 +24,10 @@ public class AnimationSheetResource {
     private int length;
 
     private ArrayList<Sprite> sprites;
+
+    public AnimationSheetResource() {
+        this.sprites = null;
+    }
 
     public AnimationSheetResource(SpriteSheet ss, int firstId) {
 

@@ -93,7 +93,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
         // INITIALIZING CURSOR
         try {
-            this.cursor = ResourceManager.getInstance().loadCursor("res/cursor.png");
+            this.cursor = ResourceManager.getInstance(true).loadCursor("res/cursor.png");
 
             Mouse.setNativeCursor(this.cursor);
         } catch (Exception e) {
@@ -149,6 +149,8 @@ public class ClientGame extends AbstractGame implements Constants {
         processInput();
 
         this.guiManager.update();
+
+
 
         render();
     }
@@ -302,7 +304,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
     private void initLevelManager() {
         try {
-            this.resourceManager = ResourceManager.getInstance();
+            this.resourceManager = ResourceManager.getInstance(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -118,18 +118,26 @@ public class GameCharacter extends GameObject implements Serializable {
      * @param y
      * @param width
      * @param height
-     */
-
-    public GameCharacter(float x, float y, float width, float height) {
+     * @param isAnimationEnabled - if false, then it's serverObject, dont render it
+     **/
+    public GameCharacter(float x, float y, float width, float height, boolean isAnimationEnabled) {
 
         super(x, y, width, height);
 
         this.currentState = WAITING_STATE;
 
-        try {
-           this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isAnimationEnabled) {
+            try {
+                this.animations = (ArrayList<Animation>) ResourceManager.getInstance(true).getAnimations(this).clone();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+
+            // use virtual animations instead
+
+            this.animations = (ArrayList<Animation>) ResourceManager.getInstance(false).getServerAnimations(this).clone();
+
         }
 
         //TODO remove hardcode
@@ -170,13 +178,9 @@ public class GameCharacter extends GameObject implements Serializable {
         // Animation must be performed here
 
         // next animation frame
-       this.sprite = this.animations.get(this.currentState).update();
+        this.spriteId = this.animations.get(this.currentState).update();
 
-        // Sync with server
         this.animations.get(this.currentState).getCurrentFrame();
-
-        ((ServerGame) ServerGame.getInstance()).putServerObject
-                (getId(), animations.get(currentState).getCurrentFrame().getSpriteId(), this.x, this.y);
 
         // current animation stops, so zero some
         // states
@@ -184,10 +188,11 @@ public class GameCharacter extends GameObject implements Serializable {
             this.isAttacking = false;
         }
 
-        // Sync with server
+        //sync with server
+        ((ServerGame) ServerGame.getInstance()).putServerObject(getId(), getSpriteId(), x, y);
 
-        float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
-        float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
+       // float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX();
+       // float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY();
     }
 
     /**
@@ -504,5 +509,19 @@ public class GameCharacter extends GameObject implements Serializable {
             anim.setFramesSize(width, height);
         }
     }
+
+    public int getSpriteId() {
+        return this.animations.get(currentState).getCurrentFrame().getSpriteId();
+    }
+
+    public static GameCharacter createGameCharacter(float x, float y, float width, float height) {
+        return new GameCharacter(x, y, width, height, true);
+    }
+
+    public static GameCharacter createServerCharacter(float x, float y, float width, float height) {
+        return new GameCharacter(x, y, width, height, false);
+    }
+
+
 
 }

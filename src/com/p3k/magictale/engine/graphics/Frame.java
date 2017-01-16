@@ -16,6 +16,23 @@ public class Frame implements Serializable {
      */
     private int spriteId;
 
+    /**
+     * For server use. Sprite can be obtain
+     * on client side, using ResMan)
+     *
+     * @param spriteId
+     * @param length
+     */
+    public Frame(int spriteId, int length) {
+
+        this.object = null;
+        this.length = length;
+        this.spriteId = spriteId;
+
+        numberDisplayed = 0;
+
+    }
+
     public Frame(Sprite sprite, int spriteId, int length) {
         this.object = sprite;
         this.length = length;

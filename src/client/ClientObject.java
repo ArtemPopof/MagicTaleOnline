@@ -21,7 +21,7 @@ public class ClientObject {
         this.y = y;
         System.out.println("IdResMan = " + idResMan);
         this.idResMan = idResMan;
-        this.sprite = new Sprite(ResourceManager.getInstance().getSprite(idResMan));
+        this.sprite = new Sprite(ResourceManager.getInstance(true).getSprite(idResMan));
     }
 
     public void render() {

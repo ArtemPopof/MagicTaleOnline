@@ -1,9 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Constants;
-import com.p3k.magictale.engine.graphics.Objects.AnimationSheetResource;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,24 +11,33 @@ import java.util.ArrayList;
  */
 public class Animation implements Constants, Serializable {
 
-    private ArrayList<Frame> frames;
-    private int currentFrame;
+    protected ArrayList<Frame> frames;
+    protected int currentFrame;
 
     /**
      * is animation running
      */
-    private boolean isRunning;
+    protected boolean isRunning;
 
     /**
      * animation will be repeted when played
      */
-    private boolean isLooped = true;
+    protected boolean isLooped = true;
 
     /**
      * if animation is played once it will set
      * frame to 0
      */
-    private boolean shouldStartOver = true;
+    protected boolean shouldStartOver = true;
+
+    public Animation(int framesCount) {
+
+        isRunning = true;
+        currentFrame = 0;
+
+        frames = new ArrayList<>(framesCount);
+
+    }
 
     public Animation(AnimationSheetResource sprites, int horizontalTileOffset, int framesCount) {
 
@@ -48,7 +55,7 @@ public class Animation implements Constants, Serializable {
         currentFrame = 0;
     }
 
-    public Sprite update() {
+    public int update() {
 
         Frame frame = frames.get(currentFrame);
 
@@ -69,7 +76,7 @@ public class Animation implements Constants, Serializable {
             }
         }
 
-        return frame.getSprite();
+        return frame.getSpriteId();
     }
 
     /**

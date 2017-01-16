@@ -1,19 +1,23 @@
 package com.p3k.magictale.engine.graphics;
 
 import com.p3k.magictale.engine.Utils;
-import com.p3k.magictale.engine.graphics.Objects.AnimationSheetResource;
 import com.p3k.magictale.game.Characters.Bat;
 import com.p3k.magictale.engine.graphics.Objects.ObjectSheetResource;
 import com.p3k.magictale.game.Characters.CharacterTypes;
+import com.sun.corba.se.spi.activation.Server;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * ResourceManager class contains all game
@@ -38,6 +42,11 @@ public class ResourceManager {
     // or when game begins.
     private HashMap<CharacterTypes, ArrayList<Animation>> animations;
 
+    /**
+     * Server animations (without sprites)
+     */
+    private HashMap<CharacterTypes, ArrayList<ServerAnimation>> serverAnimations;
+
     private static ResourceManager instance = null;
 
     /**
@@ -45,24 +54,26 @@ public class ResourceManager {
      */
     private static final int ANIMATION_TEXTURES_POOL_ID = 3000;
 
+    private static final String ANIMATION_PATH = "res/animation/animations.mta";
+
     private int animationPoolFreeIndex;
 
-    private ResourceManager() {
+    protected ResourceManager(boolean isClientSideCall) {
 
         textures = new HashMap<>();
         animations = new HashMap<>();
 
         animationPoolFreeIndex = ANIMATION_TEXTURES_POOL_ID;
 
-        loadAllAnimationsInformation();
+        loadAllAnimationsInformation(isClientSideCall);
 
         instance = this;
 
     }
 
-    public static ResourceManager getInstance() {
+    public static ResourceManager getInstance(boolean isClientCall) {
         if ( instance == null ) {
-            instance = new ResourceManager();
+            instance = new ResourceManager(isClientCall);
         }
 
         return instance;
@@ -172,8 +183,15 @@ public class ResourceManager {
      *
      * By now, this class is under development,
      * so it's do fake actions
+     *
+     * @param isClientSideCall - is this call came from client side
      */
-    private void loadAllAnimationsInformation() {
+    private void loadAllAnimationsInformation(boolean isClientSideCall) {
+
+        if (!isClientSideCall) {
+            loadAllAnimationsInformationForServer();
+            return;
+        }
 
         ArrayList<Animation> characterTestAnims = new ArrayList<>();
 
@@ -290,6 +308,91 @@ public class ResourceManager {
         animations.put(CharacterTypes.BAT_BOT, batAnims);
     }
 
+    private void loadAllAnimationsInformationForServer() {
+
+        serverAnimations = new HashMap<>();
+
+        //read information about animations from file
+
+        Scanner s = null;
+
+        try {
+            s = new Scanner(new BufferedReader(new FileReader(ANIMATION_PATH)));
+
+            while (s.hasNext()) {
+                String next = s.nextLine();
+
+                if (next.startsWith("//") || next.equals("")) continue;
+
+                if (next.startsWith("#")) {
+
+                    next = s.nextLine();
+
+                    String[] splitedNext = next.split(" ");
+
+                    // parse animations for next Character Type
+
+                    int characterType = Integer.parseInt(splitedNext[0]);
+
+                    int startOffset = Integer.parseInt(splitedNext[4]);
+                    int length = Integer.parseInt(splitedNext[5]);
+
+                    AnimationInfo nextInfo = new AnimationInfo(startOffset, length);
+
+                    ArrayList<ServerAnimation> nextAnimations = new ArrayList<>();
+
+
+                    next = s.nextLine();
+                    splitedNext = next.split(" ");
+
+                    while (!splitedNext[0].equals("$")) {
+
+                        // creating next Animation
+
+                        int offset = Integer.parseInt(splitedNext[0]);
+                        int len = Integer.parseInt(splitedNext[1]);
+
+                        ServerAnimation nextAnimation = new ServerAnimation(nextInfo, offset, len);
+
+                        nextAnimations.add(nextAnimation);
+
+                        next = s.nextLine();
+                        splitedNext = next.split(" ");
+
+                    }
+
+                    CharacterTypes charType = CharacterTypes.ABSTRACT_CHARACTER;
+
+                    if (characterType == 0) {
+                        charType = CharacterTypes.ABSTRACT_CHARACTER;
+                    } else if (characterType == 1) {
+                        charType = CharacterTypes.ABSTRACT_PLAYER;
+                    } else if (characterType == 2) {
+                        charType = CharacterTypes.ABSTRACT_BOT;
+                    } else if (characterType == 3) {
+                        charType = CharacterTypes.BAT_BOT;
+                    }
+
+                    serverAnimations.put(charType, nextAnimations);
+
+                }
+
+
+            }
+        } catch(FileNotFoundException e) {
+
+            System.err.println("ANIMATION PATH INVALID");
+            e.printStackTrace();
+
+        }finally {
+
+            if (s != null) {
+                s.close();
+            }
+
+        }
+    }
+
     /**
      * Returns textureId, or -1 if there are no such
      * texture
@@ -310,6 +413,10 @@ public class ResourceManager {
      */
     public ArrayList<Animation> getAnimations(GameCharacter character) {
         return animations.get(character.getCharacterId());
+    }
+
+    public ArrayList<ServerAnimation> getServerAnimations(GameCharacter character) {
+        return serverAnimations.get(character.getCharacterId());
     }
 
     public Cursor loadCursor(String path) {

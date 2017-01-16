@@ -7,6 +7,7 @@ import com.p3k.magictale.engine.graphics.Map.TileMap;
 import com.p3k.magictale.engine.graphics.Objects.GroupObject;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.AbstractGame;
+import com.p3k.magictale.game.Characters.Bat;
 import com.p3k.magictale.game.Characters.Bot;
 import com.p3k.magictale.game.Characters.Player;
 import com.p3k.magictale.map.level.Level;
@@ -75,11 +76,15 @@ public class ServerGame extends AbstractGame {
         initLevelManager();
         initObjectManager();
 
+        initObjects();
+/**
         try {
             initObjects();
         } catch (RemoteException | AlreadyBoundException | NotBoundException | MalformedURLException e) {
             e.printStackTrace();
         }
+
+ **/
     }
 
     public static AbstractGame getInstance() {
@@ -106,6 +111,14 @@ public class ServerGame extends AbstractGame {
     public void tick() {
 
         objectManager.update();
+
+        for (Integer object : objects.keySet()) {
+
+            GameObject obj = objects.get(object);
+
+            obj.update();
+
+        }
 
 //        for (Integer key : this.objects.keySet()) {
 //            GameObject object = this.objects.get(key);
@@ -141,6 +154,15 @@ public class ServerGame extends AbstractGame {
 
     }
 
+    private void initObjects() {
+
+        Bot bat = new Bat(300, 300);
+
+        objects.put(this.objects.size(), bat);
+
+
+    }
+
     private void initLevelManager() {
         try {
             this.levelManager = LevelManager.getInstance();
@@ -170,6 +192,7 @@ public class ServerGame extends AbstractGame {
         }
     }
 
+    /**
     private void initObjects() throws RemoteException, AlreadyBoundException, MalformedURLException, NotBoundException {
         Player player = new Player(100, 520);
 
@@ -191,7 +214,7 @@ public class ServerGame extends AbstractGame {
         this.objects.put(this.objects.size(), testBot3);
 
     }
-
+    **/
 
     /**
      * Is anyone is now in given cell
@@ -327,7 +350,12 @@ public class ServerGame extends AbstractGame {
     }
 
     public Player getNewPlayer() {
-        return null;
+
+        Player newPlayer = new Player(500, 200);
+
+        //objects.put(newPlayer.getId(), newPlayer);
+
+        return newPlayer;
     }
 
     public void putServerObject(int id, int spriteId, float x, float y) {

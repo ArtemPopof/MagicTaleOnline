@@ -23,7 +23,7 @@ public class Bat extends Bot{
         this.type = CharacterTypes.BAT_BOT;
 
         try {
-            this.animations = (ArrayList<Animation>) ResourceManager.getInstance().getAnimations(this).clone();
+            this.animations = (ArrayList<Animation>) ResourceManager.getInstance(false).getServerAnimations(this).clone();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,7 +32,8 @@ public class Bat extends Bot{
 
         setAttack(5);
 
-        setCharacterSize(BAT_WIDTH*4, BAT_HEIGHT*4);
+        // don't work on server(
+        //setCharacterSize(BAT_WIDTH*4, BAT_HEIGHT*4);
 
     }
 }

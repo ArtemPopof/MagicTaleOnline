@@ -21,7 +21,7 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
     public Player(float x, float y) {
 
-        super(x, y, 78, 112);
+        super(x, y, 78, 112, false);
 
         this.type = CharacterTypes.ABSTRACT_PLAYER;
 

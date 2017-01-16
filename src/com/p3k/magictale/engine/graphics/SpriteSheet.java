@@ -13,8 +13,8 @@ import java.io.IOException;
 public class SpriteSheet {
     ArrayList<Sprite> sprites = null;
 
-    private int tileWidth;
-    private int tileHeight;
+    protected int tileWidth;
+    protected int tileHeight;
 
     private BufferedImage image;
 
