@@ -4,6 +4,7 @@ import client.network.Receiver;
 import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.engine.graphics.ResourceManager;
+import com.p3k.magictale.engine.graphics.Sprite;
 import com.p3k.magictale.engine.gui.GuiManager;
 import com.p3k.magictale.engine.enums.Direction;
 
@@ -493,7 +494,7 @@ public class ClientGame extends AbstractGame implements Constants {
             this.player.setCurrentLevel(player.getCurrentLevel());
             this.player.setXpForNextLevel(player.getXpForNextLevel());
             this.player.setXp(player.getXp());
-            this.player.setSprite(ResourceManager.getInstance(true).getSprite(playerIndex));
+            this.player.setSprite(clientObjects.get(playerIndex).getSprite());
         }
     }
 }

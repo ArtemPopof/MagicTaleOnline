@@ -15,7 +15,7 @@ public class Player {
     private int xpForNextLevel;
     private int xp;
     private long timestamp = 0;
-    private Sprite sprite;
+    private Sprite sprite = new Sprite(0, 0, 0, 10, 10);
 
     public int getCurrentHealth() {
         return currentHealth;
@@ -53,12 +53,12 @@ public class Player {
         return isDead;
     }
 
-    public void setDead(byte dead) {
-        isDead = dead != 0;
-    }
-
     public void setDead(boolean dead) {
         isDead = dead;
+    }
+
+    public void setDead(byte dead) {
+        isDead = dead != 0;
     }
 
     public int getCurrentLevel() {
@@ -98,6 +98,9 @@ public class Player {
     }
 
     public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
+        if (sprite != null) {
+            this.sprite = sprite;
+            System.out.println("Sprite updated: " + sprite.getTextureId());
+        }
     }
 }
