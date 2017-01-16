@@ -5,6 +5,8 @@ import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.gui.GuiManager;
+import com.p3k.magictale.engine.enums.Direction;
+
 import com.p3k.magictale.engine.sound.SoundManager;
 import com.p3k.magictale.engine.sound.SoundSource;
 import com.p3k.magictale.game.AbstractGame;
@@ -154,6 +156,59 @@ public class ClientGame extends AbstractGame implements Constants {
 //            }
 //        }
 
+        // Player handlin
+        /**
+        if (isDead()) {
+            System.out.println("WASTED BUDDY!");
+            return;
+        }
+
+        boolean isStateChanged = false;
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            changeState(UP_MOVE_STATE);
+            move(0, 1);
+            setDirection(Direction.UP);
+            isStateChanged = true;
+        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            changeState(DOWN_MOVE_STATE);
+            move(0, -1);
+            setDirection(Direction.DOWN);
+            isStateChanged = true;
+        } else {
+
+            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                changeState(LEFT_MOVE_STATE);
+                move(-1, 0);
+                setDirection(Direction.LEFT);
+                isStateChanged = true;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                changeState(RIGHT_MOVE_STATE);
+                move(1, 0);
+                setDirection(Direction.RIGHT);
+                isStateChanged = true;
+            }
+        }
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            //attackSound.play("user/attack_axe.wav");
+        }
+
+        // mouse events
+        if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
+            doAttack();
+        }
+
+        if (this.isAttacking) {
+            isStateChanged = true;
+        }
+
+        // if nothing happens with player, then wait
+        if (!isStateChanged) {
+            this.animations.get(getState()).pause();
+        }
+        **/
 
         // Mouse handle
         this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;

@@ -85,57 +85,6 @@ public class Player extends GameCharacter implements Constants, Serializable {
 
     public void processInput() {
 
-        if (isDead()) {
-            System.out.println("WASTED BUDDY!");
-            return;
-        }
-
-        boolean isStateChanged = false;
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            changeState(UP_MOVE_STATE);
-            move(0, 1);
-            setDirection(Direction.UP);
-            isStateChanged = true;
-        }else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            changeState(DOWN_MOVE_STATE);
-            move(0, -1);
-            setDirection(Direction.DOWN);
-            isStateChanged = true;
-        } else {
-
-            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                changeState(LEFT_MOVE_STATE);
-                move(-1, 0);
-                setDirection(Direction.LEFT);
-                isStateChanged = true;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                changeState(RIGHT_MOVE_STATE);
-                move(1, 0);
-                setDirection(Direction.RIGHT);
-                isStateChanged = true;
-            }
-        }
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            //attackSound.play("user/attack_axe.wav");
-        }
-
-        // mouse events
-        if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
-            doAttack();
-        }
-
-        if (this.isAttacking) {
-            isStateChanged = true;
-        }
-
-        // if nothing happens with player, then wait
-        if (!isStateChanged) {
-            this.animations.get(getState()).pause();
-        }
-
     }
 
     // mag = magnitude
