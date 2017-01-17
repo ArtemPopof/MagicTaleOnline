@@ -191,7 +191,7 @@ public class Broadcaster {
                 try {
                     DatagramPacket packet = new DatagramPacket(status, status.length);
                     socket.receive(packet);
-                    System.out.println("G " + packet.getAddress().getHostAddress());
+//                    System.out.println("G " + packet.getAddress().getHostAddress());
                     activeAccounts.getAccount(packet.getAddress().getHostAddress()).updateLastAccess();
                 } catch (IOException e) {
                     Logger.log(e.getMessage(), Logger.ERROR);

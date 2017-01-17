@@ -188,9 +188,11 @@ public class Receiver implements Runnable {
 
     private class DatagramCatcher implements Runnable {
         private final DatagramSocket socket;
+        private int statusCount;
 
         DatagramCatcher(DatagramSocket socket) {
             this.socket = socket;
+            statusCount = 0;
         }
 
         @Override
@@ -202,11 +204,14 @@ public class Receiver implements Runnable {
                     packets.add(packet);
 
                     // отправка статуса
-                    byte[] status = {1};
-                    DatagramPacket answer = new DatagramPacket(status, status.length);
-                    answer.setAddress(packet.getAddress());
-                    answer.setPort(Constants.SERVER_UDP_PORT);
-                    socket.send(answer);
+                    if (statusCount == 0) {
+                        byte[] status = {1};
+                        DatagramPacket answer = new DatagramPacket(status, status.length);
+                        answer.setAddress(packet.getAddress());
+                        answer.setPort(Constants.SERVER_UDP_PORT);
+                        socket.send(answer);
+                    }
+                    statusCount = (statusCount + 1) % 25;
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
                     System.err.println("Server disconnect us");
