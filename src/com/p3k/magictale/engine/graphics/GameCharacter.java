@@ -452,6 +452,7 @@ public class GameCharacter extends GameObject implements Serializable {
 
         setState(DEATH_STATE);
         this.isDead = true;
+        this.characterState = State.DEATH;
     }
 
     /**
