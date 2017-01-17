@@ -5,7 +5,6 @@ import com.p3k.magictale.engine.Logger;
 import com.p3k.magictale.game.Characters.Player;
 import server.ServerObject;
 import server.accounts.ActiveAccounts;
-import sun.rmi.runtime.Log;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -23,6 +22,7 @@ public class Broadcaster {
     private static Broadcaster broadcaster;
     private final DatagramSocket socket;
     private final ActiveAccounts activeAccounts;
+    private final Thread statusUpdater;
 
     private final int dataSize = 16 * 16;
     // type (byte), timestamp (8 bytes), data (16 * 16 bytes), data length (byte), checksum (byte)
@@ -31,6 +31,8 @@ public class Broadcaster {
     private Broadcaster() throws SocketException {
         socket = new DatagramSocket(Constants.SERVER_UDP_PORT);
         activeAccounts = ActiveAccounts.getInstance();
+        statusUpdater = new Thread(new StatusUpdater(socket));
+        statusUpdater.start();
     }
 
     public static Broadcaster getInstance() {
@@ -160,6 +162,40 @@ public class Broadcaster {
 //                System.out.println("Send packet " + packet.getAddress().getHostAddress() + " " + packet.getPort());
             } catch (IOException e) {
                 System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private class StatusUpdater implements Runnable {
+        private DatagramSocket socket;
+        private byte[] status = {1};
+
+        StatusUpdater(DatagramSocket socket) {
+            this.socket = socket;
+        }
+
+        /**
+         * When an object implementing interface <code>Runnable</code> is used
+         * to create a thread, starting the thread causes the object's
+         * <code>run</code> method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method <code>run</code> is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    DatagramPacket packet = new DatagramPacket(status, status.length);
+                    socket.receive(packet);
+                    System.out.println("G " + packet.getAddress().getHostAddress());
+                    activeAccounts.getAccount(packet.getAddress().getHostAddress()).updateLastAccess();
+                } catch (IOException e) {
+                    Logger.log(e.getMessage(), Logger.ERROR);
+                }
             }
         }
     }

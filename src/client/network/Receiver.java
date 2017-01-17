@@ -32,7 +32,7 @@ public class Receiver implements Runnable {
     private Receiver() throws SocketException {
         socket = new DatagramSocket(Constants.CLIENT_UDP_PORT);
         // если в течение 2 секунд не придут данные - сервер отключил нас
-        socket.setSoTimeout(10000);
+        socket.setSoTimeout(2_000);
         objectsQueue = new ConcurrentLinkedQueue<>();
         packets = new ConcurrentLinkedQueue<>();
         playerUpdates = new ConcurrentLinkedQueue<>();
@@ -200,6 +200,13 @@ public class Receiver implements Runnable {
                     DatagramPacket packet = new DatagramPacket(buffer, bufferSize);
                     socket.receive(packet);
                     packets.add(packet);
+
+                    // отправка статуса
+                    byte[] status = {1};
+                    DatagramPacket answer = new DatagramPacket(status, status.length);
+                    answer.setAddress(packet.getAddress());
+                    answer.setPort(Constants.SERVER_UDP_PORT);
+                    socket.send(answer);
                 } catch (IOException e) {
                     System.err.println(e.getMessage());
                     System.err.println("Server disconnect us");

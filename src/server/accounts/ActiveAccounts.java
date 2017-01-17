@@ -14,8 +14,8 @@ public class ActiveAccounts {
     private ActiveAccounts() {
         accounts = AccountsStorage.getInstance();
         accountsInUse = new ConcurrentHashMap<>();
-        // клиент будет отключен после 5 минут бездействия
-        timeoutMillis = 300_000;
+        // клиент будет отключен после 2 секунды бездействия
+        timeoutMillis = 2_000;
     }
 
     public static ActiveAccounts getInstance() {
