@@ -203,9 +203,6 @@ public class GameCharacter extends GameObject implements Serializable {
     protected static final int RIGHT_ATTACK_STATE = 8;
     protected static final int DOWN_ATTACK_STATE = 9;
          */
-        if (attackPenalty > 0) {
-            --attackPenalty;
-        }
 
         switch (characterState) {
             case ATTACK:
@@ -352,6 +349,7 @@ public class GameCharacter extends GameObject implements Serializable {
      */
     public void doAttack() {
         if (attackPenalty > 0) {
+            attackPenalty -= 1;
             return;
         }
         attackPenalty = 10;
