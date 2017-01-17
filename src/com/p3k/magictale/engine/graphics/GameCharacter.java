@@ -226,7 +226,7 @@ public class GameCharacter extends GameObject implements Serializable {
                 }
                 break;
             case WAIT:
-                if (type == CharacterTypes.ABSTRACT_PLAYER && !isDead) {
+                if (type == CharacterTypes.ABSTRACT_PLAYER && this.animations.get(currentState).isLooped()) {
                     this.animations.get(currentState).stop();
                 }
             default:
