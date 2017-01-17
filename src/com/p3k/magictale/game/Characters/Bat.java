@@ -28,7 +28,7 @@ public class Bat extends Bot{
             e.printStackTrace();
         }
 
-        setGainedExperience(500);
+        setGainedExperience(10);
 
         setAttack(5);
 
