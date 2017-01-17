@@ -345,6 +345,9 @@ public class GameCharacter extends GameObject implements Serializable {
      * Perform attack action
      */
     public void doAttack() {
+        if (animations.get(currentState).getFrame() != 0) {
+            return;
+        }
 
         Point currentPosition = new Point((int) getRealX(), (int) getRealY());
 
