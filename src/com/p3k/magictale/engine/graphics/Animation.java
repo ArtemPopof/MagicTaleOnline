@@ -109,6 +109,11 @@ public class Animation implements Constants, Serializable {
         }
     }
 
+    public void stop() {
+        setFrame(0);
+        pause();
+    }
+
     /**
      * Start animation from first frame
      *

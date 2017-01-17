@@ -2,9 +2,11 @@ package com.p3k.magictale.engine.graphics;
 
 import client.ClientGame;
 import com.p3k.magictale.engine.Constants;
+import com.p3k.magictale.engine.enums.Direction;
 import com.p3k.magictale.engine.gui.ComponentFactory;
 import com.p3k.magictale.engine.physics.Collision;
 import com.p3k.magictale.game.Characters.CharacterTypes;
+import common.remoteInterfaces.GameController;
 import server.ServerGame;
 
 import java.awt.*;
@@ -32,25 +34,22 @@ public class GameCharacter extends GameObject implements Serializable {
     protected static final int UP_ATTACK_STATE = 7;
     protected static final int RIGHT_ATTACK_STATE = 8;
     protected static final int DOWN_ATTACK_STATE = 9;
-
     /**
      * Length of full hp bar
      * <p>
      * in pixels.
      */
     private static final int FULL_HP_BAR_LENGTH = 40;
-
     /**
      * HP Bar height
      */
     private static final int HP_BAR_HEIGHT = 5;
-
     /**
      * How many pixels will be between character
      * and hp bar
      */
     private static final int HP_BAR_PADDING = 10;
-
+    protected volatile State characterState;
     /**
      * Unique identifier for current class.
      * for derived classes it value must be changed.
@@ -59,7 +58,6 @@ public class GameCharacter extends GameObject implements Serializable {
      * thing like BLOOD_MAGE_CHARACTER_ID = 59;
      */
     protected CharacterTypes type = CharacterTypes.ABSTRACT_CHARACTER;
-
     protected ArrayList<Animation> animations;
     protected boolean isAttacking = false;
     /**
@@ -71,7 +69,6 @@ public class GameCharacter extends GameObject implements Serializable {
     protected int health;
     protected int maxHealth;
     protected int attack;
-
     /**
      * How far can damage other character
      */
@@ -82,25 +79,18 @@ public class GameCharacter extends GameObject implements Serializable {
      * current state of this character
      */
     private volatile int currentState;
-
     private boolean isDead = false;
-
     /**
      * Experience gained by killind this mob
      */
     private int gainedExperience;
-
     private int xp;
-
     private int currentLevel;
-
     private ComponentFactory guiFactory;
-
     /**
      * Harm was taken in previous update
      */
     private int takenHarm;
-
 
     /**
      * Basic constructor for GameCharacter
@@ -112,8 +102,9 @@ public class GameCharacter extends GameObject implements Serializable {
      * @param isAnimationEnabled - if false, then it's serverObject, dont render it
      **/
     public GameCharacter(float x, float y, float width, float height, boolean isAnimationEnabled) {
-
         super(x, y, width, height);
+
+        characterState = State.WAIT;
 
         this.currentState = WAITING_STATE;
 
@@ -184,6 +175,9 @@ public class GameCharacter extends GameObject implements Serializable {
     public void update() {
 
         // Animation must be performed here
+        if (characterState != State.WAIT && !this.animations.get(currentState).isRunning()) {
+            this.animations.get(currentState).startOver();
+        }
 
         // next animation frame
         this.spriteId = this.animations.get(this.currentState).update();
@@ -209,20 +203,33 @@ public class GameCharacter extends GameObject implements Serializable {
     protected static final int RIGHT_ATTACK_STATE = 8;
     protected static final int DOWN_ATTACK_STATE = 9;
          */
-        switch (currentState) {
-            case RIGHT_MOVE_STATE:
-                move(1, 0);
+
+        switch (characterState) {
+            case ATTACK:
+                doAttack();
                 break;
-            case LEFT_MOVE_STATE:
-                move(-1, 0);
-                break;
-            case UP_MOVE_STATE:
-                move(0, 1);
-                break;
-            case DOWN_MOVE_STATE:
-                move(0, -1);
+            case MOVE:
+                switch (direction) {
+                    case UP:
+                        currentState = UP_MOVE_STATE;
+                        move(0, 1);
+                        break;
+                    case LEFT:
+                        currentState = LEFT_MOVE_STATE;
+                        move(-1, 0);
+                        break;
+                    case RIGHT:
+                        currentState = RIGHT_MOVE_STATE;
+                        move(1, 0);
+                        break;
+                    default:
+                        currentState = DOWN_MOVE_STATE;
+                        move(0, -1);
+                        break;
+                }
                 break;
             default:
+                this.animations.get(currentState).stop();
                 break;
         }
 
@@ -544,6 +551,45 @@ public class GameCharacter extends GameObject implements Serializable {
 
     public int getSpriteId() {
         return this.animations.get(currentState).getCurrentFrame().getSpriteId();
+    }
+
+    public void setCharacterState(GameController.State state) {
+        switch (state) {
+            case ATTACK:
+                characterState = State.ATTACK;
+                break;
+            case MOVE:
+                characterState = State.MOVE;
+                break;
+            case WAIT:
+            default:
+                characterState = State.WAIT;
+                break;
+        }
+    }
+
+    public void setDirection(GameController.Direction direction) {
+        switch (direction) {
+            case UP:
+                this.direction = Direction.UP;
+                break;
+            case RIGHT:
+                this.direction = Direction.RIGHT;
+                break;
+            case LEFT:
+                this.direction = Direction.LEFT;
+                break;
+            case DOWN:
+            default:
+                this.direction = Direction.DOWN;
+                break;
+        }
+    }
+
+    protected enum State {
+        WAIT,
+        MOVE,
+        ATTACK
     }
 
 

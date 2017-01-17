@@ -84,7 +84,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
         initObjectManager();
 
-        if (!System.getProperty("os.name").startsWith("Windows"))  {
+        if (!System.getProperty("os.name").startsWith("Windows")) {
             try {
                 Mouse.setNativeCursor(ResourceManager.getInstance(true).loadCursor("res/cursor.png"));
             } catch (LWJGLException e) {
@@ -145,24 +145,6 @@ public class ClientGame extends AbstractGame implements Constants {
     }
 
     public void processInput() {
-
-//        for (int i = 0; i < this.objects.size(); i++) {
-//            GameObject object = this.objects.get(i);
-//
-//            if (GameCharacter.class.isInstance(object)) {
-//                GameCharacter character = (GameCharacter) object;
-//                character.processInput();
-//            }
-//        }
-
-        // Player handlin
-
-//        if (player.isDead()) {
-//            System.out.println("WASTED BUDDY!");
-//            return;
-//        }
-//
-//        boolean isStateChanged = false;
         // Mouse handle
         this.isMouseMoved = Mouse.getDX() != 0 || Mouse.getDY() != 0;
         this.isMouseLeftReleased = this.isMouseLeftPressed && !Mouse.isButtonDown(MOUSE_BTN_LEFT);
@@ -172,88 +154,28 @@ public class ClientGame extends AbstractGame implements Constants {
 
         try {
             if (!player.isDead()) {
-                if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
-                    if (isMouseLeftPressed) {
-                        controller.setPlayerState(GameController.State.UP_ATTACK_STATE);
-                    } else {
-                        controller.setPlayerState(GameController.State.UP_MOVE_STATE);
-                    }
+                if (isMouseLeftPressed) {
+                    controller.setPlayerState(GameController.State.ATTACK);
+                } else if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+                    controller.setPlayerDirection(GameController.Direction.UP);
+                    controller.setPlayerState(GameController.State.MOVE);
                 } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-                    if (isMouseLeftPressed) {
-                        controller.setPlayerState(GameController.State.DOWN_ATTACK_STATE);
-                    } else {
-                        controller.setPlayerState(GameController.State.DOWN_MOVE_STATE);
-                    }
+                    controller.setPlayerDirection(GameController.Direction.DOWN);
+                    controller.setPlayerState(GameController.State.MOVE);
                 } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                    if (isMouseLeftPressed) {
-                        controller.setPlayerState(GameController.State.LEFT_ATTACK_STATE);
-                    } else {
-                        controller.setPlayerState(GameController.State.LEFT_MOVE_STATE);
-                    }
+                    controller.setPlayerDirection(GameController.Direction.LEFT);
+                    controller.setPlayerState(GameController.State.MOVE);
                 } else if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-                    if (isMouseLeftPressed) {
-                        controller.setPlayerState(GameController.State.RIGHT_ATTACK_STATE);
-                    } else {
-                        controller.setPlayerState(GameController.State.RIGHT_MOVE_STATE);
-                    }
+                    controller.setPlayerDirection(GameController.Direction.RIGHT);
+                    controller.setPlayerState(GameController.State.MOVE);
                 } else {
-                    controller.setPlayerState(GameController.State.WAITING_STATE);
+                    controller.setPlayerState(GameController.State.WAIT);
                 }
             }
-        } catch (RemoteException e) {
-            Logger.log(e.getMessage(), Logger.ERROR);
+        } catch (RemoteException e1) {
+            e1.printStackTrace();
         }
-//
-//        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-//            //attackSound.play("user/attack_axe.wav");
-//        }
-//
-//        // mouse events
-//        if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
-//            doAttack();
-//        }
-//
-//        if (this.isAttacking) {
-//            isStateChanged = true;
-//        }
-//
-//        // if nothing happens with player, then wait
-//        if (!isStateChanged) {
-//            this.animations.get(getState()).pause();
-//        }
     }
-
-//    public void update() {
-//
-//        synchronized (this.objects) {
-//            for (Integer key : this.objects.keySet()) {
-//                GameObject object = this.objects.get(key);
-//                object.update();
-//            }
-//        }
-//
-//        HashMap<Integer, ServerObject> serverObjects = ((ServerGame) ServerGame.getInstance()).getServerObjects();
-//        if (serverObjects != null) {
-//            for (Integer key : serverObjects.keySet()) {
-//                ClientObject insObj = clientObjects.get(key);
-//                if (insObj != null) {
-//                    insObj.setIdResMan(serverObjects.get(key).getIdResMan());
-//                    insObj.setX(serverObjects.get(key).getX());
-//                    insObj.setY(serverObjects.get(key).getY());
-//                    insObj.setSprite(resourceManager.getSprite(insObj.getIdResMan()));
-//                    clientObjects.put(key, insObj);
-//                } else {
-//                    try {
-//                        insObj = new ClientObject(serverObjects.get(key).getIdResMan(),
-//                                serverObjects.get(key).getX(), serverObjects.get(key).getY());
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    clientObjects.put(key, insObj);
-//                }
-//            }
-//        }
-//    }
 
     public void render() {
         glClear(GL_COLOR_BUFFER_BIT);

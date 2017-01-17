@@ -22,28 +22,27 @@ public interface GameController extends Remote {
     void click(float x, float y) throws RemoteException;
 
     /**
-     * @return current state of your player
-     * @throws RemoteException java rmi exception
-     */
-    State getPlayerState() throws RemoteException;
-
-
-    /**
      * @param state будет установлен твоему игроку
      * @throws RemoteException java rmi exception
      */
     void setPlayerState(State state) throws RemoteException;
 
+    /**
+     * @param direction указание направления для человечка
+     * @throws RemoteException java rmi exception
+     */
+    void setPlayerDirection(Direction direction) throws RemoteException;
+
     enum State {
-        WAITING_STATE,
-        RIGHT_MOVE_STATE,
-        LEFT_MOVE_STATE,
-        UP_MOVE_STATE,
-        DOWN_MOVE_STATE,
-        DEATH_STATE,
-        LEFT_ATTACK_STATE,
-        UP_ATTACK_STATE,
-        RIGHT_ATTACK_STATE,
-        DOWN_ATTACK_STATE
+        WAIT,
+        MOVE,
+        ATTACK
     };
+
+    enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
 }
