@@ -447,13 +447,11 @@ public class ObjectManager implements ObjectInterface {
             for (ArrayList<GroupObject> arrayOfObjects : treeOfObjects.values()) {
                 if (arrayOfObjects.size() != 1) {
                     for (GroupObject obj : arrayOfObjects) {
-//                        if (arrayOfObjects.indexOf(obj) != 0) {
-//                            obj.setSpriteTest(resourceManager.getSprite(obj.getSpriteId()),
-//                                    obj.getX() * Constants.TILE_SIZE, (Constants.MAP_HEIGHT - obj.getY() - 1) * Constants.TILE_SIZE);
-//                        }
-                        serverGame.putServerObject(obj.getId(), obj.getSpriteId(),
-                                obj.getX() * Constants.TILE_SIZE,
-                                (Constants.MAP_HEIGHT - obj.getY() - 1) * Constants.TILE_SIZE);
+                        if (arrayOfObjects.indexOf(obj) != 0) {
+                            serverGame.putServerObject(obj.getId(), obj.getSpriteId(),
+                                    obj.getX() * Constants.TILE_SIZE,
+                                    (Constants.MAP_HEIGHT - obj.getY() - 1) * Constants.TILE_SIZE);
+                        }
                     }
                 }
             }

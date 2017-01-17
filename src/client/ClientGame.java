@@ -66,14 +66,15 @@ public class ClientGame extends AbstractGame implements Constants {
 
         Display.sync(60);
 
+        player = new Player();
         receiver = Receiver.getInstance();
         Registry registry = LocateRegistry.getRegistry(ip);
         controller = (GameController) registry.lookup("game");
+
         playerIndex = controller.signUp(nickname);
         if (playerIndex < 0) {
             System.exit(1);
         }
-        player = new Player();
         this.player.setSprite(ResourceManager.getInstance(true).getSprite(playerIndex));
 
         clientObjects = new TreeMap<>();
@@ -132,6 +133,7 @@ public class ClientGame extends AbstractGame implements Constants {
     public void tick() {
         // получение объектов с из очереди полученных с сервера
         receiver.tick();
+        System.out.println("Client objects = " + clientObjects.size());
 
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             isRunning = false;
@@ -337,6 +339,7 @@ public class ClientGame extends AbstractGame implements Constants {
 
     public void updateCamera() {
         ClientObject player = clientObjects.get(playerIndex);
+        if (player == null) return;
         Sprite playerSprite = player.getSprite();
 
         this.cameraX = player.getX() - 400 + playerSprite.getWidth() / 2;
@@ -425,7 +428,10 @@ public class ClientGame extends AbstractGame implements Constants {
             this.player.setCurrentLevel(player.getCurrentLevel());
             this.player.setXpForNextLevel(player.getXpForNextLevel());
             this.player.setXp(player.getXp());
-            this.player.setSprite(clientObjects.get(playerIndex).getSprite());
+            ClientObject co = clientObjects.get(playerIndex);
+            if (co != null) {
+                this.player.setSprite(co.getSprite());
+            }
         }
     }
 }
