@@ -204,6 +204,10 @@ public class GameCharacter extends GameObject implements Serializable {
     protected static final int DOWN_ATTACK_STATE = 9;
          */
 
+        if (attackPenalty > 0) {
+            attackPenalty -= 1;
+        }
+
         switch (characterState) {
             case ATTACK:
                 doAttack();
@@ -348,12 +352,6 @@ public class GameCharacter extends GameObject implements Serializable {
      * Perform attack action
      */
     public void doAttack() {
-        if (attackPenalty > 0) {
-            attackPenalty -= 1;
-            return;
-        }
-        attackPenalty = 10;
-
         Point currentPosition = new Point((int) getRealX(), (int) getRealY());
 
         switch (this.direction) {
@@ -380,7 +378,7 @@ public class GameCharacter extends GameObject implements Serializable {
         ArrayList<GameCharacter> enemies = ((ServerGame) ServerGame.getInstance()).getCharactersNearPoint(currentPosition, this.attackDistance);
 
 
-        if (this.isAttacking) {
+        if (this.isAttacking && attackPenalty == 0) {
 
             for (GameCharacter character : enemies) {
                 if (character.equals(this)) continue;
@@ -388,6 +386,8 @@ public class GameCharacter extends GameObject implements Serializable {
                 character.takeHarm(this.attack, this);
                 break;
             }
+
+            attackPenalty = 20;
 
         }
 
