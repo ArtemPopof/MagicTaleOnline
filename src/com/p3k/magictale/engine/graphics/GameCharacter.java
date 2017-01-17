@@ -176,7 +176,7 @@ public class GameCharacter extends GameObject implements Serializable {
 //    }
     @Override
     public void update() {
-        if (characterState != State.WAIT && !this.animations.get(currentState).isRunning()) {
+        if (!isDead && characterState != State.WAIT && !this.animations.get(currentState).isRunning()) {
             this.animations.get(currentState).startOver();
         }
         // next animation frame
