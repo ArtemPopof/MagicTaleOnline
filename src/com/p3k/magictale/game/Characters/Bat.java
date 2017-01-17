@@ -10,8 +10,8 @@ import java.util.ArrayList;
  */
 public class Bat extends Bot{
 
-    public static final float BAT_WIDTH = 64;
-    public static final float BAT_HEIGHT = 64;
+    public static final float BAT_WIDTH = 32;
+    public static final float BAT_HEIGHT = 32;
 
     public static final String BAT_SPRITE_PATH = "res/animation/bat/bat.png";
 
