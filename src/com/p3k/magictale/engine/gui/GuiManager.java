@@ -8,9 +8,11 @@ import com.p3k.magictale.engine.Utils;
 import com.p3k.magictale.engine.graphics.Sprite;
 import org.lwjgl.input.Mouse;
 import server.ServerGame;
+import sun.rmi.runtime.Log;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,7 +98,7 @@ public class GuiManager extends MComponent implements Constants {
         Inventory inventory = factory.createInventory(playerController);
         inventory.move(WINDOW_WIDTH - inventory.getWidth() - 60, WINDOW_HEIGHT / 2 + inventory.getHeight());
         inventory.resize((int) (inventory.getWidth() * 1.5f),
-                         (int) (inventory.getHeight() * 1.5f));
+                (int) (inventory.getHeight() * 1.5f));
         inventory.hide();
 
         // Player menu
@@ -104,7 +106,7 @@ public class GuiManager extends MComponent implements Constants {
         playerMenu.setHeight((int) (playerMenu.height * 1.5));
         playerMenu.move(WINDOW_WIDTH - playerMenu.getWidth(), playerMenu.getHeight());
         playerMenu.setButtonAction(1, () -> {
-            if ( inventory.isShown() ) {
+            if (inventory.isShown()) {
                 inventory.hide();
             } else {
                 inventory.show();
@@ -112,8 +114,12 @@ public class GuiManager extends MComponent implements Constants {
         });
 
         playerMenu.setButtonAction(0, () -> {
-            for (int i = 0; i < 5; ++i)
-            ((ServerGame) ServerGame.getInstance()).spawnBot();
+            try {
+                ClientGame clientGame = (ClientGame) ClientGame.getInstance();
+                clientGame.getController().placeRandomBots();
+            } catch (RemoteException e) {
+                Logger.log(e.getMessage(), Logger.ERROR);
+            }
         });
 
         try {
@@ -145,13 +151,13 @@ public class GuiManager extends MComponent implements Constants {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        objects.keySet().forEach( name -> {
-            if ( objects.get(name).isShown() ) {
+        objects.keySet().forEach(name -> {
+            if (objects.get(name).isShown()) {
                 objects.get(name).render();
             }
         });
 
-        if ( ClientGame.isDebug() ) {
+        if (ClientGame.isDebug()) {
 
             mousePosition.setText(
                     String.format("Mouse x = %d, y = %d", Mouse.getX(), Mouse.getY()));
@@ -170,16 +176,16 @@ public class GuiManager extends MComponent implements Constants {
         if (((ClientGame) ClientGame.getInstance()).isMouseMoved()) {
             for (MComponent child : this.children) {
 
-                if ( child.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
+                if (child.isPointBelongs(Mouse.getX(), Mouse.getY())) {
 
                     // That element has already been over'ed
-                    if ( child.isHovered() ) {
+                    if (child.isHovered()) {
                         child.onMouseMove();
                     } else {
                         child.setHovered(true);
                         child.onMouseOver();
                     }
-                } else if ( child.isHovered() ) { // Mouse not on object yet
+                } else if (child.isHovered()) { // Mouse not on object yet
                     child.setHovered(false);
                     child.onMouseOut();
                 }
@@ -190,7 +196,7 @@ public class GuiManager extends MComponent implements Constants {
         if (((ClientGame) ClientGame.getInstance()).isMousePressed()) {
             for (MComponent child : this.children) {
 
-                if ( child.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
+                if (child.isPointBelongs(Mouse.getX(), Mouse.getY())) {
                     child.setPressed(true);
                     child.onMousePressed();
                 }
@@ -198,7 +204,7 @@ public class GuiManager extends MComponent implements Constants {
         } else if (((ClientGame) ClientGame.getInstance()).isMouseReleased()) {
             for (MComponent child : this.children) {
 
-                if ( child.isPointBelongs(Mouse.getX(), Mouse.getY()) ) {
+                if (child.isPointBelongs(Mouse.getX(), Mouse.getY())) {
                     child.setPressed(false);
                     child.onMouseReleased();
                 }
@@ -207,11 +213,11 @@ public class GuiManager extends MComponent implements Constants {
 
         this.objects.get("statusBar").update();
 
-        if ( this.playerController.isDead() ) {
+        if (this.playerController.isDead()) {
             this.gameOverText.show();
         }
 
-        if ( this.cursor != null ) {
+        if (this.cursor != null) {
             this.cursor.move(Mouse.getX(), Mouse.getY());
         }
     }

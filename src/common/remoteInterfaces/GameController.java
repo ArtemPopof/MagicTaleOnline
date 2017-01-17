@@ -33,6 +33,12 @@ public interface GameController extends Remote {
      */
     void setPlayerDirection(Direction direction) throws RemoteException;
 
+    /**
+     * place 2 bots on random coords
+     * @throws RemoteException java rmi exception
+     */
+    void placeRandomBots() throws RemoteException;
+
     enum State {
         WAIT,
         MOVE,

@@ -333,6 +333,12 @@ public class ServerGame extends AbstractGame {
 
         Bot bot = new Bot(x, y, 64, 64);
         this.objects.put(this.objects.size(), bot);
+
+        int x1 = ThreadLocalRandom.current().nextInt(0, (MAP_WIDTH - 1) * TILE_SIZE);
+        int y1 = ThreadLocalRandom.current().nextInt(0, (MAP_HEIGHT - 1) * TILE_SIZE);
+
+        Bot bat = new Bat(x1, y1);
+        this.objects.put(this.objects.size(), bat);
     }
 
     public Player getNewPlayer() {

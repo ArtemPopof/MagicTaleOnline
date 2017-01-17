@@ -2,6 +2,7 @@ package server.network;
 
 import com.p3k.magictale.game.Characters.Player;
 import common.remoteInterfaces.GameController;
+import server.ServerGame;
 import server.accounts.ActiveAccounts;
 
 import java.rmi.RemoteException;
@@ -82,5 +83,11 @@ public class ControlHandler extends UnicastRemoteObject implements GameControlle
         } catch (ServerNotActiveException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void placeRandomBots() throws RemoteException {
+        ServerGame sg = (ServerGame) ServerGame.getInstance();
+        sg.spawnBot();
     }
 }
