@@ -73,6 +73,7 @@ public class GameCharacter extends GameObject implements Serializable {
      * How far can damage other character
      */
     private int attackDistance;
+    private int attackPenalty;
     private boolean isFlyable;
     private int layer;
     /**
@@ -107,6 +108,8 @@ public class GameCharacter extends GameObject implements Serializable {
         characterState = State.WAIT;
 
         this.currentState = WAITING_STATE;
+
+        attackPenalty = 0;
 
         if (isAnimationEnabled) {
             try {
@@ -200,6 +203,9 @@ public class GameCharacter extends GameObject implements Serializable {
     protected static final int RIGHT_ATTACK_STATE = 8;
     protected static final int DOWN_ATTACK_STATE = 9;
          */
+        if (attackPenalty > 0) {
+            --attackPenalty;
+        }
 
         switch (characterState) {
             case ATTACK:
@@ -345,7 +351,7 @@ public class GameCharacter extends GameObject implements Serializable {
      * Perform attack action
      */
     public void doAttack() {
-        if (!animations.get(currentState).isLastFrame()) {
+        if (attackPenalty > 0) {
             return;
         }
 
