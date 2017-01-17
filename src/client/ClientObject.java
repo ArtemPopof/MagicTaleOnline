@@ -14,6 +14,7 @@ public class ClientObject {
     private int idResMan;
     private Sprite sprite;
     private long timestamp;
+    private Sprite second;
 
     public ClientObject(int idResMan, float x, float y) {
         this.x = x;
@@ -24,9 +25,27 @@ public class ClientObject {
         if (sprite == null) {
             sprite = new Sprite(0, 0, 0, 10, 10);
         }
+        second = new Sprite(0, 0, 255, 3, 3);
     }
 
     public void render() {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glPushMatrix();
+        {
+            float cameraX = ((ClientGame) ClientGame.getInstance()).getCameraX() + sprite.getWidth() / 2;
+            float cameraY = ((ClientGame) ClientGame.getInstance()).getCameraY() - sprite.getHeight();
+
+            glTranslatef(this.x - cameraX, this.y - cameraY, 0);
+
+            this.sprite.render();
+//            this.second.render();
+
+        }
+        glPopMatrix();
+    }
+
+    public void renderPoint() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glPushMatrix();
@@ -36,7 +55,8 @@ public class ClientObject {
 
             glTranslatef(this.x - cameraX, this.y - cameraY, 0);
 
-            this.sprite.render();
+//            this.sprite.render();
+            this.second.render();
 
         }
         glPopMatrix();

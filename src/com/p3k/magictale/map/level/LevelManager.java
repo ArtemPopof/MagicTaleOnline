@@ -24,6 +24,7 @@ public class LevelManager implements Level {
     private static LevelManager instance = null;
     private static DocumentBuilderFactory dbf = null;
     private static final String LEVEL_DIR = "res/map/levels/";
+
     // TODO Add to constants. Delete it
     public static String getLevelDir() {
         return LEVEL_DIR;
@@ -49,7 +50,7 @@ public class LevelManager implements Level {
     }
 
     public static LevelManager getInstance() throws Exception {
-        if ( instance == null ) {
+        if (instance == null) {
             instance = new LevelManager();
         }
 
@@ -99,8 +100,8 @@ public class LevelManager implements Level {
                     continue;
                 }
                 background.add(new ClientObject(idInSprSh + firstId,
-                        w * Constants.MAP_TILE_SIZE,
-                        h * Constants.MAP_TILE_SIZE));
+                        w * Constants.MAP_TILE_SIZE + 16,
+                        h * Constants.MAP_TILE_SIZE - 32));
                 id++;
             }
         }
@@ -158,7 +159,6 @@ public class LevelManager implements Level {
     }
 
     /**
-     *
      * Return Tile position like (x, y)
      * where x is column in map and y is row
      *
@@ -183,7 +183,7 @@ public class LevelManager implements Level {
 
     /**
      * return tile coordinates.
-     *
+     * <p>
      * Upper left corner will be returned.
      *
      * @return
@@ -197,7 +197,7 @@ public class LevelManager implements Level {
     }
 
     public void render() {
-        for(ClientObject obj : background) {
+        for (ClientObject obj : background) {
             obj.render();
         }
     }

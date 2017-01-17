@@ -24,6 +24,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -187,10 +188,15 @@ public class ClientGame extends AbstractGame implements Constants {
         levelManager.render();
 
         if (clientObjects != null) {
-            for (Integer key : clientObjects.keySet()) {
-                ClientObject clientObject = clientObjects.get(key);
-                clientObject.render();
-            }
+//            for (Integer key : clientObjects.keySet()) {
+//                ClientObject clientObject = clientObjects.get(key);
+//                clientObject.render();
+//                clientObject.renderPoint();
+//            }
+            clientObjects.values()
+                    .stream()
+                    .sorted((o1, o2) -> (int) (o2.getY() - o1.getY()))
+                    .forEach(ClientObject::render);
         }
 
 //        this.objectManager.render();
@@ -413,6 +419,8 @@ public class ClientGame extends AbstractGame implements Constants {
 //            " coord: " + object.getX() + " " + object.getY());
 //        }
         if (!clientObjects.containsKey(id) || clientObjects.get(id).getTimestamp() <= object.getTimestamp()) {
+            object.setX(object.getX() + object.getSprite().getWidth() / 2);
+            object.setY(object.getY() - object.getSprite().getHeight());
             clientObjects.put(id, object);
         }
     }
