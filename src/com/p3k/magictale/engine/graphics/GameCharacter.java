@@ -70,17 +70,17 @@ public class GameCharacter extends GameObject implements Serializable {
     protected int maxHealth;
     protected int attack;
     /**
+     * current state of this character
+     */
+    protected volatile int currentState;
+    /**
      * How far can damage other character
      */
     private int attackDistance;
     private int attackPenalty;
     private boolean isFlyable;
     private int layer;
-    /**
-     * current state of this character
-     */
-    protected volatile int currentState;
-    private boolean isDead = false;
+    private volatile boolean isDead = false;
     /**
      * Experience gained by killind this mob
      */
@@ -565,17 +565,19 @@ public class GameCharacter extends GameObject implements Serializable {
     }
 
     public void setCharacterState(GameController.State state) {
-        switch (state) {
-            case ATTACK:
-                characterState = State.ATTACK;
-                break;
-            case MOVE:
-                characterState = State.MOVE;
-                break;
-            case WAIT:
-            default:
-                characterState = State.WAIT;
-                break;
+        if (!isDead && characterState != State.DEATH && currentState != DEATH_STATE) {
+            switch (state) {
+                case ATTACK:
+                    characterState = State.ATTACK;
+                    break;
+                case MOVE:
+                    characterState = State.MOVE;
+                    break;
+                case WAIT:
+                default:
+                    characterState = State.WAIT;
+                    break;
+            }
         }
     }
 
