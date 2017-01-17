@@ -15,6 +15,7 @@ import com.p3k.magictale.map.objects.ObjectInterface;
 import com.p3k.magictale.map.objects.ObjectManager;
 import common.remoteInterfaces.GameController;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -66,17 +67,6 @@ public class ClientGame extends AbstractGame implements Constants {
 
         Display.sync(60);
 
-        player = new Player();
-        receiver = Receiver.getInstance();
-        Registry registry = LocateRegistry.getRegistry(ip);
-        controller = (GameController) registry.lookup("game");
-
-        playerIndex = controller.signUp(nickname);
-        if (playerIndex < 0) {
-            System.exit(1);
-        }
-        this.player.setSprite(ResourceManager.getInstance(true).getSprite(playerIndex));
-
         clientObjects = new TreeMap<>();
 
         initLevelManager();
@@ -94,6 +84,17 @@ public class ClientGame extends AbstractGame implements Constants {
         } else {
             Mouse.setGrabbed(true);
         }
+
+        player = new Player();
+        receiver = Receiver.getInstance();
+        Registry registry = LocateRegistry.getRegistry(ip);
+        controller = (GameController) registry.lookup("game");
+        playerIndex = controller.signUp(nickname);
+        if (playerIndex < 0) {
+            System.exit(1);
+        }
+        this.player.setSprite(ResourceManager.getInstance(true).getSprite(playerIndex));
+
 
         initGuiManager();
 
@@ -133,7 +134,7 @@ public class ClientGame extends AbstractGame implements Constants {
     public void tick() {
         // получение объектов с из очереди полученных с сервера
         receiver.tick();
-        System.out.println("Client objects = " + clientObjects.size());
+//        System.out.println("Client objects = " + clientObjects.size());
 
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             isRunning = false;
@@ -407,6 +408,10 @@ public class ClientGame extends AbstractGame implements Constants {
 
     // обновляем (или добавляем) полученный объект в список клиентских объектов
     public void updateObject(int id, ClientObject object) {
+//        if (!clientObjects.containsKey(id)) {
+//            System.out.println("New object " + id + " " + object.getIdResMan() + " total " + clientObjects.size() +
+//            " coord: " + object.getX() + " " + object.getY());
+//        }
         if (!clientObjects.containsKey(id) || clientObjects.get(id).getTimestamp() <= object.getTimestamp()) {
             clientObjects.put(id, object);
         }

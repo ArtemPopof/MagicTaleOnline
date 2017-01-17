@@ -129,8 +129,10 @@ public class Broadcaster {
             // type == 0 -> objects update
             datagramBuffer.put((byte) 0);
             datagramBuffer.putLong(timestamp);
+            byte count = (byte) (length / 16);
+//            System.out.println("Send " + count + " objects");
+            datagramBuffer.put(count);
             datagramBuffer.put(bytes, i, length);
-            datagramBuffer.put((byte) (length / 16));
 
             // подписываем датаграмму
             byte sign = datagram[0];

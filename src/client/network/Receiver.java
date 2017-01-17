@@ -80,9 +80,10 @@ public class Receiver implements Runnable {
                     switch (type) {
                         case 0:
                             byte[] objects = new byte[16 * 16];
+                            byte count = data.get();
+//                            System.out.println("Got " + count + " objects");
                             data.get(objects);
 
-                            byte count = data.get();
                             ByteBuffer objectsBuffer = ByteBuffer.wrap(objects);
                             objectsBuffer.position(0);
                             for (byte i = 0; i < count; i++) {

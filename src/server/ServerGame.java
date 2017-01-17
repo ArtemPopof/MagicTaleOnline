@@ -134,7 +134,7 @@ public class ServerGame extends AbstractGame {
 //            }
 //        }
 
-        System.out.println("Server objects = " + serverObjects.size());
+//        System.out.println("Server objects = " + serverObjects.size());
         // отправка данных подключенным клиентам
         broadcaster.sendObjects(serverObjects.entrySet());
         // отправка статуса плееров подключенным игрокам

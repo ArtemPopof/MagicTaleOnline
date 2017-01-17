@@ -4,7 +4,6 @@ import com.p3k.magictale.engine.graphics.ResourceManager;
 import com.p3k.magictale.engine.graphics.Sprite;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
 
 /**
  * Created by COMar-PC on 10.01.2017.
@@ -22,6 +21,9 @@ public class ClientObject {
 //        System.out.println("IdResMan = " + idResMan);
         this.idResMan = idResMan;
         this.sprite = ResourceManager.getInstance(true).getSprite(idResMan);
+        if (sprite == null) {
+            sprite = new Sprite(0, 0, 0, 10, 10);
+        }
     }
 
     public void render() {
@@ -69,7 +71,9 @@ public class ClientObject {
     }
 
     public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
+        if (sprite != null) {
+            this.sprite = sprite;
+        }
     }
 
     public long getTimestamp() {
