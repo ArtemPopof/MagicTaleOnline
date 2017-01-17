@@ -40,8 +40,9 @@ public class Collision implements Constants{
 
             float x = character.getRealX();
             float y = character.getRealY();
+            System.out.println(x + " " + y);
 
-            if (x <= 0 || x >= MAP_WIDTH * MAP_TILE_SIZE || y <= 0 || y >= MAP_HEIGHT * MAP_TILE_SIZE) {
+            if (x <= 0 || x >= MAP_WIDTH * MAP_TILE_SIZE || y <= MAP_TILE_SIZE || y >= (MAP_HEIGHT + 1) * MAP_TILE_SIZE) {
                 return true;
             }
 

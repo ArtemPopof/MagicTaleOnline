@@ -1,6 +1,7 @@
 package com.p3k.magictale.engine.graphics;
 
 import client.ClientGame;
+import com.p3k.magictale.engine.Constants;
 import com.p3k.magictale.engine.enums.Direction;
 
 import java.io.Serializable;

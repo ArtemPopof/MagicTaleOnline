@@ -199,6 +199,7 @@ public class LevelManager implements Level {
     public void render() {
         for (ClientObject obj : background) {
             obj.render();
+//            obj.renderPoint();
         }
     }
 
