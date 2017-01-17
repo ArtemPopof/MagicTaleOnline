@@ -109,8 +109,8 @@ public class Animation implements Constants, Serializable {
         }
     }
 
-    public int getFrame() {
-        return this.currentFrame;
+    public boolean isLastFrame() {
+        return this.currentFrame == frames.size() - 1;
     }
 
     public void stop() {

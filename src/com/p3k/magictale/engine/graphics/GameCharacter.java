@@ -345,7 +345,7 @@ public class GameCharacter extends GameObject implements Serializable {
      * Perform attack action
      */
     public void doAttack() {
-        if (animations.get(currentState).getFrame() != 0) {
+        if (!animations.get(currentState).isLastFrame()) {
             return;
         }
 
