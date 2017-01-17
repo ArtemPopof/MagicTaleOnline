@@ -354,6 +354,7 @@ public class GameCharacter extends GameObject implements Serializable {
         if (attackPenalty > 0) {
             return;
         }
+        attackPenalty = 10;
 
         Point currentPosition = new Point((int) getRealX(), (int) getRealY());
 
