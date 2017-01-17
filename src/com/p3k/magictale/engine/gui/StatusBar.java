@@ -75,7 +75,10 @@ public class StatusBar extends Widget {
 
         this.hpBar.setWidth(barWidth);
 
-        percent = this.player.getXp() / (float) this.player.getXpForNextLevel();
+        Logger.log("XP FOR PREV LEVEL= " + this.player.getXpForPrevLevel(), Logger.DEBUG);
+
+        percent = (this.player.getXp() - this.player.getXpForPrevLevel())
+                / (float) this.player.getXpForNextLevel();
 
         barWidth = (int) (this.width * 0.52f * percent);
         barWidth = Math.max(barWidth, 2);

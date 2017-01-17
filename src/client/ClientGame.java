@@ -66,7 +66,7 @@ public class ClientGame extends AbstractGame implements Constants {
         initGl();
 
         Display.sync(60);
-
+        
         clientObjects = new TreeMap<>();
 
         initLevelManager();

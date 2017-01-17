@@ -63,6 +63,13 @@ public class Broadcaster {
         byte isDead = (byte) (player.isDead() ? 1 : 0);
         int currentLevel = player.getLevel();
         int xpForNextLevel = player.getExperienceForNextLevel();
+
+        int level = Math.max(player.getLevel(), 1);
+        int xpForPrevLevel = player.getExperienceForLevel(player.getLevel() - 1);
+
+        Logger.log("Level: " + level, Logger.DEBUG);
+        Logger.log("Prev: " + xpForPrevLevel, Logger.DEBUG);
+
         int xp = player.getXp();
 
         datagramBuffer.put(type);
@@ -74,6 +81,7 @@ public class Broadcaster {
         datagramBuffer.put(isDead);
         datagramBuffer.putInt(currentLevel);
         datagramBuffer.putInt(xpForNextLevel);
+        datagramBuffer.putInt(xpForPrevLevel);
         datagramBuffer.putInt(xp);
 
 //        System.out.println();

@@ -105,6 +105,7 @@ public class Receiver implements Runnable {
                             byte isDead = data.get();
                             int currentLevel = data.getInt();
                             int xpForNextLevel = data.getInt();
+                            int xpForPrevLevel = data.getInt();
                             int xp = data.getInt();
 
 //                            System.out.println();
@@ -125,6 +126,7 @@ public class Receiver implements Runnable {
                             player.setDead(isDead);
                             player.setCurrentLevel(currentLevel);
                             player.setXpForNextLevel(xpForNextLevel);
+                            player.setXpForPrevLevel(xpForPrevLevel);
                             player.setXp(xp);
                             playerUpdates.add(player);
                             break;

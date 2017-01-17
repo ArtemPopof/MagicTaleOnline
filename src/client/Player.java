@@ -13,6 +13,7 @@ public class Player {
     private boolean isDead;
     private int currentLevel;
     private int xpForNextLevel;
+    private int xpForPrevLevel;
     private int xp;
     private long timestamp = 0;
     private Sprite sprite = new Sprite(0, 0, 0, 10, 10);
@@ -83,6 +84,12 @@ public class Player {
 
     public void setXpForNextLevel(int xpForNextLevel) {
         this.xpForNextLevel = xpForNextLevel;
+    }
+
+    public int getXpForPrevLevel() { return (currentLevel - 1)*10; }
+
+    public void setXpForPrevLevel(int xpForPrevLevel) {
+        this.xpForPrevLevel = xpForPrevLevel;
     }
 
     public long getTimestamp() {
