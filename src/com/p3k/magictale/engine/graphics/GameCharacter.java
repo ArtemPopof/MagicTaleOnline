@@ -80,7 +80,7 @@ public class GameCharacter extends GameObject implements Serializable {
      * current state of this character
      */
     protected volatile int currentState;
-    private boolean isDead = false;
+    private volatile boolean isDead = false;
     /**
      * Experience gained by killind this mob
      */
