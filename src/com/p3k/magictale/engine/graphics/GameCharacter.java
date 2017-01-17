@@ -383,8 +383,10 @@ public class GameCharacter extends GameObject implements Serializable {
             for (GameCharacter character : enemies) {
                 if (character.equals(this)) continue;
 
-                character.takeHarm(this.attack, this);
-                break;
+                if (!character.isDead) {
+                    character.takeHarm(this.attack, this);
+                    break;
+                }
             }
 
             attackPenalty = 20;
