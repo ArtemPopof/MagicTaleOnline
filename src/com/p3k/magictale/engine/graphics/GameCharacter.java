@@ -78,7 +78,7 @@ public class GameCharacter extends GameObject implements Serializable {
     /**
      * current state of this character
      */
-    private volatile int currentState;
+    protected volatile int currentState;
     private boolean isDead = false;
     /**
      * Experience gained by killind this mob
@@ -173,12 +173,9 @@ public class GameCharacter extends GameObject implements Serializable {
 //    }
     @Override
     public void update() {
-
-        // Animation must be performed here
         if (characterState != State.WAIT && !this.animations.get(currentState).isRunning()) {
             this.animations.get(currentState).startOver();
         }
-
         // next animation frame
         this.spriteId = this.animations.get(this.currentState).update();
 
@@ -228,8 +225,11 @@ public class GameCharacter extends GameObject implements Serializable {
                         break;
                 }
                 break;
+            case WAIT:
+                if (type == CharacterTypes.ABSTRACT_PLAYER && !isDead) {
+                    this.animations.get(currentState).stop();
+                }
             default:
-                this.animations.get(currentState).stop();
                 break;
         }
 
@@ -589,7 +589,8 @@ public class GameCharacter extends GameObject implements Serializable {
     protected enum State {
         WAIT,
         MOVE,
-        ATTACK
+        ATTACK,
+        DEATH
     }
 
 
